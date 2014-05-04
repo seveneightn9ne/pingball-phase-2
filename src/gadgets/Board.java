@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import client.Ball;
+import client.ServerHandler;
 import physics.Geometry;
+import common.Constants;
 
 public class Board {
 
@@ -52,16 +54,16 @@ public class Board {
      */
     private void boardConstructor() {
         // top wall
-        borders[0] = new Wall(0);
+        borders[0] = new Wall(Constants.BoardSide.TOP);
 
         // right wall
-        borders[1] = new Wall(1);
+        borders[1] = new Wall(Constants.BoardSide.RIGHT);
 
         // bottom wall
-        borders[2] = new Wall(2);
+        borders[2] = new Wall(Constants.BoardSide.BOTTOM);
 
         // left wall
-        borders[3] = new Wall(3);
+        borders[3] = new Wall(Constants.BoardSide.LEFT);
 
         for (int i = 0; i < 22; i++) {
             boardRep[0][i] = '.';
@@ -188,7 +190,7 @@ public class Board {
      * Refresh the board, taking into account elapsed time causing motion, as
      * well as possible collisions
      */
-    public Map<Ball, Integer> update(double deltaT) {
+    public void update(double deltaT) {
 
         Map<Ball, Integer> passed = new HashMap<Ball, Integer>();
 
@@ -278,8 +280,7 @@ public class Board {
 
             }
         }
-        return passed;
-
+        System.out.println(this.toString());
     }
 
 }
