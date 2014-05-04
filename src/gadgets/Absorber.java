@@ -158,4 +158,14 @@ public class Absorber implements Gadget {
         return this.name;
     }
 
+    @Override
+    public Vect getOrigin() {
+        return this.position;
+    }
+
+    @Override
+    public int[] getSize() {
+        return new int[]{this.width, this.height};
+    }
+
 }

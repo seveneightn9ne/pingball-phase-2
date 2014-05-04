@@ -1,5 +1,6 @@
 package gadgets;
 
+import physics.Vect;
 import client.Ball;
 
 
@@ -9,6 +10,16 @@ public interface Gadget {
     //public Vect getPosition();  //Position of the Gadget
     
     public String getName();
+    
+    /**
+     * @return coordinate of the upper-left-hand corner of this gadget
+     */
+    public Vect getOrigin();
+    
+    /**
+     * @return int[] corresponding to the width and height of this object
+     */
+    public int[] getSize();
     
     /**
      * React when a ball collides with the Gadget

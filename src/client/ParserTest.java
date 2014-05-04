@@ -1,14 +1,11 @@
 package client;
 
-import static org.junit.Assert.*;
-import org.junit.Test;
-
-import src.pingball.Board;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+
+import org.junit.Test;
 
 public class ParserTest {
 	
@@ -73,8 +70,8 @@ public class ParserTest {
 	public void testisValidLine(){
 		String line1 = "this is a valid . . .. 312 line";
 		String line2 = "!! not valid^";
-		//assertFalse(parser.isValidLine(line2));
-		//assertTrue(parser.isValidLine(line1));
+//		assertFalse(parser.isValidLine(line2));
+//		assertTrue(parser.isValidLine(line1));
 	}
 	
 	@Test
@@ -85,6 +82,8 @@ public class ParserTest {
 		
 		Board board = parser.makeBoard(staffboard);
 		System.out.println(board.toString());
+		Board board2 = parser.makeBoard(staffboard2);
+        System.out.println(board2.toString());
 	}
 	
 }

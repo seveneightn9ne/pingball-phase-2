@@ -192,4 +192,13 @@ public class RightFlipper implements Gadget {
     public String getName() {
         return this.name;
     }
+    
+    @Override
+    public Vect getOrigin() {
+        return this.pivotCoord;
+    }
+    @Override
+    public int[] getSize() {
+        return new int[]{2,2};
+    }
 }
