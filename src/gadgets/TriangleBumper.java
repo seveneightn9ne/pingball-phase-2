@@ -128,14 +128,14 @@ public class TriangleBumper implements Gadget {
     }
 
     @Override
-    public int hit(Ball ball, Board board) {
+    public boolean hit(Ball ball, Board board) {
         Vect velocity = Geometry.reflectWall(nextHit, ball.getVelocity());
         ball.setVelocity(velocity);
         for (Gadget g : triggers) {
             g.action(board);
         }
         
-        return -1;
+        return true;
     }
 
     @Override

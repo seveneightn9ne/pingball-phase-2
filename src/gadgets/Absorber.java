@@ -94,7 +94,7 @@ public class Absorber implements Gadget {
     }
 
     @Override
-    public int hit(Ball ball, Board board) {
+    public boolean hit(Ball ball, Board board) {
         ball.putInBoardRep(board, true);
         ball.setPosition(new Vect(southEast.x(), southEast.y()));
         ball.setVelocity(new Vect(0, 0));
@@ -106,7 +106,7 @@ public class Absorber implements Gadget {
         for (Gadget g : triggers) {
             g.action(board);
         }
-        return -1;
+        return true;
     }
 
     @Override

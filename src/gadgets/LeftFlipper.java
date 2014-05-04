@@ -134,7 +134,7 @@ public class LeftFlipper implements Gadget {
     }
 
     @Override
-    public int hit(Ball ball, Board board) {
+    public boolean hit(Ball ball, Board board) {
         Vect velocity = Geometry.reflectRotatingWall(line, pivot,
                 angularVelocity, ball.getCircle(), ball.getVelocity());
         ball.setVelocity(velocity);
@@ -144,7 +144,7 @@ public class LeftFlipper implements Gadget {
             g.action(board);
         }
         
-        return -1;
+        return true;
     }
 
     @Override
