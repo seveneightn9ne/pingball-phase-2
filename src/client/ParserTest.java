@@ -70,8 +70,8 @@ public class ParserTest {
 	public void testisValidLine(){
 		String line1 = "this is a valid . . .. 312 line";
 		String line2 = "!! not valid^";
-		//assertFalse(parser.isValidLine(line2));
-		//assertTrue(parser.isValidLine(line1));
+//		assertFalse(parser.isValidLine(line2));
+//		assertTrue(parser.isValidLine(line1));
 	}
 	
 	@Test
@@ -82,6 +82,8 @@ public class ParserTest {
 		
 		Board board = parser.makeBoard(staffboard);
 		System.out.println(board.toString());
+		Board board2 = parser.makeBoard(staffboard2);
+        System.out.println(board2.toString());
 	}
 	
 }

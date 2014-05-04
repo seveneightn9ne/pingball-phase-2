@@ -134,6 +134,10 @@ public class Parser {
 		for (int i = 0; i<gadgetList.size(); i++){
 		    board.addGadget(gadgetList.get(i));
         }
+		
+		for (int i = 0; i<ballList.size(); i++) {
+		    board.addBall(ballList.get(i));
+		}
 
 		return board;
 	}
@@ -293,14 +297,17 @@ public class Parser {
 		    }
 		}
 		
-		//makes a new gadget array of the size of the gadget list
-		Gadget[] gadgetArr = new Gadget[gadgetList.size()];
-		for (int i = 0; i<gadgetList.size(); i++){
-			gadgetArr[i] = gadgetList.get(i);
-		}
-		
 		Board board = new Board(name, gravity, friction1, friction2);
-		return board;
+        
+        for (int i = 0; i<gadgetList.size(); i++){
+            board.addGadget(gadgetList.get(i));
+        }
+        
+        for (int i = 0; i<ballList.size(); i++) {
+            board.addBall(ballList.get(i));
+        }
+
+        return board;
 	}
 	
 	
@@ -598,7 +605,7 @@ public class Parser {
 	private boolean isValidLine(String line){
 		String[] splitLine = line.split(" ");
 		for (String word: splitLine){
-			if (!word.matches("[a-zA-Z0-9.,=]+")){
+			if (!word.matches("[a-zA-Z0-9.,=_]+")){
 				return false;
 			}
 		}
