@@ -10,15 +10,13 @@ import java.util.Hashtable;
 import java.util.List;
 import java.util.Enumeration;
 import physics.*;
-import src.pingball.Absorber;
-import src.pingball.Ball;
-import src.pingball.Board;
-import src.pingball.CircularBumper;
-import src.pingball.Gadget;
-import src.pingball.LeftFlipper;
-import src.pingball.RightFlipper;
-import src.pingball.SquareBumper;
-import src.pingball.TriangularBumper;
+import gadgets.Absorber;
+import gadgets.CircleBumper;
+import gadgets.Gadget;
+import gadgets.LeftFlipper;
+import gadgets.RightFlipper;
+import gadgets.SquareBumper;
+import gadgets.TriangleBumper;
 
 /**
  *	Parses the input from the user as presented by the PingballServer class
@@ -130,13 +128,13 @@ public class Parser {
 		    }
 		}
 		
-		//makes a new gadget array of the size of the gadget list
-		Gadget[] gadgetArr = new Gadget[gadgetList.size()];
-		for (int i = 0; i<gadgetList.size(); i++){
-			gadgetArr[i] = gadgetList.get(i);
-		}
 		
-		Board board = new Board(name, gravity, friction1, friction2, gadgetArr, ballList);
+		Board board = new Board(name, gravity, friction1, friction2);
+		
+		for (int i = 0; i<gadgetList.size(); i++){
+		    board.addGadget(gadgetList.get(i));
+        }
+
 		return board;
 	}
 	
@@ -301,7 +299,7 @@ public class Parser {
 			gadgetArr[i] = gadgetList.get(i);
 		}
 		
-		Board board = new Board(name, gravity, friction1, friction2, gadgetArr, ballList);
+		Board board = new Board(name, gravity, friction1, friction2);
 		return board;
 	}
 	
@@ -318,67 +316,68 @@ public class Parser {
 		int y;
 		if (line[0].equals("squareBumper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line.length == 4){
+			    String name = line[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
 				y = Integer.parseInt(ysplit[1]);
-				Vect origin = new Vect(x, y);
-				return new SquareBumper(origin);
+				return new SquareBumper(name, x, y);
 			}else{
 				throw new RuntimeException("invalid squareBumper");
 			}
 		}else if (line[0].equals("circleBumper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line.length==4){
+			    String name = line [1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
 				y = Integer.parseInt(ysplit[1]);
-				Vect origin = new Vect(x, y);
-				return new CircularBumper(origin);
+				return new CircleBumper(name, x, y);
 			}else{
-				throw new RuntimeException("invalid circularBumper");
+				throw new RuntimeException("invalid CircleBumper");
 			}
 		}else if (line[0].equals("triangleBumper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("orientation")&&line.length==5){
+			    String name = line[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
 				y = Integer.parseInt(ysplit[1]); 
 				String[] orientationsplit = line[4].split("=");
 				int orientation = Integer.parseInt(orientationsplit[1]);
-				Vect origin = new Vect(x,y);
-				return new TriangularBumper(orientation, origin);
+				return new TriangleBumper(name, x, y, orientation);
 			}else{
 				throw new RuntimeException("invalid triangularBumper");
 			}
 		}else if (line[0].equals("leftFlipper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("orientation")&&line.length==5){
+			    String name = line[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
 				y = Integer.parseInt(ysplit[1]); 
 				String[] orientationsplit = line[4].split("=");
 				int orientation = Integer.parseInt(orientationsplit[1]);
-				Vect origin = new Vect(x,y);
-				return new LeftFlipper(orientation, origin);
+				return new LeftFlipper(name, x, y, orientation);
 			}else{
 				throw new RuntimeException("invalid leftFlipper");
 			}
 		}else if (line[0].equals("rightFlipper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("orientation")&&line.length==5){
+			    String name = line[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
 				y = Integer.parseInt(ysplit[1]); 
 				String[] orientationsplit = line[4].split("=");
 				int orientation = Integer.parseInt(orientationsplit[1]);
-				Vect origin = new Vect(x,y);
-				return new RightFlipper(orientation, origin);
+				return new RightFlipper(name, x, y, orientation);
 			}else{
 				throw new RuntimeException("invalid rightFlipper");
 			}
 		}else if (line[0].equals("absorber")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("width")&&line[5].startsWith("height")&&line.length==6){
+			    String name = line[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
@@ -387,8 +386,7 @@ public class Parser {
 				String[] heightsplit = line[5].split("=");
 				int width = Integer.parseInt(widthsplit[1]);
 				int height = Integer.parseInt(heightsplit[1]);
-				Vect origin = new Vect(x,y);
-				return new Absorber(width, height, origin);
+				return new Absorber(name, x, y, width, height);
 			}else{
 				throw new RuntimeException("invalid absorber");
 			}
@@ -464,7 +462,7 @@ public class Parser {
 	 */
 	public List<String> cleanFile(File file){
 		List<String> lineList = makeFileList(file);
-		List<String> cleanList = new ArrayList();
+		List<String> cleanList = new ArrayList<String>();
 		for (String line: lineList){
 			//check the individual string for cleanliness (ie. comments)
 			String clean = cleanLine(line);

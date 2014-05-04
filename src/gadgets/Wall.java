@@ -86,5 +86,15 @@ public class Wall implements Gadget {
     public double timeUntilCollision(Ball ball){
         return Geometry.timeUntilWallCollision(line, ball.getCircle(), ball.getVelocity());
     }
+    
+    @Override
+    public Vect getOrigin() {
+        return this.line.p1();
+    }
+
+    @Override
+    public int[] getSize() {
+        return new int[]{1,1};
+    }
 
 }

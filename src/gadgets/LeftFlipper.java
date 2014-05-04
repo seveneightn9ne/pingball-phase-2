@@ -5,7 +5,6 @@ import java.util.Set;
 
 import client.Ball;
 import client.Board;
-
 import physics.Angle;
 import physics.Geometry;
 import physics.LineSegment;
@@ -196,6 +195,15 @@ public class LeftFlipper implements Gadget {
     @Override
     public String getName() {
         return this.name;
+    }
+    
+    @Override
+    public Vect getOrigin() {
+        return this.pivotCoord;
+    }
+    @Override
+    public int[] getSize() {
+        return new int[]{2,2};
     }
 
 }

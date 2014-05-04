@@ -5,7 +5,6 @@ import java.util.Set;
 
 import client.Ball;
 import client.Board;
-
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -176,6 +175,16 @@ public class TriangleBumper implements Gadget {
     @Override
     public String getName() {
         return this.name;
+    }
+    
+    @Override
+    public Vect getOrigin() {
+        return this.position;
+    }
+
+    @Override
+    public int[] getSize() {
+        return new int[]{1,1};
     }
 
 }
