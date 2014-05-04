@@ -13,7 +13,7 @@ public class Board {
     /**
      * Rep invariant: boardRep is the 2D char representation of the board
      */
-
+	private ServerHandler sh;
     private double gravity;
     private double mu;
     private double mu2;
@@ -74,6 +74,16 @@ public class Board {
                 }
             }
         }
+    }
+    
+    /**
+     * Set the server handler so that the walls can inform
+     * other Boards over the network if a ball is transferred.
+     * @param sh the server handler
+     */
+
+    public void setServerHandler(ServerHandler sh) {
+    	this.sh = sh;
     }
 
     /**
