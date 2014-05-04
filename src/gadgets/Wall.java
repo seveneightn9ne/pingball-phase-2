@@ -1,7 +1,6 @@
 package gadgets;
 
 import client.Ball;
-import client.Board;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;

@@ -1,5 +1,7 @@
 package client;
 
+import gadgets.Board;
+
 import java.util.concurrent.BlockingQueue;
 
 

@@ -1,13 +1,11 @@
-package client;
-
-import gadgets.Gadget;
-import gadgets.Wall;
+package gadgets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import client.Ball;
 import physics.Geometry;
 
 public class Board {

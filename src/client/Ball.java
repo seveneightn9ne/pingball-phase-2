@@ -1,5 +1,6 @@
 package client;
 
+import gadgets.Board;
 import physics.Circle;
 import physics.Vect;
 

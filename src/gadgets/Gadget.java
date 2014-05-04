@@ -1,7 +1,6 @@
 package gadgets;
 
 import client.Ball;
-import client.Board;
 
 
 public interface Gadget {
