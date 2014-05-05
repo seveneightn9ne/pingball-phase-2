@@ -110,15 +110,16 @@ public class Ball {
      *        false if we are adding the current representation
      */
     public void putInBoardRep(Board board, boolean remove){
-
+    	int xPos = (int) Math.round(position.x()+1);
+    	int yPos = (int) Math.round(position.y()+1);
         char[][] boardRep = board.getBoardRep();
         if (!remove){
-            if (boardRep[(int) Math.round(position.y()+1)][(int) Math.round(position.x()+1)] == ' ')
-            boardRep[(int) Math.round(position.y()+1)][(int) Math.round(position.x()+1)] = '*';
+            if (boardRep[yPos][xPos] == ' ')
+            boardRep[yPos][xPos] = '*';
         }
         else{
-            if (boardRep[(int) Math.round(position.y()+1)][(int) Math.round(position.x()+1)] == '*')
-            boardRep[(int) Math.round(position.y()+1)][(int) Math.round(position.x()+1)] = ' ';
+            if (boardRep[yPos][xPos] == '*')
+            boardRep[yPos][xPos] = ' ';
         }
         board.setBoardRep(boardRep);
     }
