@@ -83,7 +83,7 @@ public class PingballClient {
         while(true){
             try {
                 // Sleep to limit framerate.
-                Thread.sleep((int) (Constants.TIMESTEP * 1000));
+                Thread.sleep((int) (Constants.TIMESTEP));
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
             }
@@ -111,7 +111,7 @@ public class PingballClient {
                 }
             }
 
-            board.update(Constants.TIMESTEP * 1000);
+            board.update(Constants.TIMESTEP);
         }
     }
 

@@ -302,7 +302,7 @@ public class Board {
                     time += minTime;
                 }
 
-                if (ballStillInPlay) {
+                if (!ballStillInPlay) {
                     time = deltaT;
                     Ball transferBall = balls.remove(i);
                     transferBall.putInBoardRep(this, true);
