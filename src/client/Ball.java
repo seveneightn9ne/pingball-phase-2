@@ -57,10 +57,10 @@ public class Ball {
      * Check rep invariant.
      */
     public void checkRep(){
-        assert (position.x() >= -0.25 && position.x() <= 20.25);
-        assert (position.y() >= -0.25 && position.y() <= 20.25);
-        assert (position.x() == circle.getCenter().x() && position.y() == circle.getCenter().y());
-        assert (circle.getRadius() == 0.25);
+        if  (!(position.x() >= -0.25 && position.x() <= 20.25)) throw new RuntimeException("Ball x-position out of bounds");
+        if (!(position.y() >= -0.25 && position.y() <= 20.25)) throw new RuntimeException("Ball y-position out of bounds");
+        if (!(position.x() == circle.getCenter().x() && position.y() == circle.getCenter().y())) throw new RuntimeException("Position is not circle position");
+        if (!(circle.getRadius() == 0.25)) throw new RuntimeException("Wrong circle radius");
     }
     
     /**
@@ -101,6 +101,7 @@ public class Ball {
      */
     public void setPosition(Vect position){
         this.position = position;
+        this.circle = new Circle(position, 0.25);
     }
     
     /**
@@ -110,6 +111,7 @@ public class Ball {
      *        false if we are adding the current representation
      */
     public void putInBoardRep(Board board, boolean remove){
+    	checkRep();
     	int xPos = (int) Math.round(position.x()+1);
     	int yPos = (int) Math.round(position.y()+1);
         char[][] boardRep = board.getBoardRep();
@@ -132,10 +134,29 @@ public class Ball {
      * @param deltaT the time passed
      */
     public void move(double gravity, double mu, double mu2, double deltaT, Board board){
+    	checkRep();
         putInBoardRep(board, true);
-        position = position.plus(velocity.times(deltaT));
-        velocity = velocity.times(1+gravity*deltaT-mu*deltaT-mu2*velocity.length()*deltaT);
+//        position = position.plus(velocity.times(deltaT));
+//        velocity = velocity.times(1+gravity*deltaT-mu*deltaT-mu2*velocity.length()*deltaT);
+//        Vect term1 = oldVel.times(Constants.TIMESTEP);
+//        Vect term2 = new Vect(0, 0.5 * gravity * Constants.TIMESTEP * Constants.TIMESTEP);
+//        velocity = 
+        Vect oldPos = getPosition();
+        Vect oldVel = getVelocity();
+
+        Vect term1 = oldVel.times(deltaT);
+        Vect term2 = new Vect(0, 0.5 * gravity * deltaT * deltaT);
+
+        Vect newPos = oldPos.plus(term1).plus(term2);
+        double frictionScalar = 1-(mu)*(deltaT) - mu2*oldVel.length()*deltaT;
+        Vect frictionVel = oldVel.times(frictionScalar);
+        Vect newVel = frictionVel.plus(new Vect(0, gravity * deltaT));
+        
+        position = newPos;
+        velocity = newVel;
         circle = new Circle(position, 0.25);
+
+        checkRep();
         putInBoardRep(board, false);
     }
 }
