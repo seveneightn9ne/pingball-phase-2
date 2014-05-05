@@ -7,6 +7,7 @@ import java.util.Set;
 
 import client.Ball;
 import client.Board;
+import physics.Circle;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -24,6 +25,7 @@ public class Absorber implements Gadget {
 
 
     private LineSegment[] lines;
+    private Circle[] corners;
     private Vect southEast;
     private List<Ball> balls = new ArrayList<Ball>();
     private Set<Gadget> triggers = new HashSet<Gadget>();
