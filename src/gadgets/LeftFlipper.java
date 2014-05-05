@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import client.Ball;
+import client.Board;
 import physics.Angle;
 import physics.Geometry;
 import physics.LineSegment;
@@ -31,9 +32,10 @@ public class LeftFlipper implements Gadget {
     /**
      * Constructor for LeftFlipper
      * 
-     * @param position
-     *            the position of the upper left corner of the 2Lx2L box that
-     *            encloses the flipper
+     * @param xPos
+     *            x coordinate of the upper left corner of this gadget
+     * @param yPos 
+     *            y coordinate of the upper left corner of this gadget
      * @param orientation
      *            0 is the flipper with fixed end at position and non-fixed end
      *            below it. the other orientations represent a 90 degree
@@ -50,9 +52,10 @@ public class LeftFlipper implements Gadget {
     /**
      * Constructor for LeftFlipper
      * 
-     * @param position
-     *            the position of the upper left corner of the 2Lx2L box that
-     *            encloses the flipper
+     * @param xPos
+     *            x coordinate of the upper left corner of this gadget
+     * @param yPos 
+     *            y coordinate of the upper left corner of this gadget
      * @param orientation
      *            0 is the flipper with fixed end at position and non-fixed end
      *            below it. the other orientations represent a 90 degree

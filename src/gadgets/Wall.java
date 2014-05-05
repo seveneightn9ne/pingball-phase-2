@@ -4,6 +4,7 @@ import common.Constants;
 import common.netprotocol.BallOutMessage;
 
 import client.Ball;
+import client.Board;
 import client.ServerHandler;
 import physics.Geometry;
 import physics.LineSegment;
@@ -14,7 +15,7 @@ public class Wall implements Gadget {
      * Rep invariant: line.length() == 20
      */
     private LineSegment line;
-    public boolean open = false;
+    private boolean open = false;
     private Constants.BoardSide boardSide;
     private String connectedBoardName;
     private ServerHandler serverHandler;
@@ -73,6 +74,16 @@ public class Wall implements Gadget {
     public void addTrigger(Gadget g){
         throw new RuntimeException("Walls do not have triggers");
         //Walls cannot trigger: throw exception
+    }
+    
+    public void connectToServer(String name) {
+    	this.open = true;
+    	this.connectedBoardName = name;
+    }
+    
+    public void disconnectFromServer() {
+    	this.open = false;
+    	this.connectedBoardName = null;
     }
 
     @Override

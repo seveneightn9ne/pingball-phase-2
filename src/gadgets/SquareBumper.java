@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import client.Ball;
+import client.Board;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -23,11 +24,9 @@ public class SquareBumper implements Gadget {
     /**
      * Constructor for SquareBumper
      * 
-     * @param position
-     *            a Vect representing the coordinate position of the Square
-     *            Bumper
-     * @param name
-     *            unique name representation of the bumper
+     * @param name - name of this gadget
+     * @param x - x coordinate of the upper left corner of this gadget
+     * @param y - y coordinate of the upper left corner of this gadget
      */
     public SquareBumper(String name, int x, int y) {
         this.name = name;
@@ -39,9 +38,8 @@ public class SquareBumper implements Gadget {
     /**
      * Constructor for SquareBumper
      * 
-     * @param position
-     *            a Vect representing the coordinate position of the Square
-     *            Bumper
+     * @param x - x coordinate of the upper left corner of this gadget
+     * @param y - y coordinate of the upper left corner of this gadget
      */
     public SquareBumper(int x, int y) {
         this.name = null;
@@ -50,6 +48,9 @@ public class SquareBumper implements Gadget {
         this.linesConstructor();
     }
     
+    /**
+     * Creates LineSegments for the square bumper
+     */
     private void linesConstructor() {
 
         lines[0] = new LineSegment(position.x() - 0.5, position.y() - 0.5,

@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import client.Ball;
+import client.Board;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -28,8 +29,10 @@ public class TriangleBumper implements Gadget {
      * Triangle Bumper constructor: Create line segments corresponding to edges
      * of the bumper
      * 
-     * @param position
-     *            a Vect representing the coordinate position of the bumper
+     * @param xPos
+     *            x coordinate of the upper left corner of this gadget
+     * @param yPos 
+     *            y coordinate of the upper left corner of this gadget
      * @param orientation
      *            0 degrees has triangle corner in the northwest corner, 90 in
      *            the northeast, 180 in the southeast, 270 in the southwest
@@ -48,8 +51,10 @@ public class TriangleBumper implements Gadget {
      * Triangle Bumper constructor: Create line segments corresponding to edges
      * of the bumper
      * 
-     * @param position
-     *            a Vect representing the coordinate position of the bumper
+     * @param xPos
+     *            x coordinate of the upper left corner of this gadget
+     * @param yPos 
+     *            y coordinate of the upper left corner of this gadget
      * @param orientation
      *            0 degrees has triangle corner in the northwest corner, 90 in
      *            the northeast, 180 in the southeast, 270 in the southwest
@@ -62,9 +67,9 @@ public class TriangleBumper implements Gadget {
         this.orientationConstructor(orientation);
     }
 
-    // TODO: Add description of what is going on here
     /**
-     * INSERT COMMENT HERE
+     * Create line segments corresponding to edges of the bumper in the correct
+     * orientation.
      * 
      * @param orientation
      *            0 degrees has triangle corner in the northwest corner, 90 in

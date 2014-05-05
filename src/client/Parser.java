@@ -27,9 +27,9 @@ import gadgets.TriangleBumper;
  */
 public class Parser {
 	
-	String[] validGadgets = {"squareBumper", "circleBumper", "triangleBumper", "leftFlipper", "rightFlipper", "absorber"};
+	private static String[] validGadgets = {"squareBumper", "circleBumper", "triangleBumper", "leftFlipper", "rightFlipper", "absorber"};
 	 
-	public Parser(){}
+//	public Parser(){}
 	
 	
 	/** Takes a file, makes a board out of it
@@ -41,7 +41,7 @@ public class Parser {
 	 * @output board instance
 	 * @throws RuntimeException
 	 */
-	public Board makeBoard(File file){
+	public static Board makeBoard(File file){
 		
 		List<String> cleanedFile = cleanFile(file);
 		if (!isValidFile(cleanedFile)){
@@ -149,7 +149,7 @@ public class Parser {
 	 * @return true if the gadget is valid
 	 * false otherwise
 	 */
-	public boolean isValidGadget(Gadget gadget, List<Gadget> gadgetList){
+	public static boolean isValidGadget(Gadget gadget, List<Gadget> gadgetList){
 		boolean[][] occupied = new boolean[20][20];
 		
 		for (int i = 0; i<20; i++){
@@ -214,7 +214,7 @@ public class Parser {
 	 * @output board instance
 	 * @throws RuntimeException
 	 */
-	public Board makeBoardFromString(String fileString){
+	public static Board makeBoardFromString(String fileString){
 		
 		List<String> cleanedFile = Arrays.asList(fileString.split("\n"));
 		if (!isValidFile(cleanedFile)){
@@ -318,7 +318,7 @@ public class Parser {
 	 * @throws runtimeException if it's a bad line
 	 * or if it's a bad gadget
 	 */
-	public Gadget makeGadget(String[] line){
+	public static Gadget makeGadget(String[] line){
 		int x;
 		int y;
 		if (line[0].equals("squareBumper")){
@@ -409,7 +409,7 @@ public class Parser {
 	 * @throws runtime exception if it's a bad line
 	 * TODO: make the thrown errors less hacky
 	 */
-	public Ball makeBall(String[] line){
+	public static Ball makeBall(String[] line){
 		double x;
 		double y;
 		double xVelocity;
@@ -467,7 +467,7 @@ public class Parser {
 	 * @return List<String> of all the uncommented files
 	 * each String in the array represents a single line in the file 
 	 */
-	public List<String> cleanFile(File file){
+	public static List<String> cleanFile(File file){
 		List<String> lineList = makeFileList(file);
 		List<String> cleanList = new ArrayList<String>();
 		for (String line: lineList){
@@ -488,7 +488,7 @@ public class Parser {
 	 * 
 	 * NOTE: can handle spaces, can't currently handle tab characters
 	 */
-	public String cleanLine(String line){
+	public static String cleanLine(String line){
 		StringBuilder str = new StringBuilder();
 		boolean lastCharSpace = true;
 		for (int i = 0; i < line.length(); i++){
@@ -525,7 +525,7 @@ public class Parser {
 	 * @param file
 	 * @return List<String> of all the lines in the file
 	 */
-	public List<String> makeFileList(File file){
+	public static List<String> makeFileList(File file){
 		List<String> lineList = new ArrayList<String>();
         try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -552,7 +552,7 @@ public class Parser {
 	 * @input a file
 	 * @return a string representation of the file
 	 */
-	public String fileToString(File file){
+	public static String fileToString(File file){
 		StringBuilder str = new StringBuilder();
 		try {
             BufferedReader reader = new BufferedReader(new FileReader(file));
@@ -581,7 +581,7 @@ public class Parser {
 	 * because we don't care about what characters are in the comments
 	 * @output true if the file is valid (contains only letters, numbers, and periods)
 	 */
-	private boolean isValidFile(List<String> fileList){
+	private static boolean isValidFile(List<String> fileList){
 		boolean valid = true;
 		for (String line: fileList){
 			if (!isValidLine(line)){
@@ -602,7 +602,7 @@ public class Parser {
 	 *@return true if the line is valid characters only
 	 *return false if the line contains any invalid characters
 	 */
-	private boolean isValidLine(String line){
+	private static boolean isValidLine(String line){
 		String[] splitLine = line.split(" ");
 		for (String word: splitLine){
 			if (!word.matches("[a-zA-Z0-9.,=_]+")){
@@ -622,7 +622,7 @@ public class Parser {
 	 * false otherwise
 	 * @throw badGadgetException
 	 */
-	private boolean checkGadget(Gadget gadget){
+	private static boolean checkGadget(Gadget gadget){
 		//TODO: implement
 		throw new UnsupportedOperationException();
 	}

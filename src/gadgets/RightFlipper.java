@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import client.Ball;
+import client.Board;
 import physics.Angle;
 import physics.Geometry;
 import physics.LineSegment;
@@ -32,8 +33,10 @@ public class RightFlipper implements Gadget {
     /**
      * Constructor for RightFlipper
      * 
-     * @param position
-     *            the position of the upper left end of the flipper
+     * @param xPos
+     *            x coordinate of the upper left corner of this gadget
+     * @param yPos 
+     *            y coordinate of the upper left corner of this gadget
      * @param orientation
      *            0 is the flipper with fixed end at position and non-fixed end
      *            below it. the other orientations represent a 90 degree
@@ -53,8 +56,10 @@ public class RightFlipper implements Gadget {
     /**
      * Constructor for RightFlipper
      * 
-     * @param position
-     *            the position of the upper left end of the flipper
+     * @param xPos
+     *            x coordinate of the upper left corner of this gadget
+     * @param yPos 
+     *            y coordinate of the upper left corner of this gadget
      * @param orientation
      *            0 is the flipper with fixed end at position and non-fixed end
      *            below it. the other orientations represent a 90 degree
@@ -68,7 +73,13 @@ public class RightFlipper implements Gadget {
         this.orientationConstructor(xPos, yPos, orientation);
 
     }
-
+    
+    /**
+     * Sets the orientation of the flipper
+     * @param xPos
+     * @param yPos
+     * @param orientation
+     */
     private void orientationConstructor(int xPos, int yPos, int orientation) {
         if (orientation == 0) {
             pivot = new Vect(xPos + 1.5, yPos - 0.5);

@@ -1,8 +1,6 @@
 package client;
 
-import gadgets.Board;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -10,9 +8,6 @@ import java.util.NoSuchElementException;
 import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import client.boardlang.BoardFactory;
-import client.boardlang.InvalidBoardStringException;
 
 import common.Constants;
 import common.RepInvariantException;
@@ -45,6 +40,7 @@ public class PingballClient {
     private final Socket socket;
     private final ServerHandler serverHandler;
     private final BlockingQueue<NetworkMessage> incomingMessages;
+    
 
     /**
      * Instantiate a PingballClient.
@@ -98,7 +94,7 @@ public class PingballClient {
                     // The sending board is responsible for making ballPos on the correct side of the receiving board.
                     Vect ballPos = ((BallInMessage) message).getBallPos();
                     Vect ballVel = ((BallInMessage) message).getBallVel();
-                    board.addBall(new Ball(Constants.BALL_RADIUS, ballPos, ballVel));
+                    board.addBall(new Ball(ballPos, ballVel));
                 } else if (message instanceof BoardFuseMessage) {
                     Constants.BoardSide side = ((BoardFuseMessage) message).getSide();
                     String name = ((BoardFuseMessage) message).getBoardName();
@@ -115,8 +111,7 @@ public class PingballClient {
                 }
             }
 
-            String boardView = board.step();
-            System.out.println(boardView);
+            board.update(Constants.TIMESTEP * 1000);
         }
     }
 
@@ -186,19 +181,7 @@ public class PingballClient {
 
         // Create assets for the client and start it.
 
-        Board board;
-        try {
-            board = BoardFactory.parse(SimpleFileReader.readFile(new File(boardFilePath)));
-        } catch (InvalidBoardStringException e) {
-            System.err.println("Invalid board contents from " + boardFilePath);
-            return;
-        } catch (FileNotFoundException e) {
-            System.err.println("Board file not found at " + boardFilePath);
-            return;
-        } catch (IOException e) {
-            System.err.println("Error while reading board file at " + boardFilePath);
-            return;
-        }
+        Board board = Parser.makeBoard(new File(boardFilePath));
 
         Socket socket = null;
         if (hostname != null) {

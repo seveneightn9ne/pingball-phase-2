@@ -1,12 +1,13 @@
-package gadgets;
+package client;
+
+import gadgets.Gadget;
+import gadgets.Wall;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import client.Ball;
-import client.ServerHandler;
 import physics.Geometry;
 import common.Constants;
 
@@ -87,6 +88,57 @@ public class Board {
     public void setServerHandler(ServerHandler sh) {
     	this.sh = sh;
     }
+    
+    public void connectWallToServer(Constants.BoardSide side, String name) {
+    	getWall(side).connectToServer(name);
+    	for (int i = 1; i <= name.length() && i <=22; i++){
+            if (side == Constants.BoardSide.TOP){
+                boardRep[0][i] = name.charAt(i-1);
+            }
+            
+            else if (side == Constants.BoardSide.RIGHT){
+                boardRep[i][21] = name.charAt(i-1);
+            }
+            
+            else if (side == Constants.BoardSide.BOTTOM){
+                boardRep[22][i] = name.charAt(i-1);
+            }
+            
+            else if (side == Constants.BoardSide.LEFT){
+                boardRep[i][0] = name.charAt(i-1);
+            }
+        }
+    }
+    
+    public void disconnectWallFromServer(Constants.BoardSide side) {
+    	Wall wall = getWall(side);
+    	int nameLen = wall.getName().length();
+    	for (int i = 1; i <= nameLen && i <=22; i++){
+            if (side == Constants.BoardSide.TOP){
+                boardRep[0][i] = '.';
+            }
+            
+            else if (side == Constants.BoardSide.RIGHT){
+                boardRep[i][21] = '.';
+            }
+            
+            else if (side == Constants.BoardSide.BOTTOM){
+                boardRep[22][i] = '.';
+            }
+            
+            else if (side == Constants.BoardSide.LEFT){
+                boardRep[i][0] = '.';
+            }
+        }
+    	getWall(side).disconnectFromServer();
+    }
+    
+    private Wall getWall(Constants.BoardSide side) {
+    	if (side == Constants.BoardSide.TOP) return borders[0];
+    	if (side == Constants.BoardSide.RIGHT) return borders[1];
+    	if (side == Constants.BoardSide.BOTTOM) return borders[2];
+    	else return borders[3];
+    }
 
     /**
      * Accessor method
@@ -165,34 +217,13 @@ public class Board {
         return string;
     }
 
-    public void changeWall(int wallNumber, String name) {
-        borders[wallNumber].open = !borders[wallNumber].open;
-        for (int i = 1; i <= name.length(); i++){
-            if (wallNumber == 0){
-                boardRep[0][i] = name.charAt(i-1);
-            }
-            
-            else if (wallNumber == 1){
-                boardRep[i][21] = name.charAt(i-1);
-            }
-            
-            else if (wallNumber == 2){
-                boardRep[22][i] = name.charAt(i-1);
-            }
-            
-            else if (wallNumber == 3){
-                boardRep[i][0] = name.charAt(i-1);
-            }
-        }
-    }
-
     /**
      * Refresh the board, taking into account elapsed time causing motion, as
      * well as possible collisions
      */
     public void update(double deltaT) {
 
-        Map<Ball, Integer> passed = new HashMap<Ball, Integer>();
+//        Map<Ball, Integer> passed = new HashMap<Ball, Integer>();
 
         for (int i = 0; i < balls.size(); i++) {
             double time = 0;
@@ -224,7 +255,7 @@ public class Board {
                 }
 
                 Wall firstWall = null;
-                int hitWall = -1;
+                boolean ballStillInPlay = true;
 
                 for (Wall wall : borders) {
                     timeHit = wall.timeUntilCollision(balls.get(i));
@@ -246,7 +277,7 @@ public class Board {
                         }
                     } else {
                         balls.get(i).move(gravity, mu, mu2, minTime, this);
-                        hitWall = firstWall.hit(balls.get(i), this);
+                        ballStillInPlay = firstWall.hit(balls.get(i), this);
                         time += minTime;
                     }
                 }
@@ -267,15 +298,15 @@ public class Board {
 
                 else {
                     balls.get(i).move(gravity, mu, mu2, minTime, this);
-                    hitWall = firstWall.hit(balls.get(i), this);
+                    ballStillInPlay = firstWall.hit(balls.get(i), this);
                     time += minTime;
                 }
 
-                if (hitWall >= 0) {
+                if (ballStillInPlay) {
                     time = deltaT;
                     Ball transferBall = balls.remove(i);
                     transferBall.putInBoardRep(this, true);
-                    passed.put(transferBall, hitWall);
+//                    passed.put(transferBall, ballStillInPlay);
                 }
 
             }
