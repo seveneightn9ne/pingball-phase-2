@@ -222,110 +222,17 @@ public class Board {
 		return string;
 	}
 
-//	/**
-//	 * Refresh the board, taking into account elapsed time causing motion, as
-//	 * well as possible collisions
-//	 */
-//	public void update(double deltaT) {
-//
-//		// Map<Ball, Integer> passed = new HashMap<Ball, Integer>();
-//
-//		for (int i = 0; i < balls.size(); i++) {
-//			double time = 0;
-//			double timeHit = 0;
-//			double minTime;
-//
-//			while (time < deltaT) {
-//				minTime = Double.POSITIVE_INFINITY;
-//				Gadget firstGadget = null;
-//
-//				for (Gadget gadget : gadgets) {
-//					timeHit = gadget.timeUntilCollision(balls.get(i));
-//					if (timeHit != Double.POSITIVE_INFINITY)
-//						System.out.println(timeHit);
-//					if (timeHit < deltaT - time && timeHit < minTime) {
-//						minTime = timeHit;
-//						firstGadget = gadget;
-//					}
-//				}
-//
-//				Ball firstBall = null;
-//
-//				for (int j = i + 1; j < balls.size(); j++) {
-//					timeHit = Geometry.timeUntilBallBallCollision(balls.get(i)
-//							.getCircle(), balls.get(i).getVelocity(), balls
-//							.get(j).getCircle(), balls.get(j).getVelocity());
-//					if (timeHit < deltaT - time && timeHit < minTime) {
-//						minTime = timeHit;
-//						firstBall = balls.get(j);
-//					}
-//				}
-//
-//				Wall firstWall = null;
-//				boolean ballStillInPlay = true;
-//
-//				for (Wall wall : borders) {
-//					timeHit = wall.timeUntilCollision(balls.get(i));
-//					if (timeHit < deltaT - time && timeHit < minTime) {
-//						minTime = timeHit;
-//						firstWall = wall;
-//					}
-//				}
-//
-//				if (firstBall == null) {
-//					if (firstWall == null) {
-//						if (firstGadget == null) {
-//							balls.get(i).move(gravity, mu, mu2, deltaT, this);
-//							time = deltaT;
-//						} else {
-//							balls.get(i).move(gravity, mu, mu2, minTime, this);
-//							firstGadget.hit(balls.get(i), this);
-//							time += minTime;
-//						}
-//					} else {
-//						balls.get(i).move(gravity, mu, mu2, minTime, this);
-//						ballStillInPlay = firstWall.hit(balls.get(i), this);
-//						time += minTime;
-//					}
-//				}
-//
-//				else if (firstWall == null) {
-//
-//					balls.get(i).move(gravity, mu, mu2, minTime, this);
-//
-//					firstBall.move(gravity, mu, mu2, minTime, this);
-//					Geometry.VectPair velocities = Geometry.reflectBalls(balls
-//							.get(i).getPosition(), 1, balls.get(i)
-//							.getVelocity(), firstBall.getPosition(), 1,
-//							firstBall.getVelocity());
-//					balls.get(i).setVelocity(velocities.v1);
-//					firstBall.setVelocity(velocities.v2);
-//					time += minTime;
-//				}
-//
-//				else {
-//					balls.get(i).move(gravity, mu, mu2, minTime, this);
-//					ballStillInPlay = firstWall.hit(balls.get(i), this);
-//					time += minTime;
-//				}
-//
-//				if (!ballStillInPlay) {
-//					time = deltaT;
-//					Ball transferBall = balls.remove(i);
-//					transferBall.putInBoardRep(this, true);
-//					// passed.put(transferBall, ballStillInPlay);
-//				}
-//
-//			}
-//		}
-//		System.out.println(this.toString());
-//	}
-//	
+	/**
+	 * Refresh the board, taking into account elapsed time causing motion, as
+	 * well as possible collisions
+	 */
     public void update(double timestep) {
 
     	List<Ball> ballsToRemove = new ArrayList<Ball>();
 
         for (Ball ball : balls) {
+//        	System.out.println("Ball velocity: " + ball.getVelocity());
+//        	System.out.println("Ball location: " + ball.getPosition());
             boolean ballStillInPlay = true;
             
         	for (Gadget gadget : gadgets) {
