@@ -221,96 +221,41 @@ public class Board {
      * Refresh the board, taking into account elapsed time causing motion, as
      * well as possible collisions
      */
-    public void update(double deltaT) {
+    public void update(double timestep) {
 
-//        Map<Ball, Integer> passed = new HashMap<Ball, Integer>();
+    	List<Ball> ballsToRemove = new ArrayList<Ball>();
 
-        for (int i = 0; i < balls.size(); i++) {
-            double time = 0;
-            double timeHit = 0;
-            double minTime;
+        for (Ball ball : balls) {
 
-            while (time < deltaT) {
-                minTime = Double.POSITIVE_INFINITY;
-                Gadget firstGadget = null;
+            boolean ballStillInPlay = true;
+            
+        	for (Gadget gadget : gadgets) {
+        		if (gadget.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
+        			if (! gadget.hit(ball, this)) ballStillInPlay = false;
+        			break;
+        		}
+        	}
 
-                for (Gadget gadget : gadgets) {
-                    timeHit = gadget.timeUntilCollision(balls.get(i));
-                    if (timeHit < deltaT - time && timeHit < minTime) {
-                        minTime = timeHit;
-                        firstGadget = gadget;
-                    }
-                }
-
-                Ball firstBall = null;
-
-                for (int j = i + 1; j < balls.size(); j++) {
-                    timeHit = Geometry.timeUntilBallBallCollision(balls.get(i)
-                            .getCircle(), balls.get(i).getVelocity(), balls
-                            .get(j).getCircle(), balls.get(j).getVelocity());
-                    if (timeHit < deltaT - time && timeHit < minTime) {
-                        minTime = timeHit;
-                        firstBall = balls.get(j);
-                    }
-                }
-
-                Wall firstWall = null;
-                boolean ballStillInPlay = true;
-
-                for (Wall wall : borders) {
-                    timeHit = wall.timeUntilCollision(balls.get(i));
-                    if (timeHit < deltaT - time && timeHit < minTime) {
-                        minTime = timeHit;
-                        firstWall = wall;
-                    }
-                }
-
-                if (firstBall == null) {
-                    if (firstWall == null) {
-                        if (firstGadget != null) {
-                            balls.get(i).move(gravity, mu, mu2, minTime, this);
-                            firstGadget.hit(balls.get(i), this);
-                            time += minTime;
-                        } else {
-                            balls.get(i).move(gravity, mu, mu2, deltaT, this);
-                            time = deltaT;
-                        }
-                    } else {
-                        balls.get(i).move(gravity, mu, mu2, minTime, this);
-                        ballStillInPlay = firstWall.hit(balls.get(i), this);
-                        time += minTime;
-                    }
-                }
-
-                else if (firstWall == null) {
-
-                    balls.get(i).move(gravity, mu, mu2, minTime, this);
-
-                    firstBall.move(gravity, mu, mu2, minTime, this);
-                    Geometry.VectPair velocities = Geometry.reflectBalls(balls
-                            .get(i).getPosition(), 1, balls.get(i)
-                            .getVelocity(), firstBall.getPosition(), 1,
-                            firstBall.getVelocity());
-                    balls.get(i).setVelocity(velocities.v1);
-                    firstBall.setVelocity(velocities.v2);
-                    time += minTime;
-                }
-
-                else {
-                    balls.get(i).move(gravity, mu, mu2, minTime, this);
-                    ballStillInPlay = firstWall.hit(balls.get(i), this);
-                    time += minTime;
-                }
-
-                if (!ballStillInPlay) {
-                    time = deltaT;
-                    Ball transferBall = balls.remove(i);
-                    transferBall.putInBoardRep(this, true);
-//                    passed.put(transferBall, ballStillInPlay);
-                }
-
+            for (Wall wall : borders) {
+            	if (wall.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
+            		System.out.println("Time until wall collision: " + wall.timeUntilCollision(ball));
+            		if (! wall.hit(ball, this)) ballStillInPlay = false;
+            		break;
+            	}
             }
+                
+            if (ballStillInPlay) {
+            	ball.move(gravity, mu, mu2, timestep, this);
+            } else {
+                ballsToRemove.add(ball);
+                ball.putInBoardRep(this, true);
+            } 
         }
+        
+        for (Ball ball : ballsToRemove) {
+        	balls.remove(ball);
+        }
+        
         System.out.println(this.toString());
     }
 

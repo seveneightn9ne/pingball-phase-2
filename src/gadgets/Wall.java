@@ -88,9 +88,12 @@ public class Wall implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
+    	System.out.println("Hitting!");
         if (!open){
+        	System.out.println("Hit velocity: " + ball.getVelocity());
             Vect velocity = Geometry.reflectWall(line, ball.getVelocity());
             ball.setVelocity(velocity);
+            System.out.println(ball.getPosition() + ", " + ball.getVelocity());
             return true;
         }
         else{
