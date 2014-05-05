@@ -68,6 +68,11 @@ public class Absorber implements Gadget {
         lines[1] = new LineSegment(northEast, southEast);
         lines[2] = new LineSegment(southEast, southWest);
         lines[3] = new LineSegment(southWest, northWest);
+        corners = new Circle[4];
+        corners[0] = new Circle(northWest, 0);
+        corners[1] = new Circle(northEast, 0);
+        corners[2] = new Circle(southWest, 0);
+        corners[3] = new Circle(southEast, 0);
     }
 
     /**
@@ -96,9 +101,9 @@ public class Absorber implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-    	if(balls.contains(ball)) {
+    	if (balls.contains(ball)) {
     		balls.remove(ball);
-    		return false;
+    		return true;
     	}
         ball.putInBoardRep(board, true);
         ball.setPosition(new Vect(southEast.x(), southEast.y()));
@@ -114,7 +119,7 @@ public class Absorber implements Gadget {
     @Override
     public void action(Board board) {
         if (!balls.isEmpty()) {
-            Ball ball = balls.remove(0);
+            Ball ball = balls.get(0);
             ball.setVelocity(new Vect(0, -50));
         }
     }
@@ -149,6 +154,13 @@ public class Absorber implements Gadget {
         double time;
         for (LineSegment line : lines) {
             time = Geometry.timeUntilWallCollision(line, ball.getCircle(),
+                    ball.getVelocity());
+            if (time < minTime) {
+                minTime = time;
+            } 
+        }
+        for (Circle corner : corners) {
+            time = Geometry.timeUntilCircleCollision(corner, ball.getCircle(),
                     ball.getVelocity());
             if (time < minTime) {
                 minTime = time;

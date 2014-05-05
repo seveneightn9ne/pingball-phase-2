@@ -227,7 +227,7 @@ public class Board {
 
         for (Ball ball : balls) {
         	System.out.println("Ball velocity: " + ball.getVelocity());
-
+        	System.out.println("Ball location: " + ball.getPosition());
             boolean ballStillInPlay = true;
             
         	for (Gadget gadget : gadgets) {
