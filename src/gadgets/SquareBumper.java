@@ -5,6 +5,7 @@ import java.util.Set;
 
 import client.Ball;
 import client.Board;
+import physics.Circle;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -17,7 +18,10 @@ public class SquareBumper implements Gadget {
      */
     private Vect position;
     private LineSegment[] lines;
+    private Circle[] corners;
     private LineSegment nextHit;
+    private Circle nextCornerHit;
+    private String nextHitType;
     private String name;
     private Set<Gadget> triggers = new HashSet<Gadget>();
 
@@ -32,6 +36,7 @@ public class SquareBumper implements Gadget {
         this.name = name;
         this.position = new Vect(x, y);
         lines = new LineSegment[4];
+        corners = new Circle[4];
         this.linesConstructor();
     }
 
@@ -45,6 +50,7 @@ public class SquareBumper implements Gadget {
         this.name = null;
         this.position = new Vect(x, y);
         lines = new LineSegment[4];
+        corners = new Circle[4];
         this.linesConstructor();
     }
     
@@ -61,6 +67,11 @@ public class SquareBumper implements Gadget {
                 position.x() + 0.5, position.y() + 0.5);
         lines[3] = new LineSegment(position.x() + 0.5, position.y() + 0.5,
                 position.x() + 0.5, position.y() - 0.5);
+        
+        corners[0] = new Circle(new Vect(position.x() - .5, position.y() - .5), 0);
+        corners[1] = new Circle(new Vect(position.x() + .5, position.y() - .5), 0);
+        corners[2] = new Circle(new Vect(position.x() - .5, position.y() + .5), 0);
+        corners[3] = new Circle(new Vect(position.x() + .5, position.y() + .5), 0);
     }
 
     /**
@@ -75,8 +86,15 @@ public class SquareBumper implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-        Vect velocity = Geometry.reflectWall(nextHit, ball.getVelocity());
-        ball.setVelocity(velocity);
+        
+        if (nextHitType.equals("line")) {
+            Vect velocity = Geometry.reflectWall(nextHit, ball.getVelocity()); 
+            ball.setVelocity(velocity);
+        }
+        else if (nextHitType.equals("circle")) {
+            Vect velocity = Geometry.reflectCircle(nextCornerHit.getCenter(), ball.getPosition(), ball.getVelocity());
+            ball.setVelocity(velocity);
+        }
         for (Gadget g : triggers) {
             g.action(board);
         }
@@ -126,6 +144,16 @@ public class SquareBumper implements Gadget {
             if (time < minTime) {
                 minTime = time;
                 nextHit = line;
+                nextHitType = "line";
+            } 
+        }
+        for (Circle corner : corners) {
+            time = Geometry.timeUntilCircleCollision(corner, ball.getCircle(),
+                    ball.getVelocity());
+            if (time < minTime) {
+                minTime = time;
+                nextCornerHit = corner;
+                nextHitType = "circle";
             }
         }
         return minTime;

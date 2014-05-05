@@ -26,10 +26,10 @@ public class ParserTest {
 		File file2b = new File("staffboard2b.txt");
 		File file3 = new File("staffboard3.txt");
 		File file4 = new File("staffboard4.txt");
-		Board board1 = parser.makeBoard(file1);
-		Board board2 = parser.makeBoard(file2);
-		Board board3 = parser.makeBoard(file3);
-		Board board4 = parser.makeBoard(file4);
+		Board board1 = Parser.makeBoard(file1);
+		Board board2 = Parser.makeBoard(file2);
+		Board board3 = Parser.makeBoard(file3);
+		Board board4 = Parser.makeBoard(file4);
 		//TODO: implement the rest of this test when Megan has getattribute methods implemented
 	}
 	
@@ -38,7 +38,7 @@ public class ParserTest {
 	//@Test
 	public void invalidCharBoardTest(){
 		File file = new File("invalidcharboard.txt");
-		Board board = parser.makeBoard(file);
+		Board board = Parser.makeBoard(file);
 		//TODO: implement test
 	}
 	
@@ -47,7 +47,7 @@ public class ParserTest {
 	//@Test
 	public void invalidGadgetBoardTest(){
 		File file = new File("badgadgetboard.txt");
-		Board board = parser.makeBoard(file);
+		Board board = Parser.makeBoard(file);
 		//TODO: implement test
 	}
 	
@@ -78,11 +78,11 @@ public class ParserTest {
 	public void testMakeBoard(){
 		File staffboard = new File("staffboard1.txt");
 		File staffboard2 = new File("staffboard2.txt");
-		List<String> clean = parser.cleanFile(staffboard);
+		List<String> clean = Parser.cleanFile(staffboard);
 		
-		Board board = parser.makeBoard(staffboard);
+		Board board = Parser.makeBoard(staffboard);
 		System.out.println(board.toString());
-		Board board2 = parser.makeBoard(staffboard2);
+		Board board2 = Parser.makeBoard(staffboard2);
         System.out.println(board2.toString());
 	}
 	

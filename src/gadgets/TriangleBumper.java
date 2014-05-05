@@ -5,6 +5,7 @@ import java.util.Set;
 
 import client.Ball;
 import client.Board;
+import physics.Circle;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -20,8 +21,11 @@ public class TriangleBumper implements Gadget {
 
     private Vect position;
     private LineSegment[] lines;
+    private Circle[] corners;
     private char rep;
     private LineSegment nextHit;
+    private Circle nextCornerHit;
+    private String nextHitType;
     private String name;
     private Set<Gadget> triggers = new HashSet<Gadget>();
 
@@ -44,6 +48,7 @@ public class TriangleBumper implements Gadget {
 
         this.position = new Vect(xPos, yPos);
         lines = new LineSegment[3];
+        corners = new Circle[3];
         this.orientationConstructor(orientation);
     }
 
@@ -64,6 +69,7 @@ public class TriangleBumper implements Gadget {
 
         this.position = new Vect(xPos, yPos);
         lines = new LineSegment[3];
+        corners = new Circle[3];
         this.orientationConstructor(orientation);
     }
 
@@ -87,11 +93,17 @@ public class TriangleBumper implements Gadget {
             lines[0] = new LineSegment(northWest, northEast);
             lines[1] = new LineSegment(northWest, southWest);
             lines[2] = new LineSegment(southWest, northEast);
+            corners[0] = new Circle(northWest, 0);
+            corners[1] = new Circle(northEast, 0);
+            corners[2] = new Circle(southWest, 0);
             rep = '/';
         } else if (orientation == 90) {
             lines[0] = new LineSegment(northWest, northEast);
             lines[1] = new LineSegment(northEast, southEast);
             lines[2] = new LineSegment(northWest, southEast);
+            corners[0] = new Circle(northWest, 0);
+            corners[1] = new Circle(northEast, 0);
+            corners[2] = new Circle(southEast, 0);
             rep = '\\';
         }
 
@@ -99,6 +111,9 @@ public class TriangleBumper implements Gadget {
             lines[0] = new LineSegment(southEast, northEast);
             lines[1] = new LineSegment(southWest, southEast);
             lines[2] = new LineSegment(southWest, northEast);
+            corners[0] = new Circle(southWest, 0);
+            corners[1] = new Circle(northEast, 0);
+            corners[2] = new Circle(southEast, 0);
             rep = '/';
         }
 
@@ -106,6 +121,9 @@ public class TriangleBumper implements Gadget {
             lines[0] = new LineSegment(northWest, southWest);
             lines[1] = new LineSegment(southWest, southEast);
             lines[2] = new LineSegment(northWest, southEast);
+            corners[0] = new Circle(southWest, 0);
+            corners[1] = new Circle(northWest, 0);
+            corners[2] = new Circle(southEast, 0);
             rep = '\\';
         }
 
@@ -133,8 +151,14 @@ public class TriangleBumper implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-        Vect velocity = Geometry.reflectWall(nextHit, ball.getVelocity());
-        ball.setVelocity(velocity);
+        if (nextHitType.equals("line")) {
+            Vect velocity = Geometry.reflectWall(nextHit, ball.getVelocity()); 
+            ball.setVelocity(velocity);
+        }
+        else if (nextHitType.equals("circle")) {
+            Vect velocity = Geometry.reflectCircle(nextCornerHit.getCenter(), ball.getPosition(), ball.getVelocity());
+            ball.setVelocity(velocity);
+        }
         for (Gadget g : triggers) {
             g.action(board);
         }
@@ -171,6 +195,16 @@ public class TriangleBumper implements Gadget {
             if (time < minTime) {
                 minTime = time;
                 nextHit = line;
+                nextHitType = "line";
+            } 
+        }
+        for (Circle corner : corners) {
+            time = Geometry.timeUntilCircleCollision(corner, ball.getCircle(),
+                    ball.getVelocity());
+            if (time < minTime) {
+                minTime = time;
+                nextCornerHit = corner;
+                nextHitType = "circle";
             }
         }
         return minTime;

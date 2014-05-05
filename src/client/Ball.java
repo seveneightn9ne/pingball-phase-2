@@ -156,7 +156,7 @@ public class Ball {
 	 * @param deltaT
 	 *            the time passed
 	 */
-	public void move(double gravity, double mu, double mu2, double deltaT,
+	public void oldmove(double gravity, double mu, double mu2, double deltaT,
 			Board board) {
 		putInBoardRep(board, true);
 		position = position.plus(velocity.times(deltaT));
@@ -165,4 +165,31 @@ public class Ball {
 		circle = new Circle(position, 0.25);
 		putInBoardRep(board, false);
 	}
+	
+	public void move(double gravity, double mu, double mu2, double deltaT, Board board){
+    	checkRep();
+        putInBoardRep(board, true);
+//        position = position.plus(velocity.times(deltaT));
+//        velocity = velocity.times(1+gravity*deltaT-mu*deltaT-mu2*velocity.length()*deltaT);
+//        Vect term1 = oldVel.times(Constants.TIMESTEP);
+//        Vect term2 = new Vect(0, 0.5 * gravity * Constants.TIMESTEP * Constants.TIMESTEP);
+//        velocity = 
+        Vect oldPos = getPosition();
+        Vect oldVel = getVelocity();
+
+        Vect term1 = oldVel.times(deltaT);
+        Vect term2 = new Vect(0, 0.5 * gravity * deltaT * deltaT);
+
+        Vect newPos = oldPos.plus(term1).plus(term2);
+        double frictionScalar = 1-(mu)*(deltaT) - mu2*oldVel.length()*deltaT;
+        Vect frictionVel = oldVel.times(frictionScalar);
+        Vect newVel = frictionVel.plus(new Vect(0, gravity * deltaT));
+        
+        position = newPos;
+        velocity = newVel;
+        circle = new Circle(position, 0.25);
+
+        checkRep();
+        putInBoardRep(board, false);
+    }
 }

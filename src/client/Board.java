@@ -320,4 +320,44 @@ public class Board {
 		}
 		System.out.println(this.toString());
 	}
+	
+    public void update2(double timestep) {
+
+    	List<Ball> ballsToRemove = new ArrayList<Ball>();
+
+        for (Ball ball : balls) {
+        	System.out.println("Ball velocity: " + ball.getVelocity());
+
+            boolean ballStillInPlay = true;
+            
+        	for (Gadget gadget : gadgets) {
+        		if (gadget.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
+//        			System.out.println("Colliding with gadget!");
+        			if (! gadget.hit(ball, this)) ballStillInPlay = false;
+//        			break;
+        		}
+        	}
+
+            for (Wall wall : borders) {
+            	if (wall.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
+//            		System.out.println("Time until wall collision: " + wall.timeUntilCollision(ball));
+            		if (! wall.hit(ball, this)) ballStillInPlay = false;
+//            		break;
+            	}
+            }
+                
+            if (ballStillInPlay) {
+            	ball.move(gravity, mu, mu2, timestep, this);
+            } else {
+                ballsToRemove.add(ball);
+                ball.putInBoardRep(this, true);
+            } 
+        }
+        
+        for (Ball ball : ballsToRemove) {
+        	balls.remove(ball);
+        }
+        
+        System.out.println(this.toString());
+    }
 }

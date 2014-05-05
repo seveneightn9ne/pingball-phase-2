@@ -80,6 +80,9 @@ public class PingballClient {
         }
 
         if (Constants.DEBUG) System.out.println("Reached main loop.");
+        
+        long lastTime = System.currentTimeMillis();
+        int i=0;
         while(true){
             try {
                 // Sleep to limit framerate.
@@ -111,8 +114,18 @@ public class PingballClient {
                 }
             }
 
-            board.update(0.001);
+//            board.update(0.001);
+//            if (System.currentTimeMillis() - lastTime >= 50) {
+//                lastTime = System.currentTimeMillis();
+//                board.update((System.currentTimeMillis() - lastTime)/1000d);
+//                if (i % 5 == 0) {
+//                    System.out.println(board.toString());
+//                }
+//                i++;
+//            }
+
             
+            board.update2(Constants.TIMESTEP);
         }
     }
 

@@ -7,6 +7,7 @@ import java.util.Set;
 
 import client.Ball;
 import client.Board;
+import physics.Circle;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -24,6 +25,7 @@ public class Absorber implements Gadget {
 
 
     private LineSegment[] lines;
+    private Circle[] corners;
     private Vect southEast;
     private List<Ball> balls = new ArrayList<Ball>();
     private Set<Gadget> triggers = new HashSet<Gadget>();
@@ -94,6 +96,10 @@ public class Absorber implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
+    	if(balls.contains(ball)) {
+    		balls.remove(ball);
+    		return false;
+    	}
         ball.putInBoardRep(board, true);
         ball.setPosition(new Vect(southEast.x(), southEast.y()));
         ball.setVelocity(new Vect(0, 0));
@@ -102,7 +108,7 @@ public class Absorber implements Gadget {
         for (Gadget g : triggers) {
             g.action(board);
         }
-        return false;
+        return true;
     }
 
     @Override
