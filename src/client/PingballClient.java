@@ -125,7 +125,7 @@ public class PingballClient {
 //            }
 
             
-            board.update2(Constants.TIMESTEP);
+            board.update(Constants.TIMESTEP);
         }
     }
 
