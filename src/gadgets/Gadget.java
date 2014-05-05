@@ -1,8 +1,8 @@
 package gadgets;
 
 import physics.Vect;
+import common.Constants;
 import client.Ball;
-import client.Board;
 
 
 public interface Gadget {
@@ -24,10 +24,11 @@ public interface Gadget {
     
     /**
      * React when a ball collides with the Gadget
-     * @param velocity the velocity of the ball incident on the Gadget
-     * @return Vect of the new velocity of the ball after collision
+     * @param ball the ball
+     * @param board the board
+     * @return true if the ball is still in play. false if this is a wall that took the ball.
      */
-    public int hit(Ball ball, Board board);
+    public boolean hit(Ball ball, Board board);
     
     /**
      * Calculate the time until a Ball at fixed velocity will collide with this Gadget

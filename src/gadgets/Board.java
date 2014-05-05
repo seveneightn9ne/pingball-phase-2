@@ -1,21 +1,21 @@
-package client;
-
-import gadgets.Gadget;
-import gadgets.Wall;
+package gadgets;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import client.Ball;
+import client.ServerHandler;
 import physics.Geometry;
+import common.Constants;
 
 public class Board {
 
     /**
      * Rep invariant: boardRep is the 2D char representation of the board
      */
-
+	private ServerHandler sh;
     private double gravity;
     private double mu;
     private double mu2;
@@ -54,16 +54,16 @@ public class Board {
      */
     private void boardConstructor() {
         // top wall
-        borders[0] = new Wall(0);
+        borders[0] = new Wall(Constants.BoardSide.TOP);
 
         // right wall
-        borders[1] = new Wall(1);
+        borders[1] = new Wall(Constants.BoardSide.RIGHT);
 
         // bottom wall
-        borders[2] = new Wall(2);
+        borders[2] = new Wall(Constants.BoardSide.BOTTOM);
 
         // left wall
-        borders[3] = new Wall(3);
+        borders[3] = new Wall(Constants.BoardSide.LEFT);
 
         for (int i = 0; i < 22; i++) {
             boardRep[0][i] = '.';
@@ -76,6 +76,16 @@ public class Board {
                 }
             }
         }
+    }
+    
+    /**
+     * Set the server handler so that the walls can inform
+     * other Boards over the network if a ball is transferred.
+     * @param sh the server handler
+     */
+
+    public void setServerHandler(ServerHandler sh) {
+    	this.sh = sh;
     }
 
     /**
@@ -180,7 +190,7 @@ public class Board {
      * Refresh the board, taking into account elapsed time causing motion, as
      * well as possible collisions
      */
-    public Map<Ball, Integer> update(double deltaT) {
+    public void update(double deltaT) {
 
         Map<Ball, Integer> passed = new HashMap<Ball, Integer>();
 
@@ -270,8 +280,7 @@ public class Board {
 
             }
         }
-        return passed;
-
+        System.out.println(this.toString());
     }
 
 }

@@ -1,7 +1,10 @@
 package gadgets;
 
+import common.Constants;
+import common.netprotocol.BallOutMessage;
+
 import client.Ball;
-import client.Board;
+import client.ServerHandler;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -12,32 +15,34 @@ public class Wall implements Gadget {
      */
     private LineSegment line;
     public boolean open = false;
-    private int wallNumber;
+    private Constants.BoardSide boardSide;
+    private String connectedBoardName;
+    private ServerHandler serverHandler;
     
     /**
      * Wall constructor: creates line segments representing the walls of a board
      * @param wallNumber 1, 2, 3, or 4, corresponding to top, right, bottom, and left walls respectively
      */
-    public Wall(int wallNumber){
-        this.wallNumber = wallNumber;
+    public Wall(Constants.BoardSide side){
+    	boardSide = side;
         
         // top wall
-        if (wallNumber == 0){
+        if (side == Constants.BoardSide.TOP){
             line = new LineSegment(-.5, -.5, 19.5, -.5);
         }
         
         // right wall
-        else if (wallNumber == 1){
+        else if (side == Constants.BoardSide.RIGHT){
             line = new LineSegment(19.5, -.5, 19.5, 19.5);
         }
         
         // bottom wall
-        else if (wallNumber == 2){
+        else if (side == Constants.BoardSide.BOTTOM){
             line = new LineSegment(19.5, 19.5, -.5, 19.5);
         }
         
         // left wall
-        else if (wallNumber == 3){
+        else if (side == Constants.BoardSide.LEFT){
             line = new LineSegment(-.5, 19.5, -.5, -.5);
         }
     }
@@ -48,7 +53,7 @@ public class Wall implements Gadget {
     
     @Override
     public String getName(){
-        return String.valueOf(wallNumber);
+        return boardSide.toString();
     }
     
     @Override
@@ -71,14 +76,23 @@ public class Wall implements Gadget {
     }
 
     @Override
-    public int hit(Ball ball, Board board) {
+    public boolean hit(Ball ball, Board board) {
         if (!open){
             Vect velocity = Geometry.reflectWall(line, ball.getVelocity());
             ball.setVelocity(velocity);
-            return -1;
+            return true;
         }
         else{
-            return wallNumber;
+        	Vect newBallPosition = ball.getPosition().plus(ball.getVelocity().times(Constants.TIMESTEP));
+            if (boardSide == Constants.BoardSide.TOP)    newBallPosition = new Vect(newBallPosition.x(), 20d);
+            if (boardSide == Constants.BoardSide.RIGHT)  newBallPosition = new Vect(newBallPosition.x(), 0d);
+            if (boardSide == Constants.BoardSide.BOTTOM) newBallPosition = new Vect(20d, newBallPosition.y());
+            if (boardSide == Constants.BoardSide.LEFT)   newBallPosition = new Vect(0d, newBallPosition.y());
+            ball.setPosition(newBallPosition);
+
+            // Send the ball to the server
+            serverHandler.send(new BallOutMessage(ball.getPosition(), ball.getVelocity(), boardSide));
+            return false;
         }
     }
     

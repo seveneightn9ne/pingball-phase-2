@@ -4,7 +4,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import client.Ball;
-import client.Board;
 import physics.Angle;
 import physics.Geometry;
 import physics.LineSegment;
@@ -142,7 +141,7 @@ public class RightFlipper implements Gadget {
     }
 
     @Override
-    public int hit(Ball ball, Board board) {
+    public boolean hit(Ball ball, Board board) {
         Vect velocity = Geometry.reflectRotatingWall(line, pivot,
                 angularVelocity, ball.getCircle(), ball.getVelocity(),
                 reflection);
@@ -150,7 +149,7 @@ public class RightFlipper implements Gadget {
         for (Gadget g : triggers) {
             g.action(board);
         }
-        return -1;
+        return true;
     }
 
     @Override
