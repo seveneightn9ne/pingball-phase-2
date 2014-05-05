@@ -49,9 +49,9 @@ public class Parser {
 		}
 		
 		String name="";
-		double gravity =0;
-		double friction1=0;
-		double friction2=0;
+		double gravity =20;
+		double friction1=.025;
+		double friction2=.025;
 		ArrayList<Ball> ballList = new ArrayList<Ball>();
 		ArrayList<Gadget> gadgetList = new ArrayList<Gadget>();
 		Hashtable<String, String[]> triggerHash= new Hashtable<String, String[]>();
@@ -296,7 +296,6 @@ public class Parser {
 		    	actGadget.addTrigger(trigGadget);
 		    }
 		}
-		
 		Board board = new Board(name, gravity, friction1, friction2);
         
         for (int i = 0; i<gadgetList.size(); i++){
@@ -585,6 +584,7 @@ public class Parser {
 		boolean valid = true;
 		for (String line: fileList){
 			if (!isValidLine(line)){
+			    System.out.println(line);
 				valid = false;
 				break;
 			}
@@ -605,7 +605,7 @@ public class Parser {
 	private static boolean isValidLine(String line){
 		String[] splitLine = line.split(" ");
 		for (String word: splitLine){
-			if (!word.matches("[a-zA-Z0-9.,=_]+")){
+			if (!word.matches("[a-zA-Z0-9.,=_-]+")){
 				return false;
 			}
 		}
