@@ -85,6 +85,10 @@ public class Wall implements Gadget {
     	this.open = false;
     	this.connectedBoardName = null;
     }
+    
+    public void setServerHandler(ServerHandler sh) {
+    	this.serverHandler = sh;
+    }
 
     @Override
     public boolean hit(Ball ball, Board board) {
