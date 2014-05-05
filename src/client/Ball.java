@@ -1,6 +1,5 @@
 package client;
 
-import gadgets.Board;
 import physics.Circle;
 import physics.Vect;
 
@@ -40,6 +39,12 @@ public class Ball {
         position = new Vect(x,y);
         velocity = new Vect(xVel, yVel);
         circle = new Circle(position, 0.25);
+    }
+    
+    public Ball(Vect pos, Vect vel) {
+    	position = pos;
+    	velocity = vel;
+    	circle = new Circle(position, 0.25);
     }
     
     public String getName(){

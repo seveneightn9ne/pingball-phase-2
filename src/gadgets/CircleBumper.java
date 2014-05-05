@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import client.Ball;
+import client.Board;
 import physics.Circle;
 import physics.Geometry;
 import physics.Vect;

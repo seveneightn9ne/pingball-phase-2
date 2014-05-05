@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import client.Ball;
+import client.Board;
 import physics.Angle;
 import physics.Geometry;
 import physics.LineSegment;

@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import client.Ball;
+import client.Board;
 import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
@@ -101,7 +102,7 @@ public class Absorber implements Gadget {
         for (Gadget g : triggers) {
             g.action(board);
         }
-        return true;
+        return false;
     }
 
     @Override
