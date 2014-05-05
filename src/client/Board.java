@@ -241,6 +241,8 @@ public class Board {
 
 				for (Gadget gadget : gadgets) {
 					timeHit = gadget.timeUntilCollision(balls.get(i));
+					if (timeHit != Double.POSITIVE_INFINITY)
+						System.out.println(timeHit);
 					if (timeHit < deltaT - time && timeHit < minTime) {
 						minTime = timeHit;
 						firstGadget = gadget;
@@ -272,13 +274,13 @@ public class Board {
 
 				if (firstBall == null) {
 					if (firstWall == null) {
-						if (firstGadget != null) {
+						if (firstGadget == null) {
+							balls.get(i).move(gravity, mu, mu2, deltaT, this);
+							time = deltaT;
+						} else {
 							balls.get(i).move(gravity, mu, mu2, minTime, this);
 							firstGadget.hit(balls.get(i), this);
 							time += minTime;
-						} else {
-							balls.get(i).move(gravity, mu, mu2, deltaT, this);
-							time = deltaT;
 						}
 					} else {
 						balls.get(i).move(gravity, mu, mu2, minTime, this);
@@ -318,5 +320,4 @@ public class Board {
 		}
 		System.out.println(this.toString());
 	}
-
 }
