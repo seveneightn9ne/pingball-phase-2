@@ -48,6 +48,7 @@ public class TriangleBumper implements Gadget {
 
         this.position = new Vect(xPos, yPos);
         lines = new LineSegment[3];
+        corners = new Circle[3];
         this.orientationConstructor(orientation);
     }
 
