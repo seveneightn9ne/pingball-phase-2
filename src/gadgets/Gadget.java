@@ -7,9 +7,9 @@ import client.Board;
 
 public interface Gadget {
     
-    //public double getReflection();  //Coefficient of reflection: default 1
-    //public Vect getPosition();  //Position of the Gadget
-    
+    /**
+     * @return name of this gadget
+     */
     public String getName();
     
     /**

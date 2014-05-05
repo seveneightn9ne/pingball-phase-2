@@ -23,8 +23,6 @@ public class Absorber implements Gadget {
      * the boundaries of the absorber
      */
 
-    //private boolean selfTrigger = false; // If true, eject the same ball that
-                                         // collides with the absorber
 
     private LineSegment[] lines;
     private Vect southEast;
@@ -40,8 +38,10 @@ public class Absorber implements Gadget {
      * Constructor for Absorber: Create line segments representing the edges of
      * the Absorber
      * 
-     * @param position
-     *            the coordinate position of the upper left corner
+     * @param xPos
+     *            x coordinate of the upper left corner of this gadget
+     * @param yPos 
+     *            y coordinate of the upper left corner of this gadget
      * @param width
      *            the width of the absorber (x-direction)
      * @param height
@@ -100,9 +100,6 @@ public class Absorber implements Gadget {
         ball.setVelocity(new Vect(0, 0));
         ball.putInBoardRep(board, false);
         balls.add(ball);
-       // if (selfTrigger) {
-          //  action(board);
-        //}
         for (Gadget g : triggers) {
             g.action(board);
         }
