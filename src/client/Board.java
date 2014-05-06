@@ -8,15 +8,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import physics.Geometry;
 import common.Constants;
 
+/**
+ * a Board is an object that represents the 20x20 grid on which Pingball is played.
+ * The board has gadgets and balls on it. The board can connect a wall to a server. 
+ * 
+ * Thread Safety: The board is not thread safe. It is meant to only run in one thread. 
+ */
 public class Board {
 
 	/**
-	 * Rep invariant: boardRep is the 2D char representation of the board
+	 * Rep invariant: 
+	 * * boardRep is 22x22. 
+	 * * boardRep always represents the most up-to-date state of the board.
+	 * * There are always 4 walls, one of each type TOP, RIGHT, BOTTOM, LEFT
 	 */
-	private ServerHandler sh;
 	private double gravity;
 	private double mu;
 	private double mu2;
@@ -28,7 +35,7 @@ public class Board {
 	public Map<String, Gadget> gadgetNames = new HashMap<String, Gadget>();
 
 	/**
-	 * Constructor for a default empty Board with one ball
+	 * Constructor for a default empty Board
 	 */
 	public Board(String name, double gravity, double mu, double mu2) {
 		this.name = name;
@@ -39,30 +46,13 @@ public class Board {
 	}
 
 	/**
-	 * Constructor for a default empty Board with one ball
-	 */
-	public Board(double gravity, double mu, double mu2) {
-		this.name = null;
-		this.gravity = gravity;
-		this.mu = mu;
-		this.mu2 = mu2;
-		this.boardConstructor();
-	}
-
-	/**
-	 * Initializes appropriate boarders and walls for board object
+	 * Initializes appropriate borders and walls for board object
 	 */
 	private void boardConstructor() {
-		// top wall
+
 		borders[0] = new Wall(Constants.BoardSide.TOP);
-
-		// right wall
 		borders[1] = new Wall(Constants.BoardSide.RIGHT);
-
-		// bottom wall
 		borders[2] = new Wall(Constants.BoardSide.BOTTOM);
-
-		// left wall
 		borders[3] = new Wall(Constants.BoardSide.LEFT);
 
 		for (int i = 0; i < 22; i++) {
@@ -85,11 +75,17 @@ public class Board {
 	 * @param sh
 	 *            the server handler
 	 */
-
 	public void setServerHandler(ServerHandler sh) {
-		this.sh = sh;
+		for (Wall wall : borders) {
+			wall.setServerHandler(sh);
+		}
 	}
 
+	/**
+	 * connects a wall to a board across the network.
+	 * @param side the side of this board on which to attach the other board
+	 * @param name the name of the other board, so we can display it
+	 */
 	public void connectWallToServer(Constants.BoardSide side, String name) {
 		getWall(side).connectToServer(name);
 		for (int i = 1; i <= name.length() && i <= 22; i++) {
@@ -111,6 +107,10 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Disconnect the wall on side side from the server
+	 * @param side the side from which to disconnect 
+	 */
 	public void disconnectWallFromServer(Constants.BoardSide side) {
 		Wall wall = getWall(side);
 		int nameLen = wall.getName().length();
@@ -134,6 +134,11 @@ public class Board {
 		getWall(side).disconnectFromServer();
 	}
 
+	/**
+	 * given a side, return the wall on that side
+	 * @param side the side of the board
+	 * @return the wall on that side
+	 */
 	private Wall getWall(Constants.BoardSide side) {
 		if (side == Constants.BoardSide.TOP)
 			return borders[0];
@@ -147,21 +152,14 @@ public class Board {
 
 	/**
 	 * Accessor method
-	 * 
 	 * @return the boardRep of this Board
 	 */
 	public char[][] getBoardRep() {
 		return boardRep;
 	}
 
-	public void triggerActions(String[] triggers) {
-		String trigger = triggers[0];
-		String action = triggers[1];
-	}
-
 	/**
 	 * Accessor method
-	 * 
 	 * @return the name of this Board
 	 */
 	public String getName() {
@@ -170,17 +168,17 @@ public class Board {
 
 	/**
 	 * Mutator method
-	 * 
 	 * @param boardRep
 	 *            the 2D char array boardRep to assign to this Board
+	 *            Must be 22x22
 	 */
 	public void setBoardRep(char[][] boardRep) {
 		this.boardRep = boardRep;
+		checkRep();
 	}
 
 	/**
 	 * Add a gadget to the board at the position of the Gadget object
-	 * 
 	 * @param gadget
 	 *            Gadget to add to the board
 	 */
@@ -201,7 +199,6 @@ public class Board {
 	/**
 	 * Add a Ball to the board with position and velocity specified in the Ball
 	 * object
-	 * 
 	 * @param ball
 	 *            Ball to add
 	 */
@@ -212,6 +209,9 @@ public class Board {
 		boardRep[y + 1][x + 1] = '*';
 	}
 
+	/**
+	 * @return the Pingball board representation as described by the Project Phase 1 spec.
+	 */
 	@Override
 	public String toString() {
 		String string = "";
@@ -222,127 +222,29 @@ public class Board {
 		return string;
 	}
 
-//	/**
-//	 * Refresh the board, taking into account elapsed time causing motion, as
-//	 * well as possible collisions
-//	 */
-//	public void update(double deltaT) {
-//
-//		// Map<Ball, Integer> passed = new HashMap<Ball, Integer>();
-//
-//		for (int i = 0; i < balls.size(); i++) {
-//			double time = 0;
-//			double timeHit = 0;
-//			double minTime;
-//
-//			while (time < deltaT) {
-//				minTime = Double.POSITIVE_INFINITY;
-//				Gadget firstGadget = null;
-//
-//				for (Gadget gadget : gadgets) {
-//					timeHit = gadget.timeUntilCollision(balls.get(i));
-//					if (timeHit != Double.POSITIVE_INFINITY)
-//						System.out.println(timeHit);
-//					if (timeHit < deltaT - time && timeHit < minTime) {
-//						minTime = timeHit;
-//						firstGadget = gadget;
-//					}
-//				}
-//
-//				Ball firstBall = null;
-//
-//				for (int j = i + 1; j < balls.size(); j++) {
-//					timeHit = Geometry.timeUntilBallBallCollision(balls.get(i)
-//							.getCircle(), balls.get(i).getVelocity(), balls
-//							.get(j).getCircle(), balls.get(j).getVelocity());
-//					if (timeHit < deltaT - time && timeHit < minTime) {
-//						minTime = timeHit;
-//						firstBall = balls.get(j);
-//					}
-//				}
-//
-//				Wall firstWall = null;
-//				boolean ballStillInPlay = true;
-//
-//				for (Wall wall : borders) {
-//					timeHit = wall.timeUntilCollision(balls.get(i));
-//					if (timeHit < deltaT - time && timeHit < minTime) {
-//						minTime = timeHit;
-//						firstWall = wall;
-//					}
-//				}
-//
-//				if (firstBall == null) {
-//					if (firstWall == null) {
-//						if (firstGadget == null) {
-//							balls.get(i).move(gravity, mu, mu2, deltaT, this);
-//							time = deltaT;
-//						} else {
-//							balls.get(i).move(gravity, mu, mu2, minTime, this);
-//							firstGadget.hit(balls.get(i), this);
-//							time += minTime;
-//						}
-//					} else {
-//						balls.get(i).move(gravity, mu, mu2, minTime, this);
-//						ballStillInPlay = firstWall.hit(balls.get(i), this);
-//						time += minTime;
-//					}
-//				}
-//
-//				else if (firstWall == null) {
-//
-//					balls.get(i).move(gravity, mu, mu2, minTime, this);
-//
-//					firstBall.move(gravity, mu, mu2, minTime, this);
-//					Geometry.VectPair velocities = Geometry.reflectBalls(balls
-//							.get(i).getPosition(), 1, balls.get(i)
-//							.getVelocity(), firstBall.getPosition(), 1,
-//							firstBall.getVelocity());
-//					balls.get(i).setVelocity(velocities.v1);
-//					firstBall.setVelocity(velocities.v2);
-//					time += minTime;
-//				}
-//
-//				else {
-//					balls.get(i).move(gravity, mu, mu2, minTime, this);
-//					ballStillInPlay = firstWall.hit(balls.get(i), this);
-//					time += minTime;
-//				}
-//
-//				if (!ballStillInPlay) {
-//					time = deltaT;
-//					Ball transferBall = balls.remove(i);
-//					transferBall.putInBoardRep(this, true);
-//					// passed.put(transferBall, ballStillInPlay);
-//				}
-//
-//			}
-//		}
-//		System.out.println(this.toString());
-//	}
-//	
+	/**
+	 * Update the board assuming timestep has passed since the last update.
+	 * Includes collisions with gadgets & gadget action triggers, and the ball moving 
+	 * according to gravity, friction, etc. 
+	 * Also prints the board to System.out
+	 * @param timestep the amount of time since the last update has been called
+	 */
     public void update(double timestep) {
 
     	List<Ball> ballsToRemove = new ArrayList<Ball>();
 
         for (Ball ball : balls) {
-        	System.out.println("Ball velocity: " + ball.getVelocity());
-        	System.out.println("Ball location: " + ball.getPosition());
             boolean ballStillInPlay = true;
             
         	for (Gadget gadget : gadgets) {
         		if (gadget.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
-//        			System.out.println("Colliding with gadget!");
         			if (! gadget.hit(ball, this)) ballStillInPlay = false;
-//        			break;
         		}
         	}
 
             for (Wall wall : borders) {
             	if (wall.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
-//            		System.out.println("Time until wall collision: " + wall.timeUntilCollision(ball));
             		if (! wall.hit(ball, this)) ballStillInPlay = false;
-//            		break;
             	}
             }
                 
@@ -359,5 +261,14 @@ public class Board {
         }
         
         System.out.println(this.toString());
+        checkRep();
+    }
+    
+    /**
+     * Throws a runtime exception if the boardRep is the wrong size
+     */
+    private void checkRep() {
+    	if (boardRep.length != 22) throw new RuntimeException("BoardRep is not 22 tall");
+    	if (boardRep[0].length != 22) throw new RuntimeException("BoardRep is not 22 wide");
     }
 }
