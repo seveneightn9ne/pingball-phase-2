@@ -49,7 +49,7 @@ public class Parser {
 		}
 		
 		String name="";
-		double gravity =20;
+		double gravity =25;
 		double friction1=.025;
 		double friction2=.025;
 		ArrayList<Ball> ballList = new ArrayList<Ball>();
@@ -488,6 +488,8 @@ public class Parser {
 	 * NOTE: can handle spaces, can't currently handle tab characters
 	 */
 	public static String cleanLine(String line){
+	    line = line.replaceAll("\\s+"," ");
+	    line = line.replaceAll(" = ", "=");
 		StringBuilder str = new StringBuilder();
 		boolean lastCharSpace = true;
 		for (int i = 0; i < line.length(); i++){
