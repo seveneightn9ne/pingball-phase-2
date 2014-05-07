@@ -1,4 +1,4 @@
-package gadgets;
+package client.gadgets;
 
 import common.Constants;
 import common.netprotocol.BallOutMessage;

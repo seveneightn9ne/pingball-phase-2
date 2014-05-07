@@ -1,12 +1,13 @@
 package client;
 
-import gadgets.Gadget;
-import gadgets.Wall;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import client.gadgets.Gadget;
+import client.gadgets.Wall;
 
 import common.Constants;
 

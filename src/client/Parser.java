@@ -9,14 +9,15 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Enumeration;
+
+import client.gadgets.Absorber;
+import client.gadgets.CircleBumper;
+import client.gadgets.Gadget;
+import client.gadgets.LeftFlipper;
+import client.gadgets.RightFlipper;
+import client.gadgets.SquareBumper;
+import client.gadgets.TriangleBumper;
 import physics.*;
-import gadgets.Absorber;
-import gadgets.CircleBumper;
-import gadgets.Gadget;
-import gadgets.LeftFlipper;
-import gadgets.RightFlipper;
-import gadgets.SquareBumper;
-import gadgets.TriangleBumper;
 
 /**
  *	Parses the input from the user as presented by the PingballServer class
