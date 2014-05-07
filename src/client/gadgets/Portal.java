@@ -1,4 +1,4 @@
-package gadgets;
+package client.gadgets;
 
 
 import physics.Circle;
