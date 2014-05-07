@@ -13,6 +13,12 @@ import javax.swing.JFrame;
  * * Option 2:
  * 		Gadgets have a drawSelf method
  * 		Downsides: Bad separation of model and view
+ * * Option 3:
+ * 		All gadgets have a corresponding GadgetGUI class
+ * 		Downsides: Tons of new classes, 
+ * 		Gadget and GadgetGUI don't relate to each other in a meaningful way,
+ * 		The main GUI will have to know which GadgetGUI to use, might require instanceof,
+ * 		Alternatively a Gadget can know its GUI but once again, bad separation of model and view
  * 	
  */
 public class PingballGUI extends JFrame {
