@@ -99,7 +99,7 @@ public class Board {
 			}
 
 			else if (side == Constants.BoardSide.BOTTOM) {
-				boardRep[22][i] = name.charAt(i - 1);
+				boardRep[21][i] = name.charAt(i - 1);
 			}
 
 			else if (side == Constants.BoardSide.LEFT) {
