@@ -205,9 +205,7 @@ public class Board {
 	 */
 	public void addBall(Ball ball) {
 		balls.add(ball);
-		int x = (int) Math.round(ball.getPosition().x());
-		int y = (int) Math.round(ball.getPosition().y());
-		boardRep[y + 1][x + 1] = '*';
+		ball.putInBoardRep(this, false);
 	}
 
 	/**
