@@ -200,7 +200,9 @@ public class PingballClient {
         Socket socket = null;
         if (hostname != null) {
             try {
+            	System.out.print("Connecting to server...");
                 socket = new Socket(hostname, port);
+                System.out.println(" done.");
             } catch (IOException e) {
                 System.err.println("Could not connect to server " + hostname + ":" + port);
                 return;
