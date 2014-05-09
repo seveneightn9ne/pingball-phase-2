@@ -222,16 +222,11 @@ public class Board {
 	}
 
 	/**
-<<<<<<< HEAD
-	 * Refresh the board, taking into account elapsed time causing motion, as
-	 * well as possible collisions
-=======
 	 * Update the board assuming timestep has passed since the last update.
 	 * Includes collisions with gadgets & gadget action triggers, and the ball moving 
 	 * according to gravity, friction, etc. 
 	 * Also prints the board to System.out
 	 * @param timestep the amount of time since the last update has been called
->>>>>>> 2345d9e7bab90e594ad2534fbc5820ddb0f33184
 	 */
     public void update(double timestep) {
 
