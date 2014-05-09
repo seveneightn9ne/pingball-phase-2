@@ -1,4 +1,4 @@
-package gadgets;
+package client.gadgets;
 
 import common.Constants;
 import common.netprotocol.BallOutMessage;
@@ -84,6 +84,10 @@ public class Wall implements Gadget {
     public void disconnectFromServer() {
     	this.open = false;
     	this.connectedBoardName = null;
+    }
+    
+    public void setServerHandler(ServerHandler sh) {
+    	this.serverHandler = sh;
     }
 
     @Override

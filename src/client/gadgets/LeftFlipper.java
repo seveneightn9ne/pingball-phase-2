@@ -1,4 +1,4 @@
-package gadgets;
+package client.gadgets;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -10,7 +10,7 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 
-public class RightFlipper implements Gadget {
+public class LeftFlipper implements Gadget {
 
     /**
      * Rep invariant: 0 <= (pivotCoord.x/y, rotatedCoord.x/y,
@@ -22,7 +22,6 @@ public class RightFlipper implements Gadget {
     private boolean rotated = false;
     private int orientation;
     private Vect pivot;
-    private double reflection = 0.95;
     private double angularVelocity = 0;
     private Set<Gadget> triggers = new HashSet<Gadget>();
     private Vect pivotCoord;
@@ -31,7 +30,7 @@ public class RightFlipper implements Gadget {
     private String name;
 
     /**
-     * Constructor for RightFlipper
+     * Constructor for LeftFlipper
      * 
      * @param xPos
      *            x coordinate of the upper left corner of this gadget
@@ -42,19 +41,16 @@ public class RightFlipper implements Gadget {
      *            below it. the other orientations represent a 90 degree
      *            rotation from this
      * @param name
-     *            unique name of this flipper
+     *            unique name of the flipper object
+     * 
      */
-    public RightFlipper(String name, int xPos, int yPos, int orientation) {
+    public LeftFlipper(String name, int xPos, int yPos, int orientation) {
         this.name = name;
-
         this.orientation = orientation;
-
         this.orientationConstructor(xPos, yPos, orientation);
-
     }
-
     /**
-     * Constructor for RightFlipper
+     * Constructor for LeftFlipper
      * 
      * @param xPos
      *            x coordinate of the upper left corner of this gadget
@@ -64,16 +60,14 @@ public class RightFlipper implements Gadget {
      *            0 is the flipper with fixed end at position and non-fixed end
      *            below it. the other orientations represent a 90 degree
      *            rotation from this
+     * 
      */
-    public RightFlipper(int xPos, int yPos, int orientation) {
+    public LeftFlipper(int xPos, int yPos, int orientation) {
         this.name = null;
-
         this.orientation = orientation;
-
         this.orientationConstructor(xPos, yPos, orientation);
-
     }
-    
+
     /**
      * Sets the orientation of the flipper
      * @param xPos
@@ -82,33 +76,33 @@ public class RightFlipper implements Gadget {
      */
     private void orientationConstructor(int xPos, int yPos, int orientation) {
         if (orientation == 0) {
-            pivot = new Vect(xPos + 1.5, yPos - 0.5);
+            pivot = new Vect(xPos - 0.5, yPos - 0.5);
             line = new LineSegment(pivot.x(), pivot.y(), pivot.x(),
                     pivot.y() + 2);
-            pivotCoord = new Vect(xPos + 1, yPos);
-            rotatedCoord = new Vect(xPos, yPos);
-            nonRotatedCoord = new Vect(xPos + 1, yPos + 1);
-        } else if (orientation == 90) {
-            pivot = new Vect(xPos + 1.5, yPos + 1.5);
-            line = new LineSegment(pivot.x() - 2, pivot.y(), pivot.x(),
-                    pivot.y());
-            pivotCoord = new Vect(xPos + 1, yPos + 1);
+            pivotCoord = new Vect(xPos, yPos);
             rotatedCoord = new Vect(xPos + 1, yPos);
             nonRotatedCoord = new Vect(xPos, yPos + 1);
-        } else if (orientation == 180) {
-            pivot = new Vect(xPos - 0.5, yPos + 1.5);
-            line = new LineSegment(pivot.x(), pivot.y() - 2, pivot.x(),
+        } else if (orientation == 90) {
+            pivot = new Vect(xPos + 1.5, yPos - 0.5);
+            line = new LineSegment(pivot.x() - 2, pivot.y(), pivot.x(),
                     pivot.y());
-            pivotCoord = new Vect(xPos, yPos + 1);
+            pivotCoord = new Vect(xPos + 1, yPos);
             rotatedCoord = new Vect(xPos + 1, yPos + 1);
             nonRotatedCoord = new Vect(xPos, yPos);
-        } else if (orientation == 270) {
-            pivot = new Vect(xPos - 0.5, yPos - 0.5);
-            line = new LineSegment(pivot.x(), pivot.y(), pivot.x() + 2,
+        } else if (orientation == 180) {
+            pivot = new Vect(xPos + 1.5, yPos + 1.5);
+            line = new LineSegment(pivot.x(), pivot.y() - 2, pivot.x(),
                     pivot.y());
-            pivotCoord = new Vect(xPos, yPos);
+            pivotCoord = new Vect(xPos + 1, yPos + 1);
             rotatedCoord = new Vect(xPos, yPos + 1);
             nonRotatedCoord = new Vect(xPos + 1, yPos);
+        } else if (orientation == 270) {
+            pivot = new Vect(xPos - 0.5, yPos + 1.5);
+            line = new LineSegment(pivot.x(), pivot.y(), pivot.x() + 2,
+                    pivot.y());
+            pivotCoord = new Vect(xPos, yPos + 1);
+            rotatedCoord = new Vect(xPos, yPos);
+            nonRotatedCoord = new Vect(xPos + 1, yPos + 1);
         }
     }
 
@@ -127,14 +121,14 @@ public class RightFlipper implements Gadget {
 
     @Override
     public void action(Board board) {
-
         this.putInBoardRep(board, true);
+
         if (rotated) {
-            line = Geometry.rotateAround(line, pivot, new Angle(Math.PI / 2.0));
-            rotated = false;
-        } else {
             line = Geometry
                     .rotateAround(line, pivot, new Angle(3*Math.PI / 2.0));
+            rotated = false;
+        } else {
+            line = Geometry.rotateAround(line, pivot, new Angle(Math.PI / 2.0));
             rotated = true;
         }
 
@@ -144,12 +138,14 @@ public class RightFlipper implements Gadget {
     @Override
     public boolean hit(Ball ball, Board board) {
         Vect velocity = Geometry.reflectRotatingWall(line, pivot,
-                angularVelocity, ball.getCircle(), ball.getVelocity(),
-                reflection);
+                angularVelocity, ball.getCircle(), ball.getVelocity());
         ball.setVelocity(velocity);
+        
+        
         for (Gadget g : triggers) {
             g.action(board);
         }
+        
         return true;
     }
 
@@ -162,7 +158,6 @@ public class RightFlipper implements Gadget {
             h = ' ';
             v = ' ';
         }
-
         if (!rotated) {
             if (orientation == 90 || orientation == 270) {
                 boardRep[(int) pivotCoord.y() + 1][(int) pivotCoord.x() + 1] = h;
@@ -212,4 +207,5 @@ public class RightFlipper implements Gadget {
     public int[] getSize() {
         return new int[]{2,2};
     }
+
 }

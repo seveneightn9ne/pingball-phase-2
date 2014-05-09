@@ -9,14 +9,15 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 import java.util.Enumeration;
+
+import client.gadgets.Absorber;
+import client.gadgets.CircleBumper;
+import client.gadgets.Gadget;
+import client.gadgets.LeftFlipper;
+import client.gadgets.RightFlipper;
+import client.gadgets.SquareBumper;
+import client.gadgets.TriangleBumper;
 import physics.*;
-import gadgets.Absorber;
-import gadgets.CircleBumper;
-import gadgets.Gadget;
-import gadgets.LeftFlipper;
-import gadgets.RightFlipper;
-import gadgets.SquareBumper;
-import gadgets.TriangleBumper;
 
 /**
  *	Parses the input from the user as presented by the PingballServer class
@@ -49,7 +50,7 @@ public class Parser {
 		}
 		
 		String name="";
-		double gravity =20;
+		double gravity =25;
 		double friction1=.025;
 		double friction2=.025;
 		ArrayList<Ball> ballList = new ArrayList<Ball>();
@@ -488,6 +489,8 @@ public class Parser {
 	 * NOTE: can handle spaces, can't currently handle tab characters
 	 */
 	public static String cleanLine(String line){
+	    line = line.replaceAll("\\s+"," ");
+	    line = line.replaceAll(" = ", "=");
 		StringBuilder str = new StringBuilder();
 		boolean lastCharSpace = true;
 		for (int i = 0; i < line.length(); i++){

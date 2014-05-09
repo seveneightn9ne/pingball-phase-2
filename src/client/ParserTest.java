@@ -21,11 +21,11 @@ public class ParserTest {
 	//staffboard4: also is a board
 	//@Test
 	public void staffBoardTest(){
-		File file1 = new File("staffboard1.txt");
-		File file2 = new File("staffboard2.txt");
-		File file2b = new File("staffboard2b.txt");
-		File file3 = new File("staffboard3.txt");
-		File file4 = new File("staffboard4.txt");
+		File file1 = new File("boards/staffboard1.pb");
+		File file2 = new File("boards/staffboard2.pb");
+		File file2b = new File("boards/staffboard2b.pb");
+		File file3 = new File("boards/staffboard3.pb");
+		File file4 = new File("boards/staffboard4.pb");
 		Board board1 = Parser.makeBoard(file1);
 		Board board2 = Parser.makeBoard(file2);
 		Board board3 = Parser.makeBoard(file3);
@@ -37,7 +37,7 @@ public class ParserTest {
 	//invalidcharboard is identical to staffboard1 but there is an ! thrown in there
 	//@Test
 	public void invalidCharBoardTest(){
-		File file = new File("invalidcharboard.txt");
+		File file = new File("boards/invalidcharboard.pb");
 		Board board = Parser.makeBoard(file);
 		//TODO: implement test
 	}
@@ -46,7 +46,7 @@ public class ParserTest {
 	//badgadgetboard is identical to staffboard1 but circle3 and circle4 occupy the same location
 	//@Test
 	public void invalidGadgetBoardTest(){
-		File file = new File("badgadgetboard.txt");
+		File file = new File("boards/badgadgetboard.pb");
 		Board board = Parser.makeBoard(file);
 		//TODO: implement test
 	}
@@ -76,8 +76,8 @@ public class ParserTest {
 	
 	@Test
 	public void testMakeBoard(){
-		File staffboard = new File("staffboard1.txt");
-		File staffboard2 = new File("staffboard2.txt");
+		File staffboard = new File("boards/staffboard1.pb");
+		File staffboard2 = new File("boards/staffboard2.pb");
 		List<String> clean = Parser.cleanFile(staffboard);
 		
 		Board board = Parser.makeBoard(staffboard);
