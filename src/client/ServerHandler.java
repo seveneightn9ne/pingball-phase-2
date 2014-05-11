@@ -90,7 +90,7 @@ public class ServerHandler implements Runnable {
      * Terminates the connection to the server.
      * This also causes the run() method to finish, because in.close() will make run() fail.
      */
-    private void kill() {
+    protected void kill() {
         if (!socket.isClosed()) {
             try {
                 out.close();
@@ -100,5 +100,9 @@ public class ServerHandler implements Runnable {
                 System.err.println(e.getMessage());
             }
         }
+    }
+    
+    public String getHostName() {
+    	return socket.getRemoteSocketAddress().toString();
     }
 }

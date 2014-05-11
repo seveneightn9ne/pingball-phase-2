@@ -10,6 +10,7 @@ import client.gadgets.Gadget;
 import client.gadgets.Portal;
 import client.gadgets.Wall;
 import common.Constants;
+import common.Constants.BoardSide;
 
 /**
  * a Board is an object that represents the 20x20 grid on which Pingball is played.
@@ -83,6 +84,13 @@ public class Board {
 		}
 		for (Portal portal : portals.values()) {
 		    portal.setServerHandler(sh);
+		}
+	}
+	
+	public void disconnectFromServer() {
+		for (BoardSide side : BoardSide.values()) {
+			disconnectWallFromServer(side);
+			getWall(side).setServerHandler(null); // just to be safe
 		}
 	}
 
@@ -285,7 +293,7 @@ public class Board {
         	balls.remove(ball);
         }
         
-        System.out.println(this.toString());
+//        System.out.println(this.toString());
         checkRep();
     }
     
