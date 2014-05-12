@@ -354,9 +354,31 @@ public class PingballServer {
                 }
             }
 
+        } else if (message instanceof TeleportOutMessage) {
+            String boardTo = ((TeleportOutMessage) message).getBoardTo();
+            String portalTo = ((TeleportOutMessage) message).getPortalTo();
+            String boardFrom = ((TeleportOutMessage) message).getBoardFrom();
+            String portalFrom = ((TeleportOutMessage) message).getPortalFrom();
+            Vect ballVel = ((TeleportOutMessage) message).getBallVel();
+            if (clients.containsKey(boardTo)) {
+                clients.get(boardTo).send(new TeleportInMessage(ballVel, boardFrom, portalFrom, boardTo, portalTo));
+                
+            } else {
+                ch.send(new TeleportFailMessage(ballVel, boardFrom, portalFrom, boardTo, portalTo));
+                
+            }
+            
+        } else if (message instanceof TeleportFailMessage) {
+            String boardFrom = ((TeleportOutMessage) message).getBoardFrom();
+            if (clients.containsKey(boardFrom)) {
+                clients.get(boardFrom).send(message);
+                
+            }
+            
         } else {
             if (Constants.DEBUG) {
                 System.err.println("Received unexpected NetworkMessage: " + message.serialize());
+                
             }
         }
     }

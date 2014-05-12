@@ -7,8 +7,8 @@ import java.util.List;
 import java.util.Map;
 
 import client.gadgets.Gadget;
+import client.gadgets.Portal;
 import client.gadgets.Wall;
-
 import common.Constants;
 
 /**
@@ -30,6 +30,7 @@ public class Board {
 	private double mu2;
 	private String name;
 	private List<Gadget> gadgets = new ArrayList<Gadget>();
+	private HashMap<String, Portal> portals = new HashMap<String, Portal>();
 	private List<Ball> balls = new ArrayList<Ball>();
 	private char[][] boardRep = new char[22][22];
 	private Wall[] borders = new Wall[4];
@@ -70,7 +71,7 @@ public class Board {
 	}
 
 	/**
-	 * Set the server handler so that the walls can inform other Boards over the
+	 * Set the server handler so that the walls and portals can inform other Boards over the
 	 * network if a ball is transferred.
 	 * 
 	 * @param sh
@@ -79,6 +80,9 @@ public class Board {
 	public void setServerHandler(ServerHandler sh) {
 		for (Wall wall : borders) {
 			wall.setServerHandler(sh);
+		}
+		for (Portal portal : portals.values()) {
+		    portal.setServerHandler(sh);
 		}
 	}
 
@@ -191,12 +195,30 @@ public class Board {
 				String name = gadget.getName();
 				if (name != null) {
 					gadgetNames.put(name, gadget);
+					if (gadget.toString().equals("@")) {
+	                    portals.put(name, (Portal) gadget);
+	                }
 				}
 			}
 		}
-
 	}
-
+	
+	/**
+	 * Gets the portal with the specified name on this board.
+	 * @param name 
+	 *         name of portal
+	 * @return
+	 *         portal with name "name"
+	 */
+	public Portal getPortal(String name) {
+	    if (portals.containsKey(name)) {
+	        return portals.get(name);
+	    }
+	    else {
+	        return null;
+	    }
+	}
+	
 	/**
 	 * Add a Ball to the board with position and velocity specified in the Ball
 	 * object
@@ -204,6 +226,7 @@ public class Board {
 	 *            Ball to add
 	 */
 	public void addBall(Ball ball) {
+	    System.out.println("added ball at " + ball.getPosition());
 		balls.add(ball);
 		ball.putInBoardRep(this, false);
 	}

@@ -1,6 +1,8 @@
 package client;
 
 
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -9,6 +11,7 @@ import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
+import client.gadgets.Portal;
 import common.Constants;
 import common.RepInvariantException;
 import common.netprotocol.*;
@@ -93,6 +96,7 @@ public class PingballClient {
 
             while (!incomingMessages.isEmpty()) {
                 NetworkMessage message = incomingMessages.remove();
+                System.out.println(message);
                 if (message instanceof BallInMessage) {
                     // The sending board is responsible for making ballPos on the correct side of the receiving board.
                     Vect ballPos = ((BallInMessage) message).getBallPos();
@@ -111,6 +115,27 @@ public class PingballClient {
                     if (Constants.DEBUG) {
                         System.err.println("Connection refused by server. Reason: " + ((ConnectionRefusedMessage) message).getReason());
                     }
+                } else if (message instanceof TeleportInMessage) {
+                    String portalTo = ((TeleportInMessage) message).getPortalTo();
+                    Vect ballVel = ((TeleportInMessage) message).getBallVel();
+                    Portal portal = board.getPortal(portalTo);
+                    if (portal == null) {
+                        String boardTo = ((TeleportInMessage) message).getBoardTo();
+                        String boardFrom = ((TeleportInMessage) message).getBoardFrom();
+                        String portalFrom = ((TeleportInMessage) message).getPortalFrom();
+                        serverHandler.send(new TeleportFailMessage(ballVel, boardFrom, portalFrom, boardTo, portalTo));
+                    } else {
+                        Ball ball = new Ball(portal.getCenter(), ballVel);
+                        board.addBall(ball);
+                        portal.giveBall(ball);
+                    }
+                } else if (message instanceof TeleportFailMessage) {
+                    String portalFrom = ((TeleportFailMessage) message).getPortalFrom();
+                    Vect ballVel = ((TeleportFailMessage) message).getBallVel();
+                    Portal portal = board.getPortal(portalFrom);
+                    Ball ball = new Ball(portal.getCenter(), ballVel);
+                    board.addBall(ball);
+                    portal.giveBall(ball);
                 }
             }
 

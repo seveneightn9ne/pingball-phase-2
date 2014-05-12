@@ -68,6 +68,12 @@ public abstract class NetworkMessage {
             return ClientConnectMessage.deserialize(body);
         } else if (header.equals(ConnectionRefusedMessage.class.getSimpleName())) {
             return ConnectionRefusedMessage.deserialize(body);
+        } else if (header.equals(TeleportOutMessage.class.getSimpleName())) {
+            return TeleportOutMessage.deserialize(body);
+        } else if (header.equals(TeleportInMessage.class.getSimpleName())) {
+            return TeleportInMessage.deserialize(body);
+        } else if (header.equals(TeleportFailMessage.class.getSimpleName())) {
+            return TeleportFailMessage.deserialize(body);
         } else {
             throw new DecodeException("Unrecognized header: " + header);
         }

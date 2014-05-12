@@ -12,7 +12,7 @@ import common.*;
 import common.netprotocol.NetworkMessage.DecodeException;
 
 /**
- * Runnable which handles client's incoming requests. These include ball out messages
+ * Runnable which handles clients' incoming requests. These include ball out messages
  * and client connect/disconnect.
  *
  * Thread safety argument:

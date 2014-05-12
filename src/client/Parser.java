@@ -14,6 +14,7 @@ import client.gadgets.Absorber;
 import client.gadgets.CircleBumper;
 import client.gadgets.Gadget;
 import client.gadgets.LeftFlipper;
+import client.gadgets.Portal;
 import client.gadgets.RightFlipper;
 import client.gadgets.SquareBumper;
 import client.gadgets.TriangleBumper;
@@ -28,16 +29,14 @@ import physics.*;
  */
 public class Parser {
 	
-	private static String[] validGadgets = {"squareBumper", "circleBumper", "triangleBumper", "leftFlipper", "rightFlipper", "absorber"};
+	private static String[] validGadgets = {"squareBumper", "circleBumper", "triangleBumper", "leftFlipper", "rightFlipper", "absorber", "portal"};
 	 
 //	public Parser(){}
 	
 	
 	/** Takes a file, makes a board out of it
 	 * NOTE: the parser is case sensitive
-	 * NOTE: the parser cannot currently handle tabs (only spaces count as whitespace)
 	 * Calls cleanFile, isValidFile, and makeGadgets
-	 * TODO: make it able to handle tabs
 	 * @input file representing the board
 	 * @output board instance
 	 * @throws RuntimeException
@@ -58,7 +57,8 @@ public class Parser {
 		Hashtable<String, String[]> triggerHash= new Hashtable<String, String[]>();
 		Hashtable<Gadget, String> gadgToName = new Hashtable<Gadget, String>();
 		Hashtable<String, Gadget> nameToGadg = new Hashtable<String, Gadget>();
-		
+		Hashtable<String, ArrayList<String>> keyupToTriggers = new Hashtable<String, ArrayList<String>>();
+		Hashtable<String, ArrayList<String>> keydownToTriggers = new Hashtable<String, ArrayList<String>>();
 		
 		//this segment parses the first line of the cleaned file
 		//it gives us the board name, the gravity, friction1, and friction2
@@ -85,15 +85,16 @@ public class Parser {
 				Ball ball = makeBall(line);
 				ballList.add(ball);
 			}else if (Arrays.asList(validGadgets).contains(line[0])){
-				Gadget gadget = makeGadget(line);
-				String gadgetName = line[1].split("=")[1];
-				gadgToName.put(gadget, gadgetName);
-				nameToGadg.put(gadgetName, gadget);
-				if (isValidGadget(gadget, gadgetList)){
-					gadgetList.add(gadget);
-				}else{
-					throw new RuntimeException("gadget overlap error");
-				}
+		        Gadget gadget = makeGadget(line);
+                String gadgetName = line[1].split("=")[1];
+                gadgToName.put(gadget, gadgetName);
+                nameToGadg.put(gadgetName, gadget);
+                if (isValidGadget(gadget, gadgetList)){
+                    gadgetList.add(gadget);
+                }else{
+                    throw new RuntimeException("gadget overlap error");
+                }
+			    
 			}else if (line[0].equals("fire")){
 				if (line.length == 3 && line[1].startsWith("trigger")&& line[2].startsWith("action")){
 					String trigger = line[1].split("=")[1];
@@ -113,6 +114,14 @@ public class Parser {
 				}else{
 					throw new RuntimeException("bad trigger");
 				}
+			}else if (line[0].equals("keyup")) {
+			    if (line.length == 3 && line[1].startsWith("key")&& line[2].startsWith("action")) {
+			        
+			    }
+			}else if (line[0].equals("keydown")) {
+			    if (line.length == 3 && line[1].startsWith("key")&& line[2].startsWith("action")) {
+			        
+			    }
 			}else{
 				throw new RuntimeException("this is not an acceptable gadget");
 			}
@@ -310,6 +319,40 @@ public class Parser {
         return board;
 	}
 	
+	/**
+	 * Make a portal from a given line in the file
+	 * @param line
+	 * @return Portal
+	 * @throws runtime exception if invalid portal
+	 */
+	public static Portal makePortal(String[] line) {
+	    if (line[2].startsWith("x") && line[3].startsWith("y") && line.length == 5) {
+	        String name = line[1].split("=")[1];
+            String[] xsplit = line[2].split("=");
+            String[] ysplit = line[3].split("=");
+            String[] othersplit = line[4].split("=");
+            int x = Integer.parseInt(xsplit[1]);
+            int y = Integer.parseInt(ysplit[1]);
+            String otherName = othersplit[1];
+            return new Portal(name, x, y, null, otherName);
+	    }
+	    else if (line[2].startsWith("x") && line[3].startsWith("y") && line.length == 6) {
+	        String name = line[1].split("=")[1];
+            String[] xsplit = line[2].split("=");
+            String[] ysplit = line[3].split("=");
+            String[] otherBoardsplit = line[4].split("=");
+            String[] othersplit = line[5].split("=");
+            int x = Integer.parseInt(xsplit[1]);
+            int y = Integer.parseInt(ysplit[1]);
+            String otherName = othersplit[1];
+            String otherBoardName = otherBoardsplit[1];
+            return new Portal(name, x, y, otherBoardName, otherName);
+	    }
+	    else {
+	        throw new RuntimeException("invalid portal");
+	    }
+	}
+	
 	
 	/**
 	 * Makes a gadget from a given line in the file
@@ -323,7 +366,7 @@ public class Parser {
 		int y;
 		if (line[0].equals("squareBumper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line.length == 4){
-			    String name = line[1];
+			    String name = line[1].split("=")[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
@@ -334,7 +377,7 @@ public class Parser {
 			}
 		}else if (line[0].equals("circleBumper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line.length==4){
-			    String name = line [1];
+			    String name = line[1].split("=")[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
@@ -345,7 +388,7 @@ public class Parser {
 			}
 		}else if (line[0].equals("triangleBumper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("orientation")&&line.length==5){
-			    String name = line[1];
+			    String name = line[1].split("=")[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
@@ -358,7 +401,7 @@ public class Parser {
 			}
 		}else if (line[0].equals("leftFlipper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("orientation")&&line.length==5){
-			    String name = line[1];
+			    String name = line[1].split("=")[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
@@ -371,7 +414,7 @@ public class Parser {
 			}
 		}else if (line[0].equals("rightFlipper")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("orientation")&&line.length==5){
-			    String name = line[1];
+			    String name = line[1].split("=")[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
@@ -384,7 +427,7 @@ public class Parser {
 			}
 		}else if (line[0].equals("absorber")){
 			if (line[2].startsWith("x")&&line[3].startsWith("y")&&line[4].startsWith("width")&&line[5].startsWith("height")&&line.length==6){
-			    String name = line[1];
+			    String name = line[1].split("=")[1];
 				String[] xsplit = line[2].split("=");
 				String[] ysplit = line[3].split("=");
 				x = Integer.parseInt(xsplit[1]);
@@ -397,7 +440,11 @@ public class Parser {
 			}else{
 				throw new RuntimeException("invalid absorber");
 			}
-		}else{
+		}else if (line[0].equals("portal")){
+		    return makePortal(line);
+		}
+		
+		else{
 			throw new RuntimeException("this is not a valid gadget");
 		}
 	}
