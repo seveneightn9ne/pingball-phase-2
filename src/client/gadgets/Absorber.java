@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import common.Constants;
 import client.Ball;
 import client.Board;
 import physics.Circle;
@@ -113,12 +114,6 @@ public class Absorber implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-        System.out.println("hit");
-        if (balls.contains(ball)) {
-            System.out.println(ball.getVelocity());
-            balls.remove(ball);
-            return true;
-        }
         ball.putInBoardRep(board, true);
         ball.setPosition(new Vect(southEast.x(), southEast.y()));
         ball.setVelocity(new Vect(0, 0));
@@ -126,16 +121,31 @@ public class Absorber implements Gadget {
         for (Gadget g : triggers) {
             g.action(board);
         }
+        board.notifyAbsorbed(ball);
         return true;
     }
 
     @Override
     public void action(Board board) {
         if (!balls.isEmpty()) {
-            Ball ball = balls.get(0);
-            ball.setPosition(new Vect(southEast.x(), southEast.y()));
-            ball.setVelocity(new Vect(0, -50));
-            ball.putInBoardRep(board, false);
+            final Board notify = board;
+            Thread action = new Thread(new Runnable() {
+                public void run() {
+                    try {
+                        Thread.sleep((long) (Constants.TIMESTEP*100));
+                    } catch (InterruptedException e) {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                    Ball ball = balls.get(0);
+                    ball.putInBoardRep(notify, true);
+                    ball.setPosition(new Vect(southEast.x(), southEast.y()));
+                    ball.setVelocity(new Vect(0, -50));
+                    ball.putInBoardRep(notify, false);
+                    notify.notifyReleased(ball);
+                }
+            });
+            action.start();
         }
     }
 

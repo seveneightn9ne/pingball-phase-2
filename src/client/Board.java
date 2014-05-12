@@ -33,6 +33,7 @@ public class Board {
 	private List<Gadget> gadgets = new ArrayList<Gadget>();
 	private HashMap<String, Portal> portals = new HashMap<String, Portal>();
 	private List<Ball> balls = new ArrayList<Ball>();
+	private List<Ball> absorbed = new ArrayList<Ball>();
 	private char[][] boardRep = new char[22][22];
 	private Wall[] borders = new Wall[4];
 	public Map<String, Gadget> gadgetNames = new HashMap<String, Gadget>();
@@ -255,7 +256,7 @@ public class Board {
 	public void addBall(Ball ball) {
 	    System.out.println("added ball at " + ball.getPosition());
 		balls.add(ball);
-//		ball.putInBoardRep(this, false);
+//     	ball.putInBoardRep(this, false);
 	}
 
 	/**
@@ -301,7 +302,9 @@ public class Board {
             }
                 
             if (ballStillInPlay) {
-            	ball.move(gravity, mu, mu2, timestep, this);
+                if (!absorbed.contains(ball)) {
+                    ball.move(gravity, mu, mu2, timestep, this);
+                }
             } else {
                 ballsToRemove.add(ball);
                 ball.putInBoardRep(this, true);
@@ -314,6 +317,20 @@ public class Board {
         
         System.out.println(this.toString());
         checkRep();
+    }
+    
+    /**
+     * @param ball ball that has been absorbed
+     */
+    public void notifyAbsorbed(Ball ball) {
+        absorbed.add(ball);
+    }
+    
+    /**
+     * @param ball ball that has been released
+     */
+    public void notifyReleased(Ball ball) {
+        absorbed.remove(ball);
     }
     
     /**
