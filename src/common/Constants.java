@@ -9,7 +9,7 @@ public class Constants {
         LEFT, RIGHT, TOP, BOTTOM;
     }
 	public static final double TIMESTEP = 1d/20d; //seconds
-	public static final boolean DEBUG = false;
+	public static final boolean DEBUG = true;
 	public static final double BALL_RADIUS = 0.25; // in L
 	
 	public static final int DEFAULT_PORT = 10987;

@@ -138,7 +138,7 @@ public class Absorber implements Gadget {
 
     @Override
     public String toString() {
-        return null;
+        return "=";
     }
 
     @Override

@@ -78,12 +78,13 @@ public class ParserTest {
 	public void testMakeBoard(){
 		File staffboard = new File("boards/staffboard1.pb");
 		File staffboard2 = new File("boards/staffboard2.pb");
+		File funwithportals = new File("boards/funwithportals.pb");
 		List<String> clean = Parser.cleanFile(staffboard);
 		
 		Board board = Parser.makeBoard(staffboard);
-		System.out.println(board.toString());
 		Board board2 = Parser.makeBoard(staffboard2);
-        System.out.println(board2.toString());
+        Board portals = Parser.makeBoard(funwithportals);
+        System.out.println(portals.toString());
 	}
 	
 }

@@ -1,23 +1,35 @@
 package client.gadgets;
 
 
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.util.ArrayList;
+import java.util.List;
 
+import common.netprotocol.TeleportOutMessage;
 import physics.Circle;
+import physics.Geometry;
 import physics.Vect;
 import client.Ball;
 import client.Board;
+import client.ServerHandler;
 
 public class Portal implements Gadget {
     
-    private Portal otherPortal;
-    private Board otherBoard;
-    private Board board;
+    private String otherPortal;
+    private String otherBoard;
+    private List<Gadget> triggers = new ArrayList<Gadget>();
+    private List<Ball> exiting = new ArrayList<Ball>();
     private Circle circle;
     private Vect position;
+    private String name;
+    public ServerHandler serverHandler;
     
     /**
      * Creates a portal on the specified board linked to the specified other portal.
+     * @param name
+     *          Name of this board
      * @param posX
      *          X coordinate of the location of the center of this portal
      * @param posY
@@ -29,62 +41,115 @@ public class Portal implements Gadget {
      * @param otherPortal
      *          portal that this portal is linked to
      */
-    public Portal(int posX, int posY, Board board, Board otherBoard, Portal otherPortal) {
-        
+    public Portal(String name, int posX, int posY, String otherBoard, String otherPortal) {
+        this.name = name;
+        this.position = new Vect(posX, posY);
+        this.circle = new Circle(position, .5);
+        this.otherBoard = otherBoard;
+        this.otherPortal = otherPortal;
     }
 
     @Override
     public String getName() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.name;
     }
 
     @Override
     public Vect getOrigin() {
-        // TODO Auto-generated method stub
-        return null;
+        return this.position;
+    }
+    
+    /**
+     * @return the center of this portal
+     */
+    public Vect getCenter() {
+        return this.circle.getCenter();
     }
 
     @Override
     public int[] getSize() {
-        // TODO Auto-generated method stub
-        return null;
+        return new int[]{1,1};
     }
 
     @Override
     public boolean hit(Ball ball, Board board) {
-        // TODO Auto-generated method stub
-        return false;
+        if (exiting.contains(ball)) {
+            exiting.remove(ball);
+            return true;
+        }
+        if (otherBoard == null) {
+            Portal portal = board.getPortal(otherPortal);
+            if (portal == null) {
+                System.out.println("no connected portal");
+                return true;
+            }
+            else {
+                ball.putInBoardRep(board, true);
+                System.out.println("portaling to " + portal.name);
+                ball.setPosition(portal.position);
+                portal.giveBall(ball);
+                ball.putInBoardRep(board, false);
+                return true;
+            }
+        }
+        else if (serverHandler != null) {
+            
+            ball.putInBoardRep(board, true);
+            serverHandler.send(new TeleportOutMessage(ball.getPosition(), board.getName(), name, otherBoard, otherPortal));
+            return false;
+        }
+        return true;
     }
 
     @Override
     public double timeUntilCollision(Ball ball) {
-        // TODO Auto-generated method stub
-        return 0;
+        double time = Geometry.timeUntilCircleCollision(circle,
+                ball.getCircle(), ball.getVelocity());
+        return time;
     }
 
     @Override
     public void action(Board board) {
-        // TODO Auto-generated method stub
-
+        // Portals have no action
     }
 
     @Override
     public void addTrigger(Gadget g) {
-        // TODO Auto-generated method stub
-
+        triggers.add(g);
+    }
+    
+    public void setServerHandler(ServerHandler sh) {
+        serverHandler = sh;
+    }
+    
+    public void giveBall(Ball ball) {
+        exiting.add(ball);
     }
 
     @Override
     public void putInBoardRep(Board board, boolean remove) {
-        // TODO Auto-generated method stub
-
+        char[][] boardRep = board.getBoardRep();
+        boardRep[(int) Math.round(position.y() + 1)][(int) Math.round(position
+                .x() + 1)] = '@';
+        board.setBoardRep(boardRep);
+    }
+    
+    @Override
+    public String toString() {
+        return "@";
     }
 
+
 	@Override
-	public void draw(Graphics2D g) {
+	public Shape getShape() {
 		// TODO Auto-generated method stub
-		
+		return null;
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -16,6 +16,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.SwingUtilities;
+
+import client.PingballGUI;
+
 import physics.Vect;
 
 import common.Constants;
@@ -72,6 +76,7 @@ public class PingballServer {
     private final Map<String, ClientHandler> clients;
     private final List<List<String>> horizontalBoardJoins; // pairs of boards joined as left, right
     private final List<List<String>> verticalBoardJoins; // pairs of boards joined as top, bottom
+    private ServerGUI gui;
 
     /**
      * Instantiate a PingballServer
@@ -87,6 +92,13 @@ public class PingballServer {
         this.clients = new HashMap<String, ClientHandler>();
         this.horizontalBoardJoins = new ArrayList<List<String>>();
         this.verticalBoardJoins = new ArrayList<List<String>>();
+        final PingballServer server = this;
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	ServerGUI gui = new ServerGUI(server, cliQueue);
+                gui.setVisible(true);
+            }
+        });
 
         checkRep();
     }
@@ -105,7 +117,6 @@ public class PingballServer {
         Thread cliThread = new Thread(new CommandLineInterface(cliQueue));
         cliThread.start();
 
-        if (Constants.DEBUG) System.out.println("Reached main loop.");
         while (true) {
 
             while (!deadClientsQueue.isEmpty()) {
@@ -354,9 +365,31 @@ public class PingballServer {
                 }
             }
 
+        } else if (message instanceof TeleportOutMessage) {
+            String boardTo = ((TeleportOutMessage) message).getBoardTo();
+            String portalTo = ((TeleportOutMessage) message).getPortalTo();
+            String boardFrom = ((TeleportOutMessage) message).getBoardFrom();
+            String portalFrom = ((TeleportOutMessage) message).getPortalFrom();
+            Vect ballVel = ((TeleportOutMessage) message).getBallVel();
+            if (clients.containsKey(boardTo)) {
+                clients.get(boardTo).send(new TeleportInMessage(ballVel, boardFrom, portalFrom, boardTo, portalTo));
+                
+            } else {
+                ch.send(new TeleportFailMessage(ballVel, boardFrom, portalFrom, boardTo, portalTo));
+                
+            }
+            
+        } else if (message instanceof TeleportFailMessage) {
+            String boardFrom = ((TeleportOutMessage) message).getBoardFrom();
+            if (clients.containsKey(boardFrom)) {
+                clients.get(boardFrom).send(message);
+                
+            }
+            
         } else {
             if (Constants.DEBUG) {
                 System.err.println("Received unexpected NetworkMessage: " + message.serialize());
+                
             }
         }
     }
@@ -411,6 +444,10 @@ public class PingballServer {
             isTopBoard.add(pair.get(0));
             isBottomBoard.add(pair.get(1));
         }
+    }
+    
+    public void notifyGUI(ServerGUI gui) {
+    	this.gui = gui;
     }
 
 }
