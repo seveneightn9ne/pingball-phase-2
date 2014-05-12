@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="lib" path="/Users/meganoleary/Desktop/pingball-phase2/physics.jar"/>
 	<classpathentry exported="true" kind="lib" path="physics.jar"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="boards"/>
