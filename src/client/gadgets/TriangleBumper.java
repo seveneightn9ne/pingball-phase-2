@@ -1,6 +1,10 @@
 package client.gadgets;
 
 import java.util.HashSet;
+import java.awt.*;
+
+import javax.swing.*;
+
 import java.util.Set;
 
 import client.Ball;
@@ -18,7 +22,6 @@ public class TriangleBumper implements Gadget {
      * in lines represent the boundaries of the triangle, rep is either / or \
      * depending on orientation
      */
-
     private Vect position;
     private LineSegment[] lines;
     private Circle[] corners;
@@ -28,6 +31,12 @@ public class TriangleBumper implements Gadget {
     private String nextHitType;
     private String name;
     private Set<Gadget> triggers = new HashSet<Gadget>();
+    private int[] xPoints;
+    private int[] yPoints;
+    private int xPos;
+    private int yPos;
+    private final Color TRICOLOR = new Color(86,180,216);
+    private Shape triangleShape;
 
     /**
      * Triangle Bumper constructor: Create line segments corresponding to edges
@@ -46,11 +55,15 @@ public class TriangleBumper implements Gadget {
     public TriangleBumper(String name, int xPos, int yPos, int orientation) {
         this.name = name;
 
+        this.xPos = xPos;
+        this.yPos = yPos;
         this.position = new Vect(xPos, yPos);
         lines = new LineSegment[3];
         corners = new Circle[3];
         this.orientationConstructor(orientation);
+        pointGenerator();
     }
+    
 
     /**
      * Triangle Bumper constructor: Create line segments corresponding to edges
@@ -67,10 +80,22 @@ public class TriangleBumper implements Gadget {
     public TriangleBumper(int xPos, int yPos, int orientation) {
         this.name = null;
 
+        this.xPos = xPos;
+        this.yPos = yPos;
         this.position = new Vect(xPos, yPos);
         lines = new LineSegment[3];
         corners = new Circle[3];
         this.orientationConstructor(orientation);
+        pointGenerator();
+    }
+    
+    private void pointGenerator()
+    {
+    	int startX = xPos*10;
+    	int startY = yPos*10;
+    	yPoints = new int[]{startY, startY, startY-10};
+    	xPoints = new int[]{startX, startX+10, startX};
+    	triangleShape= new Polygon(xPoints,yPoints,3);
     }
 
     /**
@@ -225,4 +250,17 @@ public class TriangleBumper implements Gadget {
         return new int[]{1,1};
     }
 
+
+
+	@Override
+	public Shape getShape() {
+		return triangleShape;
+	}
+
+
+	@Override
+	public Color getColor() {
+		return TRICOLOR;
+	}
+	
 }

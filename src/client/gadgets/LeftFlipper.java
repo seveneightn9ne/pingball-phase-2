@@ -1,5 +1,9 @@
 package client.gadgets;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.RoundRectangle2D;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,8 +32,15 @@ public class LeftFlipper implements Gadget {
     private Vect rotatedCoord;
     private Vect nonRotatedCoord;
     private String name;
-
-    /**
+	private final double archHeight= 20.0;
+	private final double archWidth = 20.0;
+	private int xPos;
+	private int yPos;
+	private final Shape shapeHoriz;
+	private final Shape shapeVert;
+	private final Color FLIPCOLOR = new Color(238,172,150);
+	
+	/**
      * Constructor for LeftFlipper
      * 
      * @param xPos
@@ -45,9 +56,14 @@ public class LeftFlipper implements Gadget {
      * 
      */
     public LeftFlipper(String name, int xPos, int yPos, int orientation) {
+    	this.xPos = xPos;
+    	this.yPos = yPos;
         this.name = name;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*10,yPos*10,20.0,10.0,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*10,yPos*10,10.0,20.0,archHeight,archWidth);
+    	
     }
     /**
      * Constructor for LeftFlipper
@@ -66,6 +82,8 @@ public class LeftFlipper implements Gadget {
         this.name = null;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*10,yPos*10,20.0,10.0,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*10,yPos*10,10.0,20.0,archHeight,archWidth);
     }
 
     /**
@@ -203,9 +221,21 @@ public class LeftFlipper implements Gadget {
     public Vect getOrigin() {
         return this.pivotCoord;
     }
+    
+	
     @Override
     public int[] getSize() {
         return new int[]{2,2};
     }
+
+	@Override
+	public Shape getShape() {
+		if (rotated) return shapeHoriz;
+		else return shapeVert;
+	}
+	@Override
+	public Color getColor() {
+		return FLIPCOLOR;
+	}
 
 }

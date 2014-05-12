@@ -1,5 +1,10 @@
 package client;
 
+import java.awt.Color;
+import java.awt.Paint;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+
 import physics.Circle;
 import physics.Vect;
 
@@ -192,4 +197,12 @@ public class Ball {
         checkRep();
         putInBoardRep(board, false);
     }
+
+	public Shape getShape() {
+		return new Ellipse2D.Double(getPosition().x(),getPosition().y(), 0.5, 0.5);
+	}
+
+	public Color getColor() {
+		return Color.RED;
+	}
 }

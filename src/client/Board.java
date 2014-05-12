@@ -46,6 +46,20 @@ public class Board {
 		this.boardConstructor();
 	}
 
+	public Board(String name, char[][] rep)
+	{
+		boardRep = rep;
+		this.name = name;
+		this.gravity = 20;
+		this.mu = 2;
+		this.mu2 = 2;
+		this.boardConstructor();
+	}
+	
+	public List<Ball> getBalls()
+	{
+		return balls;
+	}
 	/**
 	 * Initializes appropriate borders and walls for board object
 	 */
@@ -125,7 +139,7 @@ public class Board {
 			}
 
 			else if (side == Constants.BoardSide.BOTTOM) {
-				boardRep[22][i] = '.';
+				boardRep[21][i] = '.';
 			}
 
 			else if (side == Constants.BoardSide.LEFT) {
@@ -177,6 +191,11 @@ public class Board {
 		this.boardRep = boardRep;
 		checkRep();
 	}
+	
+	public List<Gadget> returnGadgets()
+	{
+		return gadgets;
+	}
 
 	/**
 	 * Add a gadget to the board at the position of the Gadget object
@@ -205,7 +224,7 @@ public class Board {
 	 */
 	public void addBall(Ball ball) {
 		balls.add(ball);
-		ball.putInBoardRep(this, false);
+//		ball.putInBoardRep(this, false);
 	}
 
 	/**
@@ -222,16 +241,13 @@ public class Board {
 	}
 
 	/**
-<<<<<<< HEAD
 	 * Refresh the board, taking into account elapsed time causing motion, as
 	 * well as possible collisions
-=======
 	 * Update the board assuming timestep has passed since the last update.
 	 * Includes collisions with gadgets & gadget action triggers, and the ball moving 
 	 * according to gravity, friction, etc. 
 	 * Also prints the board to System.out
 	 * @param timestep the amount of time since the last update has been called
->>>>>>> 2345d9e7bab90e594ad2534fbc5820ddb0f33184
 	 */
     public void update(double timestep) {
 

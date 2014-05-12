@@ -1,5 +1,9 @@
 package client.gadgets;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -32,6 +36,10 @@ public class Absorber implements Gadget {
     private Vect position;
     private int width;
     private int height;
+    private int xPos;
+    private int yPos;
+    private final Shape shape;
+    private final Color ABSORBCOLOR = new Color(125,138,24);
 
     private String name;
 
@@ -51,6 +59,8 @@ public class Absorber implements Gadget {
 
     public Absorber(String name, int xPos, int yPos, int width, int height) {
         this.name = name;
+        this.xPos = xPos;
+        this.yPos = yPos;
         this.position = new Vect(xPos, yPos);
         this.width = width;
         this.height = height;
@@ -73,6 +83,8 @@ public class Absorber implements Gadget {
         corners[1] = new Circle(northEast, 0);
         corners[2] = new Circle(southWest, 0);
         corners[3] = new Circle(southEast, 0);
+        this.shape = new Rectangle(xPos*10,yPos*10,width*10,height*10);
+
     }
 
     /**
@@ -183,5 +195,16 @@ public class Absorber implements Gadget {
     public int[] getSize() {
         return new int[]{this.width, this.height};
     }
+
+
+	@Override
+	public Shape getShape() {
+		return shape;
+	}
+
+	@Override
+	public Color getColor() {
+		return ABSORBCOLOR;
+	}
 
 }

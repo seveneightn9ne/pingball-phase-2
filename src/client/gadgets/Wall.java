@@ -1,8 +1,11 @@
 package client.gadgets;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+
 import common.Constants;
 import common.netprotocol.BallOutMessage;
-
 import client.Ball;
 import client.Board;
 import client.ServerHandler;
@@ -130,5 +133,18 @@ public class Wall implements Gadget {
     public int[] getSize() {
         return new int[]{1,1};
     }
+
+
+	@Override
+	public Shape getShape() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

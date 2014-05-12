@@ -1,5 +1,10 @@
 package client.gadgets;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -22,6 +27,10 @@ public class CircleBumper implements Gadget {
     private double reflection = 1;
     private List<Gadget> triggers = new ArrayList<Gadget>();
     private String name;
+	private int xPos;
+	private int yPos;
+	private final Shape shape;
+	private final Color CIRCLECOLOR = new Color(25,116,171);
 
     /**
      * Circle Bumper constructor: create a circle of radius 0.5 at specified
@@ -38,8 +47,12 @@ public class CircleBumper implements Gadget {
     public CircleBumper(String name, int xPos, int yPos) {
         this.name = name;
 
+        this.xPos = xPos;
+        this.yPos = yPos;
         this.position = new Vect(xPos, yPos);
         circle = new Circle(position, 0.5);
+    	this.shape = new Ellipse2D.Double(xPos*10,yPos*10,10.0,10.0);
+
     }
     /**
      * Circle Bumper constructor: create a circle of radius 0.5 at specified
@@ -56,6 +69,8 @@ public class CircleBumper implements Gadget {
 
         this.position = new Vect(xPos, yPos);
         circle = new Circle(position, 0.5);
+    	this.shape = new Ellipse2D.Double(xPos*10,yPos*10,10.0,10.0);
+
     }
 
     /**
@@ -121,8 +136,17 @@ public class CircleBumper implements Gadget {
     public Vect getOrigin() {
         return this.position;
     }
+
     @Override
     public int[] getSize() {
         return new int[]{1,1};
-    }
+	}
+	@Override
+	public Shape getShape() {
+		return shape;
+	}
+	@Override
+	public Color getColor() {
+		return CIRCLECOLOR;
+	}
 }

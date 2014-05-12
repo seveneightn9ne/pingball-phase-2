@@ -1,5 +1,9 @@
 package client.gadgets;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+import java.awt.Shape;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -24,6 +28,10 @@ public class SquareBumper implements Gadget {
     private String nextHitType;
     private String name;
     private Set<Gadget> triggers = new HashSet<Gadget>();
+	private int xPos;
+	private int yPos;
+	private final Shape shape;
+	private final Color SQUARECOLOR = new Color(18,35,113);
 
     /**
      * Constructor for SquareBumper
@@ -33,11 +41,14 @@ public class SquareBumper implements Gadget {
      * @param y - y coordinate of the upper left corner of this gadget
      */
     public SquareBumper(String name, int x, int y) {
+    	this.xPos = x;
+    	this.yPos = y;
         this.name = name;
         this.position = new Vect(x, y);
         lines = new LineSegment[4];
         corners = new Circle[4];
         this.linesConstructor();
+        shape = new Rectangle(xPos*10,yPos*10,10,10);
     }
 
     /**
@@ -52,6 +63,7 @@ public class SquareBumper implements Gadget {
         lines = new LineSegment[4];
         corners = new Circle[4];
         this.linesConstructor();
+        shape = new Rectangle(xPos*10,yPos*10,10,10);
     }
     
     /**
@@ -174,4 +186,14 @@ public class SquareBumper implements Gadget {
         return new int[]{1,1};
     }
 
-}
+	@Override
+	public Shape getShape() {
+		return shape;
+	}
+
+	@Override
+	public Color getColor() {
+		return SQUARECOLOR;
+	}
+
+} 

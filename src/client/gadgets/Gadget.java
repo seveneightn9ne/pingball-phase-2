@@ -1,5 +1,9 @@
 package client.gadgets;
 
+import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+
 import physics.Vect;
 import common.Constants;
 import client.Ball;
@@ -57,6 +61,10 @@ public interface Gadget {
      *        false if we are adding the current representation
      */
     public void putInBoardRep(Board board, boolean remove);
-    
+    	
+	public Shape getShape();
+
+	public Color getColor();
+
     
 }
