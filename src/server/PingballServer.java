@@ -92,6 +92,8 @@ public class PingballServer {
         this.clients = new HashMap<String, ClientHandler>();
         this.horizontalBoardJoins = new ArrayList<List<String>>();
         this.verticalBoardJoins = new ArrayList<List<String>>();
+        this.gui = null;
+        
         final PingballServer server = this;
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
@@ -125,8 +127,9 @@ public class PingballServer {
             }
 
             while (!cliQueue.isEmpty()) {
-                if (Constants.DEBUG) System.out.println("Received CLI command.");
-                handleCommand(cliQueue.remove());
+            	String command = cliQueue.remove();
+                if (Constants.DEBUG) System.out.println("Received command: " + command);
+                handleCommand(command);
             }
 
             while (!messageQueue.isEmpty()) {
@@ -158,8 +161,13 @@ public class PingballServer {
                 pairsToRemove.add(pair);
             }
         }
-        for (List<String> pairToRemove : pairsToRemove) {
+        for (final List<String> pairToRemove : pairsToRemove) {
             horizontalBoardJoins.remove(pairToRemove);
+            SwingUtilities.invokeLater(new Runnable() {
+            	public void run() {
+            		gui.removeConnection("h", pairToRemove.get(0), pairToRemove.get(1));
+            	}
+            });
         }
         pairsToRemove = new ArrayList<List<String>>();
         for (List<String> pair : verticalBoardJoins) {
@@ -172,11 +180,26 @@ public class PingballServer {
                 pairsToRemove.add(pair);
             }
         }
-        for (List<String> pairToRemove : pairsToRemove) {
+        for (final List<String> pairToRemove : pairsToRemove) {
             verticalBoardJoins.remove(pairToRemove);
+            SwingUtilities.invokeLater(new Runnable() {
+            	public void run() {
+            		gui.removeConnection("v", pairToRemove.get(0), pairToRemove.get(1));
+            	}
+            });
         }
         // remove from clients
-        clients.remove(ch.getName());
+        final String clientName = ch.getName();
+        clients.remove(clientName);
+        
+        // remove from gui
+        if (gui != null) {
+	    	SwingUtilities.invokeLater(new Runnable() {
+	    		public void run() {
+	    			gui.removeClient(clientName);
+	    		}
+	    	});
+        }
 
         checkRep();
     }
@@ -255,9 +278,9 @@ public class PingballServer {
             System.err.println("Expected format: h|v BOARDNAME1 BOARDNAME2");
             return;
         }
-        String position = headerMatcher.group(1);
-        String b1 = headerMatcher.group(2);
-        String b2 = headerMatcher.group(3);
+        final String position = headerMatcher.group(1);
+        final String b1 = headerMatcher.group(2);
+        final String b2 = headerMatcher.group(3);
         if (!clients.containsKey(b1) || !clients.containsKey(b2)) {
             System.err.println("One or more of those clients were not found. Current connected clients: ");
             for (String clientName : clients.keySet()) {
@@ -279,14 +302,24 @@ public class PingballServer {
         }
         boolean overwrote = false; // is true if we find an existing board connection and we overwrite it with this new one
         for (List<String> pair : boardJoins) {
-            String p1 = pair.get(0);
-            String p2 = pair.get(1);
+            final String p1 = pair.get(0);
+            final String p2 = pair.get(1);
             if (p1.equals(b1)) { // overwrite existing board connection
+            	SwingUtilities.invokeLater(new Runnable() {
+            		public void run() {
+            			gui.removeConnection(position, p1, p2);
+            		}
+            	});
                 pair.set(1, b2);
                 overwrote = true;
                 break;
             }
             if (p2.equals(b2)) {
+            	SwingUtilities.invokeLater(new Runnable() {
+            		public void run() {
+            			gui.removeConnection(position, p1, p2);
+            		}
+            	});
                 pair.set(0, b1);
                 overwrote = true;
                 break;
@@ -298,6 +331,12 @@ public class PingballServer {
         // tell the boards they joined
         clients.get(b1).send(new BoardFuseMessage(b2, b2Pos)); // if b1 is the LEFT board, then the fuse happens on its RIGHT side.
         clients.get(b2).send(new BoardFuseMessage(b1, b1Pos));
+
+    	SwingUtilities.invokeLater(new Runnable() {
+    		public void run() {
+    			gui.addConnection(position, b1, b2);
+    		}
+    	});
     }
 
     /**
@@ -314,7 +353,7 @@ public class PingballServer {
     private void handleMessage(AuthoredMessage authoredMessage) {
 
         NetworkMessage message = authoredMessage.getMessage();
-        ClientHandler ch = authoredMessage.getClientHandler();
+        final ClientHandler ch = authoredMessage.getClientHandler();
 
         if (message instanceof ClientConnectMessage) {
             if (clients.containsKey(ch.getName())) {
@@ -323,6 +362,14 @@ public class PingballServer {
                 ch.kill();
             } else {
                 clients.put(ch.getName(), ch);
+                if (gui != null) {
+                	SwingUtilities.invokeLater(new Runnable() {
+                		public void run() {
+                        	gui.addClient(ch.getName(), ch.getIP());
+                		}
+                	});
+                }
+                
             }
         }
         else if (message instanceof BallOutMessage) {

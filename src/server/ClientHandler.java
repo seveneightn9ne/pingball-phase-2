@@ -44,6 +44,7 @@ public class ClientHandler implements Runnable{
      * Make a new ClientHandler
      * @param socket the socket through which we communicate with the client
      * @param queue the Server's queue of messages, on which to put incoming messages
+     * @param deadClientsQueue where to put the client after it has been killed
      * @throws IOException if we are unable to open the input or output stream with the client
      */
     public ClientHandler(Socket socket,
@@ -128,6 +129,14 @@ public class ClientHandler implements Runnable{
      */
     public String getName() {
         return this.name;
+    }
+    
+    /**
+     * get the address of the client
+     * @return the IP address of the connected client, or null if the connection has ended.
+     */
+    public String getIP() {
+    	return socket.getInetAddress().toString();
     }
 
     /**
