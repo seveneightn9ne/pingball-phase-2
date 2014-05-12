@@ -95,7 +95,7 @@ public class PingballClient {
 			if (!paused.get()) {
 	            try {
 	                // Sleep to limit framerate.
-	                Thread.sleep((int) (Constants.TIMESTEP*10000));
+	                Thread.sleep((int) (Constants.TIMESTEP*1000));
 	            } catch (InterruptedException e) {
 	                Thread.currentThread().interrupt();
 	            }
