@@ -221,7 +221,9 @@ public class PingballClient {
         	client.setBoard(boardFilePath);
         if (hostname != null) {
         	try {client.connectToServer(hostname, port);} 
-        	catch (IOException e) {}
+        	catch (IOException e) {
+        		System.out.println("Could not connect to " + hostname + ":" + port);
+        	}
         	catch (RuntimeException e) {
         		System.err.println("Tried to connect to server without a valid board");
         	}

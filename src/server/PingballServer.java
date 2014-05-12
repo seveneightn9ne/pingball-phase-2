@@ -16,6 +16,10 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.swing.SwingUtilities;
+
+import client.PingballGUI;
+
 import physics.Vect;
 
 import common.Constants;
@@ -72,6 +76,7 @@ public class PingballServer {
     private final Map<String, ClientHandler> clients;
     private final List<List<String>> horizontalBoardJoins; // pairs of boards joined as left, right
     private final List<List<String>> verticalBoardJoins; // pairs of boards joined as top, bottom
+    private ServerGUI gui;
 
     /**
      * Instantiate a PingballServer
@@ -87,6 +92,13 @@ public class PingballServer {
         this.clients = new HashMap<String, ClientHandler>();
         this.horizontalBoardJoins = new ArrayList<List<String>>();
         this.verticalBoardJoins = new ArrayList<List<String>>();
+        final PingballServer server = this;
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+            	ServerGUI gui = new ServerGUI(server, cliQueue);
+                gui.setVisible(true);
+            }
+        });
 
         checkRep();
     }
@@ -105,7 +117,6 @@ public class PingballServer {
         Thread cliThread = new Thread(new CommandLineInterface(cliQueue));
         cliThread.start();
 
-        if (Constants.DEBUG) System.out.println("Reached main loop.");
         while (true) {
 
             while (!deadClientsQueue.isEmpty()) {
@@ -433,6 +444,10 @@ public class PingballServer {
             isTopBoard.add(pair.get(0));
             isBottomBoard.add(pair.get(1));
         }
+    }
+    
+    public void notifyGUI(ServerGUI gui) {
+    	this.gui = gui;
     }
 
 }
