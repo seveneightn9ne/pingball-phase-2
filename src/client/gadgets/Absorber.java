@@ -113,14 +113,15 @@ public class Absorber implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-    	if (balls.contains(ball)) {
-    		balls.remove(ball);
-    		return true;
-    	}
+        System.out.println("hit");
+        if (balls.contains(ball)) {
+            System.out.println(ball.getVelocity());
+            balls.remove(ball);
+            return true;
+        }
         ball.putInBoardRep(board, true);
         ball.setPosition(new Vect(southEast.x(), southEast.y()));
         ball.setVelocity(new Vect(0, 0));
-        ball.putInBoardRep(board, false);
         balls.add(ball);
         for (Gadget g : triggers) {
             g.action(board);
@@ -132,7 +133,9 @@ public class Absorber implements Gadget {
     public void action(Board board) {
         if (!balls.isEmpty()) {
             Ball ball = balls.get(0);
+            ball.setPosition(new Vect(southEast.x(), southEast.y()));
             ball.setVelocity(new Vect(0, -50));
+            ball.putInBoardRep(board, false);
         }
     }
 
