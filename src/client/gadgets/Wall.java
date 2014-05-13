@@ -104,11 +104,11 @@ public class Wall implements Gadget {
             return true;
         }
         else{
-        	Vect newBallPosition = ball.getPosition().plus(ball.getVelocity().times(Constants.TIMESTEP));
-            if (boardSide == Constants.BoardSide.TOP)    newBallPosition = new Vect(newBallPosition.x(), 19.4d);
-            if (boardSide == Constants.BoardSide.RIGHT)  newBallPosition = new Vect(-.4d, newBallPosition.y());
-            if (boardSide == Constants.BoardSide.BOTTOM) newBallPosition = new Vect(newBallPosition.x(), -.4d);
-            if (boardSide == Constants.BoardSide.LEFT)   newBallPosition = new Vect(-.4d, newBallPosition.y());
+        	Vect newBallPosition = ball.getPosition();//.plus(ball.getVelocity().times(Constants.TIMESTEP));
+            if (boardSide == Constants.BoardSide.TOP)    newBallPosition = new Vect(newBallPosition.x(), 19d);
+            if (boardSide == Constants.BoardSide.RIGHT)  newBallPosition = new Vect(0d, newBallPosition.y());
+            if (boardSide == Constants.BoardSide.BOTTOM) newBallPosition = new Vect(newBallPosition.x(), 0d);
+            if (boardSide == Constants.BoardSide.LEFT)   newBallPosition = new Vect(19d, newBallPosition.y());
             ball.setPosition(newBallPosition);
 
             // Send the ball to the server
