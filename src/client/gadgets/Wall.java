@@ -109,6 +109,7 @@ public class Wall implements Gadget {
             if (boardSide == Constants.BoardSide.RIGHT)  newBallPosition = new Vect(0d, newBallPosition.y());
             if (boardSide == Constants.BoardSide.BOTTOM) newBallPosition = new Vect(newBallPosition.x(), 0d);
             if (boardSide == Constants.BoardSide.LEFT)   newBallPosition = new Vect(19d, newBallPosition.y());
+            ball.putInBoardRep(board, true);
             ball.setPosition(newBallPosition);
 
             // Send the ball to the server
