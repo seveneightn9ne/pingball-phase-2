@@ -116,11 +116,25 @@ public class Parser {
 				}
 			}else if (line[0].equals("keyup")) {
 			    if (line.length == 3 && line[1].startsWith("key")&& line[2].startsWith("action")) {
-			        
+			        String key = line[1].split("=")[1];
+                    String trigger = line[2].split("=")[1];
+                    if (keyupToTriggers.containsKey(key)) {
+                        keyupToTriggers.get(key).add(trigger);
+                    } else {
+                        keyupToTriggers.put(key, new ArrayList<String>());
+                        keyupToTriggers.get(key).add(trigger);
+                    }
 			    }
 			}else if (line[0].equals("keydown")) {
 			    if (line.length == 3 && line[1].startsWith("key")&& line[2].startsWith("action")) {
-			        
+			        String key = line[1].split("=")[1];
+                    String trigger = line[2].split("=")[1];
+                    if (keyupToTriggers.containsKey(key)) {
+                        keyupToTriggers.get(key).add(trigger);
+                    } else {
+                        keyupToTriggers.put(key, new ArrayList<String>());
+                        keyupToTriggers.get(key).add(trigger);
+                    }
 			    }
 			}else{
 				throw new RuntimeException("this is not an acceptable gadget");

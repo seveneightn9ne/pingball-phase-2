@@ -118,34 +118,24 @@ public class Absorber implements Gadget {
         ball.setPosition(new Vect(southEast.x(), southEast.y()));
         ball.setVelocity(new Vect(0, 0));
         balls.add(ball);
+        board.notifyAbsorbed(ball);
+        System.out.println("Ow! I got hit!");
         for (Gadget g : triggers) {
             g.action(board);
         }
-        board.notifyAbsorbed(ball);
         return true;
     }
 
     @Override
     public void action(Board board) {
         if (!balls.isEmpty()) {
-            final Board notify = board;
-            Thread action = new Thread(new Runnable() {
-                public void run() {
-                    try {
-                        Thread.sleep((long) (Constants.TIMESTEP*100));
-                    } catch (InterruptedException e) {
-                        // TODO Auto-generated catch block
-                        e.printStackTrace();
-                    }
-                    Ball ball = balls.get(0);
-                    ball.putInBoardRep(notify, true);
-                    ball.setPosition(new Vect(southEast.x(), southEast.y()));
-                    ball.setVelocity(new Vect(0, -50));
-                    ball.putInBoardRep(notify, false);
-                    notify.notifyReleased(ball);
-                }
-            });
-            action.start();
+            System.out.println("Released");
+            Ball ball = balls.get(0);
+            balls.remove(ball);
+            ball.setPosition(new Vect(southEast.x(), southEast.y()));
+            ball.setVelocity(new Vect(0, -50));
+            ball.putInBoardRep(board, false);
+            board.notifyReleased(ball);
         }
     }
 
