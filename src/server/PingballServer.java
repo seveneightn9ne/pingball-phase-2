@@ -18,8 +18,6 @@ import java.util.regex.Pattern;
 
 import javax.swing.SwingUtilities;
 
-import client.PingballGUI;
-
 import physics.Vect;
 
 import common.Constants;
@@ -76,6 +74,7 @@ public class PingballServer {
     private final Map<String, ClientHandler> clients;
     private final List<List<String>> horizontalBoardJoins; // pairs of boards joined as left, right
     private final List<List<String>> verticalBoardJoins; // pairs of boards joined as top, bottom
+    private SocketAcceptor socketAcceptor;
     private ServerGUI gui;
 
     /**
@@ -113,7 +112,8 @@ public class PingballServer {
      */
     public void serve() throws IOException {
 
-        Thread socketThread = new Thread(new SocketAcceptor(port, messageQueue, deadClientsQueue));
+    	this.socketAcceptor = new SocketAcceptor(port, messageQueue, deadClientsQueue);
+        Thread socketThread = new Thread(socketAcceptor);
         socketThread.start();
 
         Thread cliThread = new Thread(new CommandLineInterface(cliQueue));
@@ -206,6 +206,8 @@ public class PingballServer {
 
     /**
      * Start a PingballServer using the given arguments.
+     * 
+     * @param args must be in the format specified:
      *
      * Usage: PingballServer [--port PORT]
      *
@@ -493,8 +495,27 @@ public class PingballServer {
         }
     }
     
+    /**
+     * Tell the Server that a ServerGUI is available
+     * @param gui the ServerGUI that will display the Server's info
+     */
     public void notifyGUI(ServerGUI gui) {
     	this.gui = gui;
+    }
+    
+    /**
+     * @return the port by which clients can connect to the server
+     */
+    public int getPort() {
+    	return port;
+    }
+
+    /** 
+     * Get the server's IP address
+     * @return the address by which clients can connect to the server
+     */
+    public String getIP() {
+    	return socketAcceptor.getIP();
     }
 
 }

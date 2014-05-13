@@ -3,9 +3,11 @@ package server;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.BlockingQueue;
 
 import javax.swing.Box;
@@ -20,24 +22,40 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import javax.swing.table.DefaultTableModel;
 
-
+/**
+ * ServerGUI is a Swing GUI for a Pingball server. 
+ * It displays the connected users, the server's IP, 
+ * and information about connected boards.
+ * It also allows the user to connect boards. 
+ * 
+ * Thread Safety: The GUI is confined to the Swing thread. 
+ * 
+ * Manual Testing Strategy:
+ * * Multiple boards connect to the server
+ * * Try connecting them in different configurations
+ * * Make sure a new connection overwrites an old one if there is a shared wall
+ * * When the client disconnects, the GUI updates accordingly and doesn't crash
+ * * Connecting boards via the CLI updates the GUI too
+ *
+ */
 public class ServerGUI extends JFrame {
-	
+
+	private static final long serialVersionUID = 1L;
 	private final DefaultTableModel tableModel;
 	private final JTable clientsTable;
-//	private final JList<String> hConnected;
-//	private final JList<String> vConnected;
 	private final DefaultListModel<String> hConnectedModel;
 	private final DefaultListModel<String> vConnectedModel;
-//	private final DefaultTableModel hTableModel;
-//	private final JTable hTable;
-//	private final DefaultTableModel vTableModel;
-//	private final JTable vTable;
 	private final BlockingQueue<String> commandQueue;
+	private final JLabel serverStatus;
 
+	/**
+	 * Create a new Server GUI with the given server and its command queue
+	 * @param server the server
+	 * @param commandQueue the queue to which the GUI should send commands from the user
+	 */
 	public ServerGUI(PingballServer server, BlockingQueue<String> commandQueue) {
 		this.commandQueue = commandQueue;
 		
@@ -54,50 +72,40 @@ public class ServerGUI extends JFrame {
         JScrollPane clientsPane = new JScrollPane(clientsTable);
         clientsPane.setPreferredSize(new Dimension((int) clientsTable.getSize().getWidth(), 150));
         
-        // Server status
-        JLabel serverStatus = new JLabel("Server running on host:port");
+        // Server status. Get the public IP from checkip.amazonaws.com :)
+        final int port = server.getPort();
+        Thread backgroundThread = new Thread(new Runnable() {
+        	public void run() {
+        		try {
+        	        URL ipFetcher = new URL("http://checkip.amazonaws.com");
+        	        BufferedReader in = new BufferedReader(new InputStreamReader(ipFetcher.openStream()));
+        			final String ip = in.readLine();
+        			SwingUtilities.invokeLater(new Runnable() {
+        				public void run() {
+        					setIP(ip, port);
+        				}
+        			});
+        		} catch (MalformedURLException e) {
+        			e.printStackTrace();
+        		} catch (IOException e) {
+        			e.printStackTrace();
+        		}
+        	}
+        });
+        backgroundThread.start();
+        
+		
+        serverStatus = new JLabel("");
         
         // Action buttons
         JButton hButton = new JButton("Connect Clients Horizontally");
         JButton vButton = new JButton("Connect Clients Vertically");
-        
-        // Connected Boards:
-        JLabel connectedBoards = new JLabel("Connected Boards:");
         
         // hConnect list
         hConnectedModel = new DefaultListModel<String>();
         vConnectedModel = new DefaultListModel<String>();
         final JList<String> hConnected = new JList<String>(hConnectedModel);
         final JList<String> vConnected = new JList<String>(vConnectedModel);
-        
-//        // hConnect table
-// 		String[] hCols = {"left", "right"};
-//        hTableModel = new DefaultTableModel(cols, 0);
-//        hTable = new JTable(hTableModel){
-//             private static final long serialVersionUID = 1L;
-//
-//             @Override public boolean isCellEditable(int arg0, int arg1) { 
-//                 return false; 
-//             }
-//         }; 
-//         JScrollPane hPane = new JScrollPane(hTable);
-//         hTable.setPreferredSize(new Dimension((int) hTable.getSize().getWidth()/2, 70));
-////         clientsPane.setPreferredSize(new Dimension((int) hTable.getSize().getWidth(), 70));
-//
-//         // vConnect table
-//  		String[] vCols = {"top", "bottom"};
-//         vTableModel = new DefaultTableModel(cols, 0);
-//         vTable = new JTable(vTableModel){
-//              private static final long serialVersionUID = 1L;
-//
-//              @Override public boolean isCellEditable(int arg0, int arg1) { 
-//                  return false; 
-//              }
-//          }; 
-//          JScrollPane vPane = new JScrollPane(vTable);
-////          vTable.setPreferredSize(new Dimension((int) vTable.getSize().getWidth()/2, 70));
-//          vTable.setSize((int) vTable.getSize().getWidth()/2, 70);
-////          clientsPane.setPreferredSize(new Dimension((int) vTable.getSize().getWidth(), 70));
         
         // define layout
         GroupLayout layout = new GroupLayout(this.getContentPane());
@@ -132,23 +140,11 @@ public class ServerGUI extends JFrame {
 
         hButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-//            	int[] indices = hConnected.getSelectedIndices();
-//            	if (indices.length == 2) {
-//            		String b1 = hConnectedModel.getElementAt(indices[0]);
-//            		String b2 = hConnectedModel.getElementAt(indices[1]);
-//                    connectBoards("h", b1, b2);
-//            	}
             	connectBoards("h");
             }
         });
         vButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent event) {
-//            	int[] indices = vConnected.getSelectedIndices();
-//            	if (indices.length == 2) {
-//            		String b1 = vConnectedModel.getElementAt(indices[0]);
-//            		String b2 = vConnectedModel.getElementAt(indices[1]);
-//                    connectBoards("v", b1, b2);
-//            	}
             	connectBoards("v");
             }
         });
@@ -193,11 +189,24 @@ public class ServerGUI extends JFrame {
 		pack();
 	}
 	
+	/**
+	 * Add a connection to the GUI so the user can see that two boards have been connected
+	 * @param dir the direction of the connection. must be "h" or "v"
+	 * @param b1 the name of the board on the top/left side of the connection
+	 * @param b2 the name of the board on the bottom/right side of the connection
+	 */
 	public void addConnection(String dir, String b1, String b2) {
 		if (dir.equals("h")) hConnectedModel.addElement(b1 + " :: " + b2);
 		if (dir.equals("v")) vConnectedModel.addElement(b1 + " :: " + b2);
 	}
 	
+	/**
+	 * Remove a connection from the GUI, for example if a board disconnects
+	 * from the server, then its connections have been broken and must be removed.
+	 * @param dir the direction of the connection. must be "h" or "v"
+	 * @param b1 the name of the board on the top/left side of the connection
+	 * @param b2 the name of the board on the bottom/right side of the connection
+	 */
 	public void removeConnection(String dir, String b1, String b2) {
 		DefaultListModel<String> m;
 		if (dir.equals("h")) m = hConnectedModel;
@@ -211,7 +220,12 @@ public class ServerGUI extends JFrame {
 		}
 	}
 	
-	public void connectBoards(String dir) {
+	/**
+	 * connectBoards asks the user to select two boards from the list of clients
+	 * and then asks the server to connect those boards in the direction specified
+	 * @param dir must be "h" or "v" to mean horizontal or vertical connection.
+	 */
+	private void connectBoards(String dir) {
 		String[] boards = new String[clientsTable.getRowCount()];
 		for (int i=0; i<clientsTable.getRowCount(); i++) {
 			boards[i] = (String) clientsTable.getValueAt(i, 0);
@@ -236,19 +250,9 @@ public class ServerGUI extends JFrame {
 	    }
 	}
 	
-//	public void removeBoardConnect(String b1, String b2) {
-//		List<DefaultListModel<String>> models = Arrays.asList(hConnectedModel, vConnectedModel);
-//		for (DefaultListModel<String> model : models) {
-//			List<Integer> rowsToRemove = new ArrayList<Integer>();
-//			for (int i=0; i<model.getSize(); i++) {
-//				if (model.get(i).equals(b1 + " :: " + b2)){
-//					rowsToRemove.add(i);
-//				}
-//			}
-//			for (int i : rowsToRemove) {
-//				model.remove(i);
-//			}
-//		}
-//	}
+	private void setIP(String ip, int port) {
+		serverStatus.setText("Server running on " + ip + ":" + port);
+	}
+	
 
 }
