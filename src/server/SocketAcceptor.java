@@ -56,6 +56,15 @@ public class SocketAcceptor implements Runnable {
             }
         }
     }
+    
+    /** 
+     * Get the IP of the Socket on *this* end
+     * i.e., the server IP address
+     * @return the address by which clients can connect to the server
+     */
+    public String getIP() {
+    	return serverSocket.getInetAddress().toString();
+    }
 
     /**
      * Rep invariant: none

@@ -95,7 +95,7 @@ public class Portal implements Gadget {
         else if (serverHandler != null) {
             
             ball.putInBoardRep(board, true);
-            serverHandler.send(new TeleportOutMessage(ball.getPosition(), board.getName(), name, otherBoard, otherPortal));
+            serverHandler.send(new TeleportOutMessage(ball.getVelocity(), board.getName(), name, otherBoard, otherPortal));
             return false;
         }
         return true;

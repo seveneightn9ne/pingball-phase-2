@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import common.Constants;
 import client.Ball;
 import client.Board;
 import physics.Circle;
@@ -113,15 +114,12 @@ public class Absorber implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-    	if (balls.contains(ball)) {
-    		balls.remove(ball);
-    		return true;
-    	}
         ball.putInBoardRep(board, true);
         ball.setPosition(new Vect(southEast.x(), southEast.y()));
         ball.setVelocity(new Vect(0, 0));
-        ball.putInBoardRep(board, false);
         balls.add(ball);
+        board.notifyAbsorbed(ball);
+        System.out.println("Ow! I got hit!");
         for (Gadget g : triggers) {
             g.action(board);
         }
@@ -131,8 +129,13 @@ public class Absorber implements Gadget {
     @Override
     public void action(Board board) {
         if (!balls.isEmpty()) {
+            System.out.println("Released");
             Ball ball = balls.get(0);
+            balls.remove(ball);
+            ball.setPosition(new Vect(southEast.x(), southEast.y()));
             ball.setVelocity(new Vect(0, -50));
+            ball.putInBoardRep(board, false);
+            board.notifyReleased(ball);
         }
     }
 

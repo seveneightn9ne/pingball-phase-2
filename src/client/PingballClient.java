@@ -99,78 +99,60 @@ public class PingballClient {
 				Runnable r = invokeLaterQueue.remove();
 				r.run();
 			}
-			if (!paused.get()) {
-				try {
-					// Sleep to limit framerate.
-					Thread.sleep((int) (Constants.TIMESTEP));
-				} catch (InterruptedException e) {
-					Thread.currentThread().interrupt();
-				}
+			if (!paused.get()) {				
+	            try {
+	                // Sleep to limit framerate.
+	                Thread.sleep((int) (Constants.TIMESTEP*1000));
+	            } catch (InterruptedException e) {
+	                Thread.currentThread().interrupt();
+	            }
+	
+	            while (!incomingMessages.isEmpty() && board != null) {
+	                NetworkMessage message = incomingMessages.remove();
+	                System.out.println(message);
+	                if (message instanceof BallInMessage) {
+	                    // The sending board is responsible for making ballPos on the correct side of the receiving board.
+	                    Vect ballPos = ((BallInMessage) message).getBallPos();
+	                    Vect ballVel = ((BallInMessage) message).getBallVel();
+	                    board.addBall(new Ball(ballPos, ballVel));
+	                } else if (message instanceof BoardFuseMessage) {
+	                    Constants.BoardSide side = ((BoardFuseMessage) message).getSide();
+	                    String name = ((BoardFuseMessage) message).getBoardName();
+	                    board.connectWallToServer(side, name);
+	                } else if (message instanceof BoardUnfuseMessage) {
+	                    Constants.BoardSide side = ((BoardUnfuseMessage) message).getSide();
+	                    board.disconnectWallFromServer(side);
+	                } else if (message instanceof ConnectionRefusedMessage) {
+	                    // when the serverHandler receives a ConnectionRefusedMessage it
+	                    // kills itself (calls this.kill()) and then passes the message to PingballClient.
+	                    if (Constants.DEBUG) {
+	                        System.err.println("Connection refused by server. Reason: " + ((ConnectionRefusedMessage) message).getReason());
+	                    }
+	                } else if (message instanceof TeleportInMessage) {
+	                    String portalTo = ((TeleportInMessage) message).getPortalTo();
+	                    Vect ballVel = ((TeleportInMessage) message).getBallVel();
+	                    Portal portal = board.getPortal(portalTo);
+	                    if (portal == null) {
+	                        String boardTo = ((TeleportInMessage) message).getBoardTo();
+	                        String boardFrom = ((TeleportInMessage) message).getBoardFrom();
+	                        String portalFrom = ((TeleportInMessage) message).getPortalFrom();
+	                        serverHandler.send(new TeleportFailMessage(ballVel, boardFrom, portalFrom, boardTo, portalTo));
+	                    } else {
+	                        Ball ball = new Ball(portal.getCenter(), ballVel);
+	                        board.addBall(ball);
+	                        portal.giveBall(ball);
+	                    }
+	                } else if (message instanceof TeleportFailMessage) {
+	                    String portalFrom = ((TeleportFailMessage) message).getPortalFrom();
+	                    Vect ballVel = ((TeleportFailMessage) message).getBallVel();
+	                    Portal portal = board.getPortal(portalFrom);
+	                    Ball ball = new Ball(portal.getCenter(), ballVel);
+	                    board.addBall(ball);
+	                    portal.giveBall(ball);
+	                }
+	            }
 
-				while (!incomingMessages.isEmpty() && board != null) {
-					NetworkMessage message = incomingMessages.remove();
-					System.out.println(message);
-					if (message instanceof BallInMessage) {
-						// The sending board is responsible for making ballPos
-						// on the correct side of the receiving board.
-						Vect ballPos = ((BallInMessage) message).getBallPos();
-						Vect ballVel = ((BallInMessage) message).getBallVel();
-						board.addBall(new Ball(ballPos, ballVel));
-					} else if (message instanceof BoardFuseMessage) {
-						Constants.BoardSide side = ((BoardFuseMessage) message)
-								.getSide();
-						String name = ((BoardFuseMessage) message)
-								.getBoardName();
-						board.connectWallToServer(side, name);
-					} else if (message instanceof BoardUnfuseMessage) {
-						Constants.BoardSide side = ((BoardUnfuseMessage) message)
-								.getSide();
-						board.disconnectWallFromServer(side);
-					} else if (message instanceof ConnectionRefusedMessage) {
-						// when the serverHandler receives a
-						// ConnectionRefusedMessage it
-						// kills itself (calls this.kill()) and then passes the
-						// message to PingballClient.
-						if (Constants.DEBUG) {
-							System.err
-									.println("Connection refused by server. Reason: "
-											+ ((ConnectionRefusedMessage) message)
-													.getReason());
-						}
-					} else if (message instanceof TeleportInMessage) {
-						String portalTo = ((TeleportInMessage) message)
-								.getPortalTo();
-						Vect ballVel = ((TeleportInMessage) message)
-								.getBallVel();
-						Portal portal = board.getPortal(portalTo);
-						if (portal == null) {
-							String boardTo = ((TeleportInMessage) message)
-									.getBoardTo();
-							String boardFrom = ((TeleportInMessage) message)
-									.getBoardFrom();
-							String portalFrom = ((TeleportInMessage) message)
-									.getPortalFrom();
-							serverHandler.send(new TeleportFailMessage(ballVel,
-									boardFrom, portalFrom, boardTo, portalTo));
-						} else {
-							Ball ball = new Ball(portal.getCenter(), ballVel);
-							board.addBall(ball);
-							portal.giveBall(ball);
-						}
-					} else if (message instanceof TeleportFailMessage) {
-						String portalFrom = ((TeleportFailMessage) message)
-								.getPortalFrom();
-						Vect ballVel = ((TeleportFailMessage) message)
-								.getBallVel();
-						Portal portal = board.getPortal(portalFrom);
-						Ball ball = new Ball(portal.getCenter(), ballVel);
-						board.addBall(ball);
-						portal.giveBall(ball);
-					}
-				}
-
-				if (board != null)
-					board.update(Constants.TIMESTEP);
+				if (board != null) board.update(Constants.TIMESTEP);
 			}
 		}
 	}
@@ -244,6 +226,7 @@ public class PingballClient {
 					throw new IllegalArgumentException(
 							"unable to parse number for " + flag);
 				}
+
 			}
 
 		} catch (IllegalArgumentException iae) {

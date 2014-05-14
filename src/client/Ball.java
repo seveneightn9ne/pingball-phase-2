@@ -6,6 +6,7 @@ import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
 import physics.Circle;
+import physics.Geometry;
 import physics.Vect;
 
 public class Ball {
@@ -119,6 +120,16 @@ public class Ball {
 	 */
 	public void setPosition(Vect position) {
 		this.position = position;
+	}
+	
+	public double timeUntilCollision(Ball ball) {
+	    return Geometry.timeUntilBallBallCollision(this.getCircle(), this.getVelocity(), ball.getCircle(), ball.getVelocity());
+	}
+	
+	public void hit(Ball ball) {
+	    Geometry.VectPair newVelocities = Geometry.reflectBalls(this.position, 1, this.getVelocity(), ball.position, 1, ball.getVelocity());
+	    this.setVelocity(newVelocities.v1);
+	    ball.setVelocity(newVelocities.v2);
 	}
 
 	/**

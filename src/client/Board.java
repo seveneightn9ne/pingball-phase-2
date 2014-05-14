@@ -33,6 +33,7 @@ public class Board {
 	private List<Gadget> gadgets = new ArrayList<Gadget>();
 	private HashMap<String, Portal> portals = new HashMap<String, Portal>();
 	private List<Ball> balls = new ArrayList<Ball>();
+	private List<Ball> absorbed = new ArrayList<Ball>();
 	private char[][] boardRep = new char[22][22];
 	private Wall[] borders = new Wall[4];
 	public Map<String, Gadget> gadgetNames = new HashMap<String, Gadget>();
@@ -255,7 +256,7 @@ public class Board {
 	public void addBall(Ball ball) {
 	    System.out.println("added ball at " + ball.getPosition());
 		balls.add(ball);
-//		ball.putInBoardRep(this, false);
+//     	ball.putInBoardRep(this, false);
 	}
 
 	/**
@@ -284,10 +285,16 @@ public class Board {
     	List<Ball> ballsToRemove = new ArrayList<Ball>();
 
         for (Ball ball : balls) {
-//        	System.out.println("Ball velocity: " + ball.getVelocity());
-//        	System.out.println("Ball location: " + ball.getPosition());
 
             boolean ballStillInPlay = true;
+            
+            for (Ball ball2 : balls) {
+                if (ball2 != ball) {
+                    if (ball.timeUntilCollision(ball2) <= timestep && ballStillInPlay) {
+                        ball.hit(ball2);
+                    }
+                }
+            }
             
         	for (Gadget gadget : gadgets) {
         		if (gadget.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
@@ -300,9 +307,12 @@ public class Board {
             		if (! wall.hit(ball, this)) ballStillInPlay = false;
             	}
             }
+            
                 
             if (ballStillInPlay) {
-            	ball.move(gravity, mu, mu2, timestep, this);
+                if (!absorbed.contains(ball)) {
+                    ball.move(gravity, mu, mu2, timestep, this);
+                }
             } else {
                 ballsToRemove.add(ball);
                 ball.putInBoardRep(this, true);
@@ -315,6 +325,21 @@ public class Board {
         
         System.out.println(this.toString());
         checkRep();
+    }
+    
+    /**
+     * @param ball ball that has been absorbed
+     */
+    public void notifyAbsorbed(Ball ball) {
+        absorbed.add(ball);
+    }
+    
+    /**
+     * @param ball ball that has been released
+     */
+    public void notifyReleased(Ball ball) {
+        System.out.println("released");
+        absorbed.remove(ball);
     }
     
     /**

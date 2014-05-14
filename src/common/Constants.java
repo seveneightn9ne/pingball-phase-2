@@ -1,5 +1,6 @@
 package common;
 
+
 /**
  * This is a static class containing the constants that need
  * to be used by multiple packages.
@@ -16,4 +17,5 @@ public class Constants {
     public static final int MIN_PORT = 0;
     public static final int MAX_PORT = 65535;
     public static final int SCALE = 10;
+    
 }
