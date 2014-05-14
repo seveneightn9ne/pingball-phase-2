@@ -21,11 +21,9 @@ import common.netprotocol.*;
 import java.io.File;
 import java.net.Socket;
 
-import kineticpingball.KineticModel;
 import javax.swing.SwingUtilities;
 
 import physics.Vect;
-import threadBoard.Skeleton;
 
 /**
  * 

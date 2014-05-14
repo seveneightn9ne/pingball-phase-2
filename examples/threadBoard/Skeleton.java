@@ -7,6 +7,7 @@ import javax.swing.JFrame;
 import common.Constants;
 
 import client.Board;
+import client.BoardGUI;
 
 public class Skeleton extends JFrame {
 
