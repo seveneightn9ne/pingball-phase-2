@@ -35,43 +35,18 @@ public class ParserTest {
 	
 	//tests that exceptions are properly thrown when there is a board including an invalid character
 	//invalidcharboard is identical to staffboard1 but there is an ! thrown in there
-	//@Test
-	public void invalidCharBoardTest(){
+	@Test (expected=RuntimeException.class)
+	public void invalidCharBoardTest() {
 		File file = new File("boards/invalidcharboard.pb");
 		Board board = Parser.makeBoard(file);
-		//TODO: implement test
 	}
 	
-	//this test checks that exceptions are properly thronw when there are invalid gadgets
-	//badgadgetboard is identical to staffboard1 but circle3 and circle4 occupy the same location
-	//@Test
+	//this test checks that exceptions are properly thrown when there are invalid gadgets
+	//badgadgetboard is identical to staffboard1 but circle4 and circle5 occupy the same location
+	//@Test (expected=RuntimeException.class)
 	public void invalidGadgetBoardTest(){
 		File file = new File("boards/badgadgetboard.pb");
 		Board board = Parser.makeBoard(file);
-		//TODO: implement test
-	}
-	
-	//checks the method "cleanLine" in parser
-	//doesn't exist anymore because I made cleanLine() private
-	//@Test
-	public void testCleanLine(){
-		String line1 = "this is a partially commented line #and here is the comment";
-		String line2 = "this has      many        spaces";
-		String cleaned1 = "this is a partially commented line";
-		String cleaned2 = "this has many spaces";
-		//System.out.println(parser.cleanLine(line1) + "printing in test");
-		//assertEquals(parser.cleanLine(line1), cleaned1);
-		//assertEquals(parser.cleanLine(line2), cleaned2);
-	}
-	
-	//checks the method isValidLine() in parser
-	//which is now a private method
-	//@Test
-	public void testisValidLine(){
-		String line1 = "this is a valid . . .. 312 line";
-		String line2 = "!! not valid^";
-//		assertFalse(parser.isValidLine(line2));
-//		assertTrue(parser.isValidLine(line1));
 	}
 	
 	@Test
@@ -84,7 +59,6 @@ public class ParserTest {
 		Board board = Parser.makeBoard(staffboard);
 		Board board2 = Parser.makeBoard(staffboard2);
         Board portals = Parser.makeBoard(funwithportals);
-        System.out.println(portals.toString());
 	}
 	
 }
