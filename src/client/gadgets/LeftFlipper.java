@@ -7,6 +7,8 @@ import java.awt.geom.RoundRectangle2D;
 import java.util.HashSet;
 import java.util.Set;
 
+import common.Constants;
+
 import client.Ball;
 import client.Board;
 import physics.Angle;
@@ -61,8 +63,8 @@ public class LeftFlipper implements Gadget {
         this.name = name;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*10,yPos*10,20.0,10.0,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*10,yPos*10,10.0,20.0,archHeight,archWidth);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1*Constants.SCALE,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     	
     }
     /**
@@ -82,8 +84,8 @@ public class LeftFlipper implements Gadget {
         this.name = null;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*10,yPos*10,20.0,10.0,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*10,yPos*10,10.0,20.0,archHeight,archWidth);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1*Constants.SCALE,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     }
 
     /**

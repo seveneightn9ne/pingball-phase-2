@@ -8,10 +8,11 @@ public Skeleton() {
         add(new Board());
         setTitle("Stars");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-        setSize(300, 280);
+        setSize(200, 200);
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);
+        pack();
     }
     public static void main(String[] args) {
         new Skeleton();

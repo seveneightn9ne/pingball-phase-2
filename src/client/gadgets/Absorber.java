@@ -84,7 +84,7 @@ public class Absorber implements Gadget {
         corners[1] = new Circle(northEast, 0);
         corners[2] = new Circle(southWest, 0);
         corners[3] = new Circle(southEast, 0);
-        this.shape = new Rectangle(xPos*10,yPos*10,width*10,height*10);
+        this.shape = new Rectangle(xPos*Constants.SCALE,yPos*Constants.SCALE,width*Constants.SCALE,height*Constants.SCALE);
 
     }
 
