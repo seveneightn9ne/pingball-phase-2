@@ -256,7 +256,7 @@ public class Board {
 	public void addBall(Ball ball) {
 	    System.out.println("added ball at " + ball.getPosition());
 		balls.add(ball);
-//     	ball.putInBoardRep(this, false);
+     	ball.putInBoardRep(this, false);
 	}
 
 	/**
