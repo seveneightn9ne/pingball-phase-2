@@ -5,6 +5,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import common.Constants;
+
 import java.util.Set;
 
 import client.Ball;
@@ -61,7 +63,6 @@ public class TriangleBumper implements Gadget {
         lines = new LineSegment[3];
         corners = new Circle[3];
         this.orientationConstructor(orientation);
-        pointGenerator();
     }
     
 
@@ -86,18 +87,8 @@ public class TriangleBumper implements Gadget {
         lines = new LineSegment[3];
         corners = new Circle[3];
         this.orientationConstructor(orientation);
-        pointGenerator();
     }
     
-    private void pointGenerator()
-    {
-    	int startX = xPos*10;
-    	int startY = yPos*10;
-    	yPoints = new int[]{startY, startY, startY-10};
-    	xPoints = new int[]{startX, startX+10, startX};
-    	triangleShape= new Polygon(xPoints,yPoints,3);
-    }
-
     /**
      * Create line segments corresponding to edges of the bumper in the correct
      * orientation.
@@ -156,6 +147,10 @@ public class TriangleBumper implements Gadget {
             throw new RuntimeException(
                     "Invalid orientation given. Can only be multiples of 90.");
         }
+        xPoints = new int[]{(int)corners[0].getCenter().x()*Constants.SCALE,(int) corners[1].getCenter().x()*Constants.SCALE,(int) corners[2].getCenter().x()*Constants.SCALE};
+        yPoints = new int[]{(int)corners[0].getCenter().y()*Constants.SCALE,(int) corners[1].getCenter().y()*Constants.SCALE,(int) corners[2].getCenter().y()*Constants.SCALE};
+        triangleShape= new Polygon(xPoints,yPoints,3);
+
     }
 
     /**

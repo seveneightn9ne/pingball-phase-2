@@ -2,11 +2,12 @@ package client.gadgets;
 
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import common.Constants;
 import common.netprotocol.TeleportOutMessage;
 import physics.Circle;
 import physics.Geometry;
@@ -25,8 +26,10 @@ public class Portal implements Gadget {
     private Vect position;
     private String name;
     public ServerHandler serverHandler;
-    
-    /**
+    private Shape portalShape;
+    private final Color PORTALCOLOR= new Color(0,0,0);
+  
+	/**
      * Creates a portal on the specified board linked to the specified other portal.
      * @param name
      *          Name of this board
@@ -47,6 +50,8 @@ public class Portal implements Gadget {
         this.circle = new Circle(position, .5);
         this.otherBoard = otherBoard;
         this.otherPortal = otherPortal;
+        portalShape = new Ellipse2D.Double(posX*Constants.SCALE,posY*Constants.SCALE, 1*Constants.SCALE, 1*Constants.SCALE);
+
     }
 
     @Override
@@ -142,14 +147,12 @@ public class Portal implements Gadget {
 
 	@Override
 	public Shape getShape() {
-		// TODO Auto-generated method stub
-		return null;
+		return portalShape;
 	}
 
 	@Override
 	public Color getColor() {
-		// TODO Auto-generated method stub
-		return null;
+		return PORTALCOLOR;
 	}
 
 }

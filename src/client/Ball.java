@@ -22,7 +22,7 @@ public class Ball {
 	private Vect velocity;
 	private Circle circle;
 	private String name;
-	private final Color BALLCOLOR = new Color(215,238,130);
+	private final Color BALLCOLOR = new Color(210,17,220);
 
 	/**
 	 * Constructor for Ball
@@ -213,7 +213,7 @@ public class Ball {
     }
 
 	public Shape getShape() {
-		return new Ellipse2D.Double(getPosition().x()*Constants.SCALE,getPosition().y()*Constants.SCALE, 1*Constants.SCALE, 1*Constants.SCALE);
+		return new Ellipse2D.Double(getPosition().x()*Constants.SCALE,getPosition().y()*Constants.SCALE, 0.5*Constants.SCALE, 0.5*Constants.SCALE);
 	}
 
 	public Color getColor() {
