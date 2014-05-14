@@ -69,8 +69,6 @@ public class BoardGUI extends JPanel implements Runnable {
 //		execution.execute();
 //        while(true){
 //            try {
-//                for (Star s : this.items) {
-//                    s.move();
 //                }
 //                repaint();
 //
