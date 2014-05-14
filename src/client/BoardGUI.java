@@ -1,4 +1,4 @@
-package threadBoard;
+package client;
 
 
 import java.awt.Color;
@@ -13,8 +13,6 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 import common.Constants;
-import client.Ball;
-import client.Board;
 import client.gadgets.Gadget;
 
 
