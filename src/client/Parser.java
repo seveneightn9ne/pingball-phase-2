@@ -30,6 +30,9 @@ import physics.*;
 public class Parser {
 	
 	private static String[] validGadgets = {"squareBumper", "circleBumper", "triangleBumper", "leftFlipper", "rightFlipper", "absorber", "portal"};
+	private static String[] validKeys = {"a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v",
+	    "w", "x", "y", "z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "shift", "ctrl", "alt", "meta", "space", "left", "right", "up", "down",
+        "minus", "equals", "backspace", "openbracket", "closebracket", "backslash", "semicolon", "quote", "enter", "comma", "period", "slash"};
 	 
 //	public Parser(){}
 	
@@ -117,27 +120,57 @@ public class Parser {
 			}else if (line[0].equals("keyup")) {
 			    if (line.length == 3 && line[1].startsWith("key")&& line[2].startsWith("action")) {
 			        String key = line[1].split("=")[1];
-                    String trigger = line[2].split("=")[1];
-                    if (keyupToTriggers.containsKey(key)) {
-                        keyupToTriggers.get(key).add(trigger);
+                    if (Arrays.asList(validKeys).contains(key)) {
+                        if (key.equals("backslash")) {
+                            key = "Back Slash";
+                        } else if (key.equals("openbracket")) {
+                            key = "Open Bracket";
+                        } else if (key.equals("closebracket")) {
+                            key = "Close Bracket";
+                        }
+                        key = Character.toUpperCase(key.charAt(0)) + key.substring(1);
+                        String trigger = line[2].split("=")[1];
+                        if (keyupToTriggers.containsKey(key)) {
+                            keyupToTriggers.get(key).add(trigger);
+                        } else {
+                            keyupToTriggers.put(key, new ArrayList<String>());
+                            keyupToTriggers.get(key).add(trigger);
+                        }
                     } else {
-                        keyupToTriggers.put(key, new ArrayList<String>());
-                        keyupToTriggers.get(key).add(trigger);
+                        throw new RuntimeException("invalid key: " + key);
                     }
-			    }
+                  
+                } else {
+                    throw new RuntimeException("invalid keyup: " + line);
+                }
 			}else if (line[0].equals("keydown")) {
 			    if (line.length == 3 && line[1].startsWith("key")&& line[2].startsWith("action")) {
 			        String key = line[1].split("=")[1];
-                    String trigger = line[2].split("=")[1];
-                    if (keyupToTriggers.containsKey(key)) {
-                        keyupToTriggers.get(key).add(trigger);
-                    } else {
-                        keyupToTriggers.put(key, new ArrayList<String>());
-                        keyupToTriggers.get(key).add(trigger);
-                    }
+			        if (Arrays.asList(validKeys).contains(key)) {
+			            if (key.equals("backslash")) {
+	                        key = "Back Slash";
+	                    } else if (key.equals("openbracket")) {
+	                        key = "Open Bracket";
+	                    } else if (key.equals("closebracket")) {
+	                        key = "Close Bracket";
+	                    }
+	                    key = Character.toUpperCase(key.charAt(0)) + key.substring(1);
+	                    String trigger = line[2].split("=")[1];
+	                    if (keydownToTriggers.containsKey(key)) {
+	                        keydownToTriggers.get(key).add(trigger);
+	                    } else {
+	                        keydownToTriggers.put(key, new ArrayList<String>());
+	                        keydownToTriggers.get(key).add(trigger);
+	                    }
+			        } else {
+			            throw new RuntimeException("invalid key: " + key);
+			        }
+			      
+			    } else {
+			        throw new RuntimeException("invalid keydown: " + line);
 			    }
 			}else{
-				throw new RuntimeException("this is not an acceptable gadget");
+				throw new RuntimeException("invalid line: " + line);
 			}
 		}
 		
@@ -551,7 +584,8 @@ public class Parser {
 	 */
 	public static String cleanLine(String line){
 	    line = line.replaceAll("\\s+"," ");
-	    line = line.replaceAll(" = ", "=");
+	    line = line.replaceAll(" =", "=");
+	    line = line.replaceAll("= ", "=");
 		StringBuilder str = new StringBuilder();
 		boolean lastCharSpace = true;
 		for (int i = 0; i < line.length(); i++){
