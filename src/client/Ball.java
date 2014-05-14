@@ -5,6 +5,8 @@ import java.awt.Paint;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import common.Constants;
+
 import physics.Circle;
 import physics.Geometry;
 import physics.Vect;
@@ -20,6 +22,7 @@ public class Ball {
 	private Vect velocity;
 	private Circle circle;
 	private String name;
+	private final Color BALLCOLORS = new Color(215,238,153);
 
 	/**
 	 * Constructor for Ball
@@ -219,10 +222,10 @@ public class Ball {
     }
 
 	public Shape getShape() {
-		return new Ellipse2D.Double(getPosition().x(),getPosition().y(), 0.5, 0.5);
+		return new Ellipse2D.Double(getPosition().x()*Constants.SCALE,getPosition().y()*Constants.SCALE, 1*Constants.SCALE, 1*Constants.SCALE);
 	}
 
 	public Color getColor() {
-		return Color.RED;
+		return BALLCOLORS;
 	}
 }

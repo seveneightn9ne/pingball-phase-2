@@ -271,8 +271,9 @@ public class Board {
 		}
 		return string;
 	}
-
 	/**
+	 * Refresh the board, taking into account elapsed time causing motion, as
+	 * well as possible collisions
 	 * Update the board assuming timestep has passed since the last update.
 	 * Includes collisions with gadgets & gadget action triggers, and the ball moving 
 	 * according to gravity, friction, etc. 
