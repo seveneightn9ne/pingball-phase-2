@@ -7,19 +7,29 @@ import java.util.List;
 
 import org.junit.Test;
 
+/**
+ * Parser Testing Strategy:
+ *          
+ *          Test that each class of object that parser must create is parsed correctly. 
+ * 
+ *          Ball parsing tests:         Check that ball initial locations and velocities are correct. Check that a parser can
+ *                                      create a board with multiple balls.
+ * 
+ *          Gadget parsing tests:       Check that each gadget is initialized in the correct locations. Check that objects with variable
+ *                                      orientations and sizes have correct orientations and sizes.
+ * 
+ *          Fire parsing tests:         Check that fire commands connect the correct gadgets.
+ * 
+ *          Keyup/down parsing tests:   Check that keyup and keydown commands are added to the board appropriately
+ *          
+ *          General tests:              Check that comments are ignored, exceptions are thrown when illegal arguments/formatting is given.
+ *          
+ * @author meganoleary
+ *
+ */
 public class ParserTest {
 	
-	Parser parser = new Parser();
 	
-	//the this test checks the staff board implementations
-	//comments included
-	//staffboard1: sample board designed for single-player play
-	//staffboard2: sample board designed for two players
-	//is very similar to the right half of board 1, scaled and
-	//broken into two halves
-	//staffboard3: defines events for gadgets
-	//staffboard4: also is a board
-	//@Test
 	public void staffBoardTest(){
 		File file1 = new File("boards/staffboard1.pb");
 		File file2 = new File("boards/staffboard2.pb");
