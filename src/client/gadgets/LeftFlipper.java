@@ -63,8 +63,8 @@ public class LeftFlipper implements Gadget {
         this.name = name;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1*Constants.SCALE,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1,2*Constants.SCALE,archHeight,archWidth);
     	
     }
     /**
@@ -84,8 +84,8 @@ public class LeftFlipper implements Gadget {
         this.name = null;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1*Constants.SCALE,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1,2*Constants.SCALE,archHeight,archWidth);
     }
 
     /**

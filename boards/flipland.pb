@@ -9,9 +9,9 @@ triangleBumper name=Rebound x=19 y=10 orientation=90
 # leftFlipper name=Rebound2 x=17 y=5 orientation=90
 
 leftFlipper name=Flip1 x=2 y=15 orientation=90
-leftFlipper name=Flip2 x=5 y=15 orientation=90
+rightFlipper name=Flip2 x=5 y=15 orientation=90
 leftFlipper name=Flip3 x=8 y=15 orientation=90
-leftFlipper name=Flip4 x=12 y=15 orientation=90
+rightFlipper name=Flip4 x=12 y=15 orientation=90
 leftFlipper name=Flip5 x=15 y=15 orientation=90
 
 fire trigger=Flip1 action=Flip5
