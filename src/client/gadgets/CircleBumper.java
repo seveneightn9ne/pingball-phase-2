@@ -10,6 +10,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import common.Constants;
+
 import client.Ball;
 import client.Board;
 import physics.Circle;
@@ -27,8 +29,6 @@ public class CircleBumper implements Gadget {
     private double reflection = 1;
     private List<Gadget> triggers = new ArrayList<Gadget>();
     private String name;
-	private int xPos;
-	private int yPos;
 	private final Shape shape;
 	private final Color CIRCLECOLOR = new Color(25,116,171);
 
@@ -47,11 +47,9 @@ public class CircleBumper implements Gadget {
     public CircleBumper(String name, int xPos, int yPos) {
         this.name = name;
 
-        this.xPos = xPos;
-        this.yPos = yPos;
         this.position = new Vect(xPos, yPos);
         circle = new Circle(position, 0.5);
-    	this.shape = new Ellipse2D.Double(xPos*10,yPos*10,10.0,10.0);
+    	this.shape = new Ellipse2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
 
     }
     /**
@@ -69,7 +67,7 @@ public class CircleBumper implements Gadget {
 
         this.position = new Vect(xPos, yPos);
         circle = new Circle(position, 0.5);
-    	this.shape = new Ellipse2D.Double(xPos*10,yPos*10,10.0,10.0);
+    	this.shape = new Ellipse2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
 
     }
 

@@ -7,6 +7,8 @@ import java.awt.Shape;
 import java.util.HashSet;
 import java.util.Set;
 
+import common.Constants;
+
 import client.Ball;
 import client.Board;
 import physics.Circle;
@@ -48,7 +50,7 @@ public class SquareBumper implements Gadget {
         lines = new LineSegment[4];
         corners = new Circle[4];
         this.linesConstructor();
-        shape = new Rectangle(xPos*10,yPos*10,10,10);
+        shape = new Rectangle(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
     }
 
     /**
@@ -63,7 +65,7 @@ public class SquareBumper implements Gadget {
         lines = new LineSegment[4];
         corners = new Circle[4];
         this.linesConstructor();
-        shape = new Rectangle(xPos*10,yPos*10,10,10);
+        shape = new Rectangle(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
     }
     
     /**
