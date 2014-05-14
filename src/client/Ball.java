@@ -19,6 +19,7 @@ public class Ball {
 	private Vect velocity;
 	private Circle circle;
 	private String name;
+	
 
 	/**
 	 * Constructor for Ball

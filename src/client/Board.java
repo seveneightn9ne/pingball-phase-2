@@ -270,7 +270,6 @@ public class Board {
 		}
 		return string;
 	}
-
 	/**
 	 * Refresh the board, taking into account elapsed time causing motion, as
 	 * well as possible collisions

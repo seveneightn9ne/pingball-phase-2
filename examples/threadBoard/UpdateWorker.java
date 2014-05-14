@@ -9,6 +9,7 @@ import java.util.logging.Logger;
 
 import javax.swing.SwingWorker;
 
+import client.Ball;
 import client.Board;
 import client.gadgets.Gadget;
 
@@ -61,11 +62,15 @@ public class UpdateWorker extends SwingWorker<String[], String[]> {
 			// finally pause for a bit. Note: this should run us at about
 			// 100 fps but on windows this might vary each loop due to
 			// a bad implementation of timer
-			
 			synchronized (gadgets) {
 				for (Gadget gad : board.returnGadgets()) {
 					g.setColor(gad.getColor());
 					g.fill(gad.getShape());
+				}
+				for (Ball ball : board.getBalls())
+				{
+					g.setColor(ball.getColor());
+					g.fill(ball.getShape());
 				}
 			}
 			try {

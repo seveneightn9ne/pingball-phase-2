@@ -15,6 +15,9 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 import javax.swing.SwingWorker;
 
+import common.Constants;
+
+import client.Ball;
 import client.Board;
 import client.gadgets.Gadget;
 
@@ -24,15 +27,14 @@ public class BoardGUI extends JPanel implements Runnable {
 
     private Board board;
     private Thread animator;
-    private List<Gadget> gadgets;
     private final Color BACKGROUNDCOLOR = new Color(231,220,166);
+	private BufferStrategy strategy;
 
     public BoardGUI(Board board) {
         setBackground(BACKGROUNDCOLOR);
         this.board = board;
         setDoubleBuffered(true);
         setSize(200,200);
-        gadgets = board.returnGadgets();
 //    	strategy = getBufferStrategy();
 
     }
@@ -48,9 +50,14 @@ public class BoardGUI extends JPanel implements Runnable {
 
         Graphics2D g2d = (Graphics2D)g;
 
-        for (Gadget s : this.gadgets) {
+        for (Gadget s : board.returnGadgets()) {
         	g2d.setColor(s.getColor());
         	g2d.fill(s.getShape());
+        }
+        for (Ball b : board.getBalls())
+        {
+        	g2d.setColor(b.getColor());
+        	g2d.fill(b.getShape());
         }
 
         Toolkit.getDefaultToolkit().sync();
@@ -58,8 +65,8 @@ public class BoardGUI extends JPanel implements Runnable {
     }
 
     public void run() {
-		SwingWorker<String[], String[]> execution = new UpdateWorker(board);
-		execution.execute();
+//		SwingWorker<String[], String[]> execution = new UpdateWorker(board);
+//		execution.execute();
 //        while(true){
 //            try {
 //                for (Star s : this.items) {
@@ -67,10 +74,18 @@ public class BoardGUI extends JPanel implements Runnable {
 //                }
 //                repaint();
 //
-//                Thread.sleep(star.delay);
+//                Thread.sleep((long) Constants.TIMESTEP);
 //            } catch (InterruptedException ex) {
 //                Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
 //            }
-//        }
+        while(true){
+            try {
+                repaint();
+
+                Thread.sleep((long) Constants.TIMESTEP);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }
