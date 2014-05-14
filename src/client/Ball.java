@@ -22,7 +22,7 @@ public class Ball {
 	private Vect velocity;
 	private Circle circle;
 	private String name;
-	private final Color BALLCOLORS = new Color(215,238,153);
+	private final Color BALLCOLOR = new Color(215,238,153);
 
 	/**
 	 * Constructor for Ball
@@ -217,6 +217,6 @@ public class Ball {
 	}
 
 	public Color getColor() {
-		return BALLCOLORS;
+		return BALLCOLOR;
 	}
 }
