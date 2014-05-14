@@ -69,12 +69,12 @@ public class PingballClient {
 		checkRep();
 
 		// new Skeleton(board);
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				// new KineticModel(board);
-				new Skeleton(board);
-			}
-		});
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				// new KineticModel(board);
+//				new Skeleton(board);
+//			}
+//		});
 		final PingballClient client = this;
 		String hostnameValue = null;
 		if (serverHandler != null) {
@@ -353,5 +353,13 @@ public class PingballClient {
 	 */
 	public void invokeLater(Runnable r) {
 		invokeLaterQueue.add(r);
+	}
+	
+	/**
+	 * Get the current Board
+	 * @return the board
+	 */
+	public Board getBoard() {
+		return board;
 	}
 }

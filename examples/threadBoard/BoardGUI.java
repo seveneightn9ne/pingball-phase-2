@@ -81,4 +81,13 @@ public class BoardGUI extends JPanel implements Runnable {
             }
         }
     }
+    
+    /**
+     * Set the board to be this board.
+     * Used, for example, when resetting the game.
+     * @param b the new board
+     */
+    public void setBoard(Board b) {
+    	this.board = b;
+    }
 }
