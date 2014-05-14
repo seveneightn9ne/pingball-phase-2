@@ -287,6 +287,14 @@ public class Board {
 
             boolean ballStillInPlay = true;
             
+            for (Ball ball2 : balls) {
+                if (ball2 != ball) {
+                    if (ball.timeUntilCollision(ball2) <= timestep && ballStillInPlay) {
+                        ball.hit(ball2);
+                    }
+                }
+            }
+            
         	for (Gadget gadget : gadgets) {
         		if (gadget.timeUntilCollision(ball) <= timestep && ballStillInPlay) {
         			if (! gadget.hit(ball, this)) ballStillInPlay = false;
@@ -298,6 +306,7 @@ public class Board {
             		if (! wall.hit(ball, this)) ballStillInPlay = false;
             	}
             }
+            
                 
             if (ballStillInPlay) {
                 if (!absorbed.contains(ball)) {
