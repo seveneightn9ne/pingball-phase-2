@@ -5,7 +5,7 @@ import javax.swing.JFrame;
 public class Skeleton extends JFrame {
 
 public Skeleton() {
-        add(new Board());
+        add(new BoardStar());
         setTitle("Stars");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(200, 200);

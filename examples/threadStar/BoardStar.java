@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 import javax.swing.JPanel;
 
 
-public class Board extends JPanel implements Runnable {
+public class BoardStar extends JPanel implements Runnable {
 
 
     private Star star;
@@ -19,7 +19,7 @@ public class Board extends JPanel implements Runnable {
     ArrayList<Star> items=new ArrayList<Star>();
 
 
-    public Board() {
+    public BoardStar() {
         setBackground(Color.BLACK);
         setDoubleBuffered(true);
         star=new Star(25,0,0);
@@ -61,7 +61,7 @@ public class Board extends JPanel implements Runnable {
 
                 Thread.sleep(star.delay);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(BoardStar.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
