@@ -15,4 +15,5 @@ public class Constants {
 	public static final int DEFAULT_PORT = 10987;
     public static final int MIN_PORT = 0;
     public static final int MAX_PORT = 65535;
+    public static final int SCALE = 10;
 }
