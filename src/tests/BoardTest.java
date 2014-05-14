@@ -18,7 +18,7 @@ import client.gadgets.*;
  * > test that a ball hitting a bumper that triggers a flipper changes the state of the flipper correctly
  *
  */
-public class ADTTest {
+public class BoardTest {
     
     @BeforeClass
     public static void setUpBeforeClass() {
