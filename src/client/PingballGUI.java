@@ -7,6 +7,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.Box;
@@ -22,6 +23,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
+
+import threadBoard.BoardGUI;
 
 
 /**
@@ -65,6 +68,7 @@ public class PingballGUI extends JFrame {
 	private final JLabel serverStatus;
 	private final JMenuItem connectMI;
 	private final JMenuItem disconnectMI;
+	private final BoardGUI boardPanel;
 
 	/**
 	 * Create a PingballGUI
@@ -112,11 +116,7 @@ public class PingballGUI extends JFrame {
 		setTitle(WINDOW_TITLE);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		// make a dummy board panel TODO replace
-		JPanel dummyBoardPanel = new JPanel();
-		dummyBoardPanel.setMinimumSize(new Dimension(20*10, 20*10));
-		dummyBoardPanel.setMaximumSize(new Dimension(20*10, 20*10));
-		dummyBoardPanel.setBackground(Color.black);
+		boardPanel = new BoardGUI(board);
 		
 		// The bottom status bar
 		JPanel statusBar = new JPanel();
@@ -142,11 +142,11 @@ public class PingballGUI extends JFrame {
 //        layout.setAutoCreateContainerGaps(true);
 //        layout.setAutoCreateGaps(true);
         layout.setVerticalGroup(layout.createSequentialGroup()
-        		.addComponent(dummyBoardPanel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+        		.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
         		.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
         );
         layout.setHorizontalGroup(layout.createParallelGroup()
-                .addComponent(dummyBoardPanel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
+                .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
                 .addComponent(statusBar)
          );
         pack();
@@ -188,17 +188,24 @@ public class PingballGUI extends JFrame {
 	
 	private void newGame() {
 		pause();
-		final JFileChooser fc = new JFileChooser();
+		String boardsdir = System.getProperty("user.dir") + "/boards" /*+ System.getProperty("line.separator" +) "boards"*/;
+//		JFileChooser fileChooser = new JFileChooser();
+		final JFileChooser fc = new JFileChooser(new File(boardsdir));
 		int returnVal = fc.showOpenDialog(PingballGUI.this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
 			final String filename = fc.getCurrentDirectory().toString() + "/" +  fc.getSelectedFile().getName();
 			setTitle(WINDOW_TITLE + " - " + filename);
-			Thread backgroundThread = new Thread(new Runnable() {
+			client.invokeLater(new Runnable() {
 				public void run() {
 					client.setBoard(filename);
+	                SwingUtilities.invokeLater(new Runnable() {
+	                	public void run() {
+
+	                    	boardPanel.setBoard(client.getBoard());
+	                	}
+	                });
 				}
 			});
-			backgroundThread.start();
 		}
 	}
 	
@@ -226,6 +233,12 @@ public class PingballGUI extends JFrame {
         client.invokeLater(new Runnable() {
             public void run() {
                 client.restart();
+                SwingUtilities.invokeLater(new Runnable() {
+                	public void run() {
+
+                    	boardPanel.setBoard(client.getBoard());
+                	}
+                });
             }
         });         
 		// restart disconnects from server
