@@ -225,10 +225,10 @@ public class Parser {
 				if (x > 18||x<0||y>18||y<0){
 					throw new RuntimeException("invalid dimensions for flipper");
 				}
-				occupied[x][y] = true;
-				occupied[x+1][y] = true;
-				occupied[x][y+1] = true;
-				occupied[x+1][y+1] = true;
+//				occupied[x][y] = true;
+//				occupied[x+1][y] = true;
+//				occupied[x][y+1] = true;
+//				occupied[x+1][y+1] = true;
 			}
 			//absorbers are width x height
 			//where width and height are properties of the absorber
@@ -258,6 +258,8 @@ public class Parser {
 		}
 		
 		//now we'll check whether any of the spaces our gadget needs are occupied
+		
+        
 		return true;
 	}
 	

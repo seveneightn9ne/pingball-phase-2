@@ -121,10 +121,19 @@ public class Ball {
 		this.position = position;
 	}
 	
+	/**
+	 * Calculates time until this ball collides with another ball.
+	 * @param ball - ball to be collided with
+	 * @return double - time in seconds until collision
+	 */
 	public double timeUntilCollision(Ball ball) {
 	    return Geometry.timeUntilBallBallCollision(this.getCircle(), this.getVelocity(), ball.getCircle(), ball.getVelocity());
 	}
 	
+	/**
+	 * Adjusts velocities of two balls that have collided
+	 * @param ball - ball to collide with
+	 */
 	public void hit(Ball ball) {
 	    Geometry.VectPair newVelocities = Geometry.reflectBalls(this.position, 1, this.getVelocity(), ball.position, 1, ball.getVelocity());
 	    this.setVelocity(newVelocities.v1);
