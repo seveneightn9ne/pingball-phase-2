@@ -1,9 +1,13 @@
 package client;
 
+import ihavenoidea.RepaintThread;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,9 +16,11 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.GroupLayout;
+import javax.swing.GroupLayout.Alignment;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -28,7 +34,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import common.Constants;
-
 import client.gadgets.Wall;
 
 /**
@@ -135,50 +140,26 @@ public class PingballGUI extends JFrame {
 			serverStatus.setText(CONNECTED_TEXT + hostname);
 			serverStatus.setForeground(DARK_GREEN);
 		}
-
-		JPanel rightWall = new WallGUI(
-				board.getWall(Constants.BoardSide.RIGHT), 20);
-		JPanel leftWall = new WallGUI(board.getWall(Constants.BoardSide.LEFT),
-				20);
-		JPanel bottomWall = new WallGUI(
-				board.getWall(Constants.BoardSide.BOTTOM), 20);
-		JPanel topWall = new WallGUI(board.getWall(Constants.BoardSide.TOP), 20);
-
-		JPanel boardWallPanel = new BoardWallGUI(board, boardPanel, rightWall,
-				leftWall, topWall, bottomWall);
+		// define layout
 		GroupLayout layout = new GroupLayout(this.getContentPane());
 		this.getContentPane().setLayout(layout);
 		// layout.setAutoCreateContainerGaps(true);
 		// layout.setAutoCreateGaps(true);
-		layout.setVerticalGroup(layout
-				.createSequentialGroup()
-				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 500,
-						GroupLayout.PREFERRED_SIZE)
-				.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
-						GroupLayout.PREFERRED_SIZE));
-		layout.setHorizontalGroup(layout
-				.createParallelGroup()
-				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 500,
-						GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
-		pack();
-
-		// // define layout
-		// GroupLayout layout = new GroupLayout(this.getContentPane());
-		// this.getContentPane().setLayout(layout);
-		// // layout.setAutoCreateContainerGaps(true);
-		// // layout.setAutoCreateGaps(true);
-		// layout.setVerticalGroup(layout.createSequentialGroup()
+		Container cont = getContentPane();
+		cont.setLayout(new GridBagLayout());
+		add(boardPanel);
+		add(statusBar);
+		// layout.setVerticalGroup(layout
+		// .createSequentialGroup()
 		// .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
 		// GroupLayout.PREFERRED_SIZE)
 		// .addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
-		// GroupLayout.PREFERRED_SIZE)
-		// );
-		// layout.setHorizontalGroup(layout.createParallelGroup()
+		// GroupLayout.PREFERRED_SIZE));
+		// layout.setHorizontalGroup(layout
+		// .createParallelGroup(Alignment.CENTER)
 		// .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
-		// GroupLayout.PREFERRED_SIZE)
-		// .addComponent(statusBar)
-		// );
-
+		// GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
+		pack();
 		// TODO: keyboard listener sends keys to board
 
 		// menu event listeners

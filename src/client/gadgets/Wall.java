@@ -28,6 +28,7 @@ public class Wall implements Gadget {
     private Constants.BoardSide boardSide;
     private String connectedBoardName=null;
     private ServerHandler serverHandler;
+    private String sidething;
     
     
     /**
@@ -40,21 +41,25 @@ public class Wall implements Gadget {
         // top wall
         if (side == Constants.BoardSide.TOP){
             line = new LineSegment(-.5, -.5, 19.5, -.5);
+            sidething = "TOP";
         }
         
         // right wall
         else if (side == Constants.BoardSide.RIGHT){
             line = new LineSegment(19.5, -.5, 19.5, 19.5);
+            sidething = "bottom";
         }
         
         // bottom wall
         else if (side == Constants.BoardSide.BOTTOM){
             line = new LineSegment(19.5, 19.5, -.5, 19.5);
+            sidething = "bottom";
         }
         
         // left wall
         else if (side == Constants.BoardSide.LEFT){
             line = new LineSegment(-.5, 19.5, -.5, -.5);
+            sidething = "left";
         }
     }
     
@@ -85,6 +90,8 @@ public class Wall implements Gadget {
     public void connectToServer(String name) {
         this.open = true;
         this.connectedBoardName = name;
+        System.out.println("BoardName Added: "+this.connectedBoardName +" on "+sidething);
+ 
     }
     
     /**

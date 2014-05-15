@@ -1,4 +1,4 @@
-package client;
+package notfunctioningwalls;
 
 import java.awt.Color;
 import java.awt.Graphics;

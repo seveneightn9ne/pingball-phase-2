@@ -1,4 +1,4 @@
-package client;
+package notfunctioningwalls;
 
 import java.awt.BorderLayout;
 import java.awt.Graphics;
@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import javax.swing.JPanel;
 
+import client.Board;
 import client.gadgets.Wall;
 import common.Constants;
 
@@ -34,6 +35,7 @@ public class BoardWallGUI extends JPanel implements Runnable {
 		add(this.leftWall, BorderLayout.WEST);
 		add(this.topWall, BorderLayout.NORTH);
 		add(this.bottomWall, BorderLayout.SOUTH);
+		
 
 	}
 
@@ -50,11 +52,11 @@ public class BoardWallGUI extends JPanel implements Runnable {
 		super.paint(g);
 
 		synchronized (board) {
-			boardGUI.repaint();
-			rightWall.repaint();
-			leftWall.repaint();
-			topWall.repaint();
-			bottomWall.repaint();
+			boardGUI.paint(g);
+			rightWall.paint(g);
+			leftWall.paint(g);
+			topWall.paint(g);
+			bottomWall.paint(g);
 		}
 	}
 
