@@ -16,12 +16,11 @@ import client.gadgets.Gadget;
 import client.gadgets.Wall;
 
 /**
- * BoardGUI is a JPanel that represents a Pingball Board. 
- * It repaints the JPanel to continuously represent the state 
- * of the Board.
+ * BoardGUI is a JPanel that represents a Pingball Board. It repaints the JPanel
+ * to continuously represent the state of the Board.
  * 
  * Thread Safety: BoardGUI is confined to the Swing thread.
- *
+ * 
  */
 public class BoardGUI extends JPanel implements Runnable {
 
@@ -35,12 +34,20 @@ public class BoardGUI extends JPanel implements Runnable {
 	private boolean firstPrintLeft = false;
 	private boolean firstPrintRight = false;
 
-	
+	/**
+	 * Initializes the panel that displays the board in the GUI.
+	 * 
+	 * @param board
+	 *            - the board to be shown in the GUI
+	 */
 	public BoardGUI(Board board) {
 		setBackground(BACKGROUNDCOLOR);
 		this.board = board;
+		//cleaner animations via double buffered
 		setDoubleBuffered(true);
-		setSize(20*Constants.SCALE+Constants.SCALE, 20*Constants.SCALE+Constants.SCALE);
+		//keeping size scalable
+		setSize(20 * Constants.SCALE + Constants.SCALE, 20 * Constants.SCALE
+				+ Constants.SCALE);
 		setBorder(border);
 		setPreferredSize(new Dimension(200, 200));
 
@@ -58,8 +65,10 @@ public class BoardGUI extends JPanel implements Runnable {
 		super.paint(g);
 
 		Graphics2D g2d = (Graphics2D) g;
+		//Anti-aliasing = cleaner graphics! 
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
+		
 		if (board != null) {
 			for (Gadget s : board.returnGadgets()) {
 				g2d.setColor(s.getColor());
@@ -115,7 +124,8 @@ public class BoardGUI extends JPanel implements Runnable {
 
 				Thread.sleep((long) Constants.TIMESTEP);
 			} catch (InterruptedException ex) {
-				Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
+				Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null,
+						ex);
 			}
 		}
 	}
