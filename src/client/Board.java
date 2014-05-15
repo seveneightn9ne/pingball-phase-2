@@ -2,6 +2,7 @@ package client;
 
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.List;
@@ -17,7 +18,7 @@ import common.Constants.BoardSide;
  * a Board is an object that represents the 20x20 grid on which Pingball is played.
  * The board has gadgets and balls on it. The board can connect a wall to a server. 
  * 
- * Thread Safety: The board is not thread safe. It is meant to only run in one thread. 
+ * Thread Safety: 
  */
 public class Board {
 
@@ -31,9 +32,9 @@ public class Board {
 	private double mu;
 	private double mu2;
 	private String name;
-	private List<Gadget> gadgets = new ArrayList<Gadget>();
+	private List<Gadget> gadgets = Collections.synchronizedList(new ArrayList<Gadget>());
 	private HashMap<String, Portal> portals = new HashMap<String, Portal>();
-	private List<Ball> balls = new ArrayList<Ball>();
+	private final List<Ball> balls = Collections.synchronizedList(new ArrayList<Ball>());
 	private List<Ball> absorbed = new ArrayList<Ball>();
 	private char[][] boardRep = new char[22][22];
 	private Wall[] borders = new Wall[4];
