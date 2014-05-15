@@ -10,13 +10,19 @@ import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Line2D;
 
 import javax.swing.border.AbstractBorder;
 
 import common.Constants;
 
+/**
+ * PingBorder is the GUI element that represents the walls
+ * of the Pingball board. 
+ *
+ */
 public class PingBorder extends AbstractBorder {
+
+	private static final long serialVersionUID = 1L;
 	private Color borderColour;
 	private int gap;
 	private String topString = null;
@@ -24,27 +30,25 @@ public class PingBorder extends AbstractBorder {
 	private String leftString = null;
 	private String rightString = null;
 
+	/**
+	 * Create a new border
+	 * @param colour the colour of the border
+	 * @param g the amount of gap in pixels
+	 */
 	public PingBorder(Color colour, int g) {
 		borderColour = colour;
 		gap = g;
 	}
 
+	/**
+	 * Set the name of the wall on the given side
+	 * @param side the side of the border
+	 * @param name the name to write on that side
+	 */
 	public void setString(Constants.BoardSide side, String name) {
 		if (side == Constants.BoardSide.RIGHT) {
-//			String buildingString = "";
-//			String br = "\n";
-//			for (int i = 0; i < name.length(); i++) {
-//				buildingString += name.charAt(i) + br;
-//			}
-//			rightString = buildingString;
 			rightString = name;
 		} else if (side == Constants.BoardSide.LEFT) {
-//			String buildingString = "";
-//			String br = "\n";
-//			for (int i = 0; i < name.length(); i++) {
-//				buildingString += name.charAt(i) + br;
-//			}
-//			leftString = buildingString;
 			leftString = name;
 		} else if (side == Constants.BoardSide.TOP) {
 			topString = name;
@@ -53,6 +57,10 @@ public class PingBorder extends AbstractBorder {
 		}
 	}
 
+	/**
+	 * Clear the current side name, if there is one
+	 * @param side the side of the border to clear the name of
+	 */
 	public void clearString(Constants.BoardSide side) {
 		if (side == Constants.BoardSide.RIGHT) {
 			rightString = null;
@@ -75,7 +83,6 @@ public class PingBorder extends AbstractBorder {
 			g2d.setColor(borderColour);
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 					RenderingHints.VALUE_ANTIALIAS_ON);
-			AffineTransform orig = g2d.getTransform();
 
 			// TOPLEFT Border
 			if (rightString != null) {
@@ -94,7 +101,6 @@ public class PingBorder extends AbstractBorder {
 				g2d.setFont(theDerivedFont);
 
 				// Render a string using the derived font
-				int yval = y + height / 2;
 				g2d.drawString(rightString, (int) width-(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y + height / 2);
 
 				// put the original font back
@@ -116,7 +122,6 @@ public class PingBorder extends AbstractBorder {
 				g2d.setFont(theDerivedFont);
 
 				// Render a string using the derived font
-				int yval = y + height / 2;
 				g2d.drawString(leftString, (int)(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y+height/2);
 
 				// put the original font back
@@ -164,38 +169,6 @@ public class PingBorder extends AbstractBorder {
 			}
 		}
 	}
-
-	// g2d.setColor(borderColour);
-	// AffineTransform orig = g2d.getTransform();
-	// // Left Border
-	// if (leftString != null) {
-	// System.out.println("adding left border");
-	// g2d.rotate(-Math.PI / 2);
-	// g2d.setColor(Color.BLACK);
-	// g2d.drawString(leftString, (float) width / 2, (float) height / 2);
-	// g2d.setTransform(orig);
-	//
-	// }
-	// // Right Border
-	// if (rightString != null) {
-	// System.out.println("adding right border");
-	// g2d.rotate(Math.PI / 2);
-	// g2d.setColor(Color.BLACK);
-	// g2d.drawString(rightString, (float) width / 2, (float) height / 2);
-	// g2d.setTransform(orig);
-	// }
-	// // Top Border
-	// if (topString != null) {
-	// System.out.println("adding top border");
-	// g2d.setColor(Color.BLACK);
-	// g2d.drawString(topString, (float) width / 2, (float) 0);
-	// }
-	// // Bottom Border
-	// if (bottomString != null) {
-	// System.out.println("adding bottom border");
-	// g2d.setColor(Color.BLACK);
-	// g2d.drawString(bottomString, (float) width / 2, (float) height);
-	// }
 
 	@Override
 	public Insets getBorderInsets(Component c) {
