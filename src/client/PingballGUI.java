@@ -145,20 +145,17 @@ public class PingballGUI extends JFrame {
 		this.getContentPane().setLayout(layout);
 		// layout.setAutoCreateContainerGaps(true);
 		// layout.setAutoCreateGaps(true);
-		Container cont = getContentPane();
-		cont.setLayout(new GridBagLayout());
-		add(boardPanel);
-		add(statusBar);
-		// layout.setVerticalGroup(layout
-		// .createSequentialGroup()
-		// .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
-		// GroupLayout.PREFERRED_SIZE)
-		// .addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
-		// GroupLayout.PREFERRED_SIZE));
-		// layout.setHorizontalGroup(layout
-		// .createParallelGroup(Alignment.CENTER)
-		// .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
-		// GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
+
+		layout.setVerticalGroup(layout
+				.createSequentialGroup()
+				.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
+						GroupLayout.PREFERRED_SIZE));
+		layout.setHorizontalGroup(layout
+				.createParallelGroup(Alignment.CENTER)
+				.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
+						GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
 		pack();
 		// TODO: keyboard listener sends keys to board
 

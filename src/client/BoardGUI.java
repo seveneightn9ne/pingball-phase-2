@@ -69,21 +69,28 @@ public class BoardGUI extends JPanel implements Runnable {
 							&& !firstPrintRight) {
 						System.out.println("adding name to RIGHTSIDE");
 						firstPrintRight = true;
+						border.setString(w.getSide(), w.wallConnectedName());
+						setBorder(border);
 					} else if (w.getSide() == Constants.BoardSide.LEFT
 							&& !firstPrintLeft) {
 						System.out.println("adding name to LEFTSIDE");
-						firstPrintTop = true;
+						firstPrintLeft = true;
+						border.setString(w.getSide(), w.wallConnectedName());
+						setBorder(border);
 					} else if (w.getSide() == Constants.BoardSide.TOP
 							&& !firstPrintTop) {
 						System.out.println("adding name to TOPSIDE");
 						firstPrintTop = true;
+						border.setString(w.getSide(), w.wallConnectedName());
+						setBorder(border);
 					} else if (w.getSide() == Constants.BoardSide.BOTTOM
 							&& !firstPrintBottom) {
 						System.out.println("adding name to BOTTOMSIDE");
 						firstPrintBottom = true;
+						border.setString(w.getSide(), w.wallConnectedName());
+						setBorder(border);
 					}
-					border.setString(w.getSide(), w.wallConnectedName());
-					setBorder(border);
+
 				} else {
 					border.clearString(w.getSide());
 					setBorder(border);
