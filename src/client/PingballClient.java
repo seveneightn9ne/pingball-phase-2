@@ -1,8 +1,5 @@
 package client;
 
-import java.awt.EventQueue;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyListener;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedList;

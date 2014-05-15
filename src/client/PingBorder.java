@@ -31,20 +31,8 @@ public class PingBorder extends AbstractBorder {
 
 	public void setString(Constants.BoardSide side, String name) {
 		if (side == Constants.BoardSide.RIGHT) {
-//			String buildingString = "";
-//			String br = "\n";
-//			for (int i = 0; i < name.length(); i++) {
-//				buildingString += name.charAt(i) + br;
-//			}
-//			rightString = buildingString;
 			rightString = name;
 		} else if (side == Constants.BoardSide.LEFT) {
-//			String buildingString = "";
-//			String br = "\n";
-//			for (int i = 0; i < name.length(); i++) {
-//				buildingString += name.charAt(i) + br;
-//			}
-//			leftString = buildingString;
 			leftString = name;
 		} else if (side == Constants.BoardSide.TOP) {
 			topString = name;
@@ -94,7 +82,6 @@ public class PingBorder extends AbstractBorder {
 				g2d.setFont(theDerivedFont);
 
 				// Render a string using the derived font
-				int yval = y + height / 2;
 				g2d.drawString(rightString, (int) width-(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y + height / 2);
 
 				// put the original font back
@@ -116,7 +103,6 @@ public class PingBorder extends AbstractBorder {
 				g2d.setFont(theDerivedFont);
 
 				// Render a string using the derived font
-				int yval = y + height / 2;
 				g2d.drawString(leftString, (int)(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y+height/2);
 
 				// put the original font back
