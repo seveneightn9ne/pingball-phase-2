@@ -124,8 +124,8 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos + 1, yPos);
 			rotatedCoord = new Vect(xPos, yPos);
 			nonRotatedCoord = new Vect(xPos + 1, yPos + 1);
-            shapeOrigin = pivotCoord;
-            rotatedShapeOrigin = rotatedCoord;
+            shapeOrigin = new Vect(xPos + 1.5, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos);
             shapeType = verticalShape;
             rShapeType = horizontalShape;
 		} else if (orientation == 90) {
@@ -135,8 +135,8 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos + 1, yPos + 1);
 			rotatedCoord = new Vect(xPos + 1, yPos);
 			nonRotatedCoord = new Vect(xPos, yPos + 1);
-            shapeOrigin = nonRotatedCoord;
-            rotatedShapeOrigin = rotatedCoord;
+            shapeOrigin = new Vect(xPos, yPos + 1.5);
+            rotatedShapeOrigin = new Vect(xPos + 1.5, yPos);
             shapeType = horizontalShape;
             rShapeType = verticalShape;
 		} else if (orientation == 180) {
@@ -146,8 +146,8 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos, yPos + 1);
 			rotatedCoord = new Vect(xPos + 1, yPos + 1);
 			nonRotatedCoord = new Vect(xPos, yPos);
-            shapeOrigin = nonRotatedCoord;
-            rotatedShapeOrigin = pivotCoord;
+            shapeOrigin = new Vect(xPos, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos + 1.5);
             shapeType = verticalShape;
             rShapeType = horizontalShape;
 		} else {// if (orientation == 270) {
@@ -157,8 +157,8 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos, yPos);
 			rotatedCoord = new Vect(xPos, yPos + 1);
 			nonRotatedCoord = new Vect(xPos + 1, yPos);
-            shapeOrigin = pivotCoord;
-            rotatedShapeOrigin = pivotCoord;
+            shapeOrigin = new Vect(xPos, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos);
             shapeType = horizontalShape;
             rShapeType = verticalShape;
 		}

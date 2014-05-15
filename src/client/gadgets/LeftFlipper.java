@@ -124,8 +124,8 @@ public class LeftFlipper implements Gadget {
             pivotCoord = new Vect(xPos, yPos + 1);
             rotatedCoord = new Vect(xPos, yPos);
             nonRotatedCoord = new Vect(xPos + 1, yPos + 1);
-            shapeOrigin = pivotCoord;
-            rotatedShapeOrigin = rotatedCoord;
+            shapeOrigin = new Vect(xPos, yPos + 1.5);
+            rotatedShapeOrigin = new Vect(xPos, yPos);
             shapeType = horizontalShape;
             rShapeType = verticalShape;
         } else if (orientation == 180) {
@@ -135,8 +135,8 @@ public class LeftFlipper implements Gadget {
             pivotCoord = new Vect(xPos + 1, yPos + 1);
             rotatedCoord = new Vect(xPos, yPos + 1);
             nonRotatedCoord = new Vect(xPos + 1, yPos);
-            shapeOrigin = nonRotatedCoord;
-            rotatedShapeOrigin = rotatedCoord;
+            shapeOrigin = new Vect(xPos + 1.5, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos + 1.5);
             shapeType = verticalShape;
             rShapeType = horizontalShape;
         } else {// if (orientation == 270) {
@@ -146,8 +146,8 @@ public class LeftFlipper implements Gadget {
             pivotCoord = new Vect(xPos + 1, yPos);
             rotatedCoord = new Vect(xPos + 1, yPos + 1);
             nonRotatedCoord = new Vect(xPos, yPos);
-            shapeOrigin = nonRotatedCoord;
-            rotatedShapeOrigin = pivotCoord;
+            shapeOrigin = new Vect(xPos, yPos);
+            rotatedShapeOrigin = new Vect(xPos + 1.5, yPos);
             shapeType = horizontalShape;
             rShapeType = verticalShape;
         }
@@ -163,6 +163,9 @@ public class LeftFlipper implements Gadget {
         		rShapeType.x()*Constants.SCALE,
         		rShapeType.y()*Constants.SCALE,
         		archHeight,archWidth);
+        
+        System.out.println("Shape: " + shape.getBounds2D());
+        System.out.println("Rotated: " + rotatedShape.getBounds2D());
 
     }
 
