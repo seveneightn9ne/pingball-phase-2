@@ -264,7 +264,7 @@ public class Board {
 	 */
 	public List<Gadget> returnGadgets()
 	{
-		return gadgets;
+		return new ArrayList<Gadget>(gadgets);
 	}
 
 	/**
@@ -379,7 +379,8 @@ public class Board {
         	balls.remove(ball);
         }
         
-//		System.out.println(this.toString());
+        // Uncomment to print the board to the command line:
+        // System.out.println(this.toString());
         checkRep();
     }
     

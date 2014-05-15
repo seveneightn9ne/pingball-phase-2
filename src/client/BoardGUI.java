@@ -35,10 +35,9 @@ public class BoardGUI extends JPanel implements Runnable {
 	private boolean firstPrintRight = false;
 
 	/**
-	 * Initializes the panel that displays the board in the GUI.
-	 * 
-	 * @param board
-	 *            - the board to be shown in the GUI
+	 * Create a new boardGui with the given board
+	 * @param board a Board. if null, will create a blank board with
+	 * the correct background color but no features on it.
 	 */
 	public BoardGUI(Board board) {
 		setBackground(BACKGROUNDCOLOR);

@@ -18,7 +18,7 @@ import common.Constants;
  */
 public class CommandLineInterface implements Runnable {
 
-    BlockingQueue<String> cliQueue;
+    private BlockingQueue<String> cliQueue;
 
     /**
      * Create a new CommandLineInterface

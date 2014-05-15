@@ -1,7 +1,8 @@
 package client.gadgets;
 
 import java.util.HashSet;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Shape;
 import java.awt.geom.Path2D;
 
 import common.Constants;

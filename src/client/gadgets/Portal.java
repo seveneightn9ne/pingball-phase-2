@@ -26,7 +26,6 @@ import client.ServerHandler;
  * 
  */
 public class Portal implements Gadget {
-
 	/**
 	 * No representation invariants
 	 */

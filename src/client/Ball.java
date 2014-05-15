@@ -139,14 +139,15 @@ public class Ball {
 	}
 
 	/**
-	 * Returns the Shape representation for it to be drawn in the Pingbal GUI.
+	 * Returns the Shape representation for it to be drawn in the Pingball GUI.
 	 * 
 	 * @return shape representation of the gadget
 	 */
 	public Shape getShape() {
-		return new Ellipse2D.Double(getPosition().x() * Constants.SCALE
-				+ Constants.SCALE, getPosition().y() * Constants.SCALE
-				+ Constants.SCALE, 0.5 * Constants.SCALE, 0.5 * Constants.SCALE);
+		return new Ellipse2D.Double(
+				getPosition().x() * Constants.SCALE + Constants.SCALE, 
+				getPosition().y() * Constants.SCALE + Constants.SCALE, 
+				0.5 * Constants.SCALE, 0.5 * Constants.SCALE);
 	}
 
 	/**

@@ -573,9 +573,9 @@ public class Parser {
 	/**
 	 * checks a board file for validity
 	 * throws a badFileException if the board is not valid
-	 * @input List<String> -- THIS MUST BE THE CLEANED LINE
+	 * @param fileList -- THIS MUST BE THE CLEANED LINE
 	 * because we don't care about what characters are in the comments
-	 * @output true if the file is valid (contains only letters, numbers, and periods)
+	 * @return true if the file is valid (contains only letters, numbers, and periods)
 	 */
 	private static boolean isValidFile(List<String> fileList){
 		boolean valid = true;
@@ -593,7 +593,7 @@ public class Parser {
 	 * called by isValidFile
 	 * is checked on a cleaned line (all characters are valid in comments)
 	 * Note: doesn't 
-	 * @input String line to check for validity
+	 * @param line to check for validity
 	 *NOTE: THIS LINE MUST BE PRE-CLEANED (contain no comments or excess whitespace)
 	 *@return true if the line is valid characters only
 	 *return false if the line contains any invalid characters
