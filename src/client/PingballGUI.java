@@ -82,7 +82,7 @@ public class PingballGUI extends JFrame {
 	 *            the connected board, or null if there is no board
 	 */
 
-	public PingballGUI(PingballClient client, String hostname, final Board board) {
+	public PingballGUI(final PingballClient client, String hostname, final Board board) {
 
 		this.client = client;
 
@@ -192,13 +192,22 @@ public class PingballGUI extends JFrame {
 		});
 
 		KeyListener listener = new KeyAdapter() {
-			public void keyPressed(KeyEvent e) {
-				board.notifyKeydown(KeyEvent.getKeyText(e.getKeyCode()));
-				System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+			public void keyPressed(final KeyEvent e) {
+				client.invokeLater(new Runnable() {
+					public void run() {
+						board.notifyKeydown(KeyEvent.getKeyText(e.getKeyCode()));
+						System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+					}
+				});
 			}
 
-			public void keyReleased(KeyEvent e) {
-				board.notifyKeyup(KeyEvent.getKeyText(e.getKeyCode()));
+			public void keyReleased(final KeyEvent e) {
+				client.invokeLater(new Runnable() {
+					public void run() {
+						board.notifyKeyup(KeyEvent.getKeyText(e.getKeyCode()));
+						System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+					}
+				});
 			}
 		};
 

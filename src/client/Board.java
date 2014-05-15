@@ -38,8 +38,8 @@ public class Board {
 	private char[][] boardRep = new char[22][22];
 	private Wall[] borders = new Wall[4];
 	private Map<String, Gadget> gadgetNames = new HashMap<String, Gadget>();
-	private Hashtable<String, ArrayList<String>> keyupToTriggers = new Hashtable<String, ArrayList<String>>();
-    private Hashtable<String, ArrayList<String>> keydownToTriggers = new Hashtable<String, ArrayList<String>>();
+	private final Hashtable<String, ArrayList<String>> keyupToTriggers; //= new Hashtable<String, ArrayList<String>>();
+    private final Hashtable<String, ArrayList<String>> keydownToTriggers; //= new Hashtable<String, ArrayList<String>>();
 	
     /**
      * Constructor for the board.
@@ -64,6 +64,7 @@ public class Board {
 		this.boardConstructor();
 		this.keyupToTriggers = keyups;
 		this.keydownToTriggers = keydowns;
+
 	}
 	
 	/**
@@ -86,10 +87,13 @@ public class Board {
      * @param key - String representation of key that has been pressed
      */
     public void notifyKeydown(String key) {
+//    	System.out.println("Got a key: " + key);
+    	System.out.println("All triggers: " + keydownToTriggers);
         if (keydownToTriggers.get(key) == null) {
             return;
         }
         for (String name : keydownToTriggers.get(key)) {
+        	System.out.println("Triggering " + name);
             gadgetNames.get(name).action(this);
         }
     }

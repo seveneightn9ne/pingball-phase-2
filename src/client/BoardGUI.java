@@ -10,9 +10,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.swing.JPanel;
-import javax.swing.border.AbstractBorder;
-
-import com.sun.xml.internal.bind.v2.model.core.WildcardMode;
 
 import common.Constants;
 import client.gadgets.Gadget;
