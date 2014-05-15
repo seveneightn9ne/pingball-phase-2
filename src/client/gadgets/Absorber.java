@@ -17,6 +17,14 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 
+/**
+ * Model for the absorber gadget. 
+ * 
+ * Absorbers have a width and a height, and their action is
+ * to shoot out a stored ball if they contain one. Upon contact with a ball, an absorber
+ * stops it and moves it to the lower left hand corner of the absorber. Absorbers generate
+ * a trigger whenever they are hit. 
+ */
 public class Absorber implements Gadget {
     /**
      * Rep invariant: 0 <= position.x() <= 19, 0 <= position.y() <= 19.
@@ -37,8 +45,6 @@ public class Absorber implements Gadget {
     private Vect position;
     private int width;
     private int height;
-    private int xPos;
-    private int yPos;
     private final Shape shape;
     private final Color ABSORBCOLOR = new Color(125,138,24);
 
@@ -47,7 +53,8 @@ public class Absorber implements Gadget {
     /**
      * Constructor for Absorber: Create line segments representing the edges of
      * the Absorber
-     * 
+     * @param name 
+     *            name of this gadget
      * @param xPos
      *            x coordinate of the upper left corner of this gadget
      * @param yPos 
@@ -60,8 +67,6 @@ public class Absorber implements Gadget {
 
     public Absorber(String name, int xPos, int yPos, int width, int height) {
         this.name = name;
-        this.xPos = xPos;
-        this.yPos = yPos;
         this.position = new Vect(xPos, yPos);
         this.width = width;
         this.height = height;

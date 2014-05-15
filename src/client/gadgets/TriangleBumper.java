@@ -16,6 +16,13 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 
+/**
+ * Model for the Triangle Bumper gadget. 
+ * 
+ * Triangle bumpers have an edge length of 1d and a hypotenuse length of sqrt(2)d. 
+ * They do not have actions and they generate a trigger whenever they are hit. 
+ * 
+ */
 public class TriangleBumper implements Gadget {
 
     /**
@@ -35,8 +42,6 @@ public class TriangleBumper implements Gadget {
     private Set<Gadget> triggers = new HashSet<Gadget>();
     private int[] xPoints;
     private int[] yPoints;
-    private int xPos;
-    private int yPos;
     private final Color TRICOLOR = new Color(86,180,216);
     private Shape triangleShape;
 
@@ -57,32 +62,6 @@ public class TriangleBumper implements Gadget {
     public TriangleBumper(String name, int xPos, int yPos, int orientation) {
         this.name = name;
 
-        this.xPos = xPos;
-        this.yPos = yPos;
-        this.position = new Vect(xPos, yPos);
-        lines = new LineSegment[3];
-        corners = new Circle[3];
-        this.orientationConstructor(orientation);
-    }
-    
-
-    /**
-     * Triangle Bumper constructor: Create line segments corresponding to edges
-     * of the bumper
-     * 
-     * @param xPos
-     *            x coordinate of the upper left corner of this gadget
-     * @param yPos 
-     *            y coordinate of the upper left corner of this gadget
-     * @param orientation
-     *            0 degrees has triangle corner in the northwest corner, 90 in
-     *            the northeast, 180 in the southeast, 270 in the southwest
-     */
-    public TriangleBumper(int xPos, int yPos, int orientation) {
-        this.name = null;
-
-        this.xPos = xPos;
-        this.yPos = yPos;
         this.position = new Vect(xPos, yPos);
         lines = new LineSegment[3];
         corners = new Circle[3];
@@ -163,12 +142,22 @@ public class TriangleBumper implements Gadget {
         assert (position.y() >= 0 && position.y() <= 19);
         assert (rep == '\\' || rep == '/');
     }
-
+    
     @Override
-    public void action(Board board) {
-        // Triangle bumpers have no action
+    public String getName() {
+        return this.name;
+    }
+    
+    @Override
+    public Vect getOrigin() {
+        return this.position;
     }
 
+    @Override
+    public int[] getSize() {
+        return new int[]{1,1};
+    }
+    
     @Override
     public boolean hit(Ball ball, Board board) {
         if (nextHitType.equals("line")) {
@@ -185,26 +174,7 @@ public class TriangleBumper implements Gadget {
         
         return true;
     }
-
-    @Override
-    public String toString() {
-        return String.valueOf(rep);
-    }
-
-    @Override
-    public void addTrigger(Gadget g) {
-        triggers.add(g);
-    }
-
-    @Override
-    public void putInBoardRep(Board board, boolean remove) {
-        char[][] boardRep = board.getBoardRep();
-        boardRep[(int) Math.round(position.y() + 1)][(int) Math.round(position
-                .x() + 1)] = rep;
-        board.setBoardRep(boardRep);
-
-    }
-
+    
     @Override
     public double timeUntilCollision(Ball ball) {
         double minTime = Double.POSITIVE_INFINITY;
@@ -231,21 +201,23 @@ public class TriangleBumper implements Gadget {
     }
 
     @Override
-    public String getName() {
-        return this.name;
-    }
-    
-    @Override
-    public Vect getOrigin() {
-        return this.position;
+    public void action(Board board) {
+        // Triangle bumpers have no action
     }
 
     @Override
-    public int[] getSize() {
-        return new int[]{1,1};
+    public void addTrigger(Gadget g) {
+        triggers.add(g);
     }
 
+    @Override
+    public void putInBoardRep(Board board, boolean remove) {
+        char[][] boardRep = board.getBoardRep();
+        boardRep[(int) Math.round(position.y() + 1)][(int) Math.round(position
+                .x() + 1)] = rep;
+        board.setBoardRep(boardRep);
 
+    }
 
 	@Override
 	public Shape getShape() {
@@ -258,4 +230,8 @@ public class TriangleBumper implements Gadget {
 		return TRICOLOR;
 	}
 	
+    @Override
+    public String toString() {
+        return String.valueOf(rep);
+    }
 }

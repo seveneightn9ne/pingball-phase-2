@@ -16,6 +16,12 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 
+/**
+ * Model for the Square Bumper gadget. 
+ * 
+ * Square bumpers have an edge length of 1d. They do not have actions and they generate
+ * a trigger whenever they are hit. 
+ */
 public class SquareBumper implements Gadget {
     /**
      * Rep invariant: 0 <= position.x() <= 19, 0 <= position.y() <= 19.
@@ -115,25 +121,7 @@ public class SquareBumper implements Gadget {
         
         return true;
     }
-
-    @Override
-    public void putInBoardRep(Board board, boolean remove) {
-        char[][] boardRep = board.getBoardRep();
-        boardRep[(int) Math.round(position.y() + 1)][(int) Math.round(position
-                .x() + 1)] = '#';
-        board.setBoardRep(boardRep);
-    }
-
-    @Override
-    public void action(Board board) {
-        // Square bumpers have no action.
-    }
-
-    @Override
-    public void addTrigger(Gadget g) {
-        triggers.add(g);
-    }
-
+    
     @Override
     public double timeUntilCollision(Ball ball) {
         double minTime = Double.POSITIVE_INFINITY;
@@ -157,6 +145,24 @@ public class SquareBumper implements Gadget {
             }
         }
         return minTime;
+    }
+    
+    @Override
+    public void action(Board board) {
+        // Square bumpers have no action.
+    }
+    
+    @Override
+    public void addTrigger(Gadget g) {
+        triggers.add(g);
+    }
+
+    @Override
+    public void putInBoardRep(Board board, boolean remove) {
+        char[][] boardRep = board.getBoardRep();
+        boardRep[(int) Math.round(position.y() + 1)][(int) Math.round(position
+                .x() + 1)] = '#';
+        board.setBoardRep(boardRep);
     }
 
 	@Override
