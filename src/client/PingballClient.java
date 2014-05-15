@@ -45,7 +45,6 @@ import physics.Vect;
 public class PingballClient {
 	private Board board;
 	private String boardPath;
-	// private Socket socket;
 	private ServerHandler serverHandler;
 	private final BlockingQueue<NetworkMessage> incomingMessages;
 	private final AtomicBoolean paused;
@@ -69,13 +68,6 @@ public class PingballClient {
 	public void startClient() {
 		checkRep();
 
-//		 new Skeleton(board);
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				// new KineticModel(board);
-//				new Skeleton(board);
-//			}
-//		});
 		final PingballClient client = this;
 		String hostnameValue = null;
 		if (serverHandler != null) {
@@ -216,9 +208,6 @@ public class PingballClient {
 									"Extra argument: " + flag);
 						}
 						boardFilePath = flag;
-						// throw new
-						// IllegalArgumentException("unknown option: \"" + flag
-						// + "\"");
 					}
 				} catch (NoSuchElementException nsee) {
 					throw new IllegalArgumentException("missing argument for "

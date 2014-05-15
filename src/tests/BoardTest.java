@@ -23,8 +23,8 @@ import client.gadgets.*;
  */
 public class BoardTest {
     
-    Hashtable<String, ArrayList<String>> keyupToTriggers = new Hashtable<String, ArrayList<String>>();
-    Hashtable<String, ArrayList<String>> keydownToTriggers = new Hashtable<String, ArrayList<String>>();
+    private Hashtable<String, ArrayList<String>> keyupToTriggers = new Hashtable<String, ArrayList<String>>();
+    private Hashtable<String, ArrayList<String>> keydownToTriggers = new Hashtable<String, ArrayList<String>>();
     
     @BeforeClass
     public static void setUpBeforeClass() {
