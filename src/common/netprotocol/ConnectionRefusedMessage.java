@@ -33,7 +33,11 @@ public class ConnectionRefusedMessage extends NetworkMessage {
         }
         return new ConnectionRefusedMessage(reason);
     }
-
+    
+    /**
+     * Constructor for ConnectionRefusedMessage
+     * @param reason - reason for connection refusal
+     */
     public ConnectionRefusedMessage(String reason) {
         this.reason = reason;
     }

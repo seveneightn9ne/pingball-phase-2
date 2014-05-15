@@ -19,7 +19,7 @@ import client.ServerHandler;
 /**
  * Model for the Portal gadget. 
  * 
- * Portals are circular and have a diameter of 1d. They do not have an action.
+ * Portals are circular and have a diameter of 1L. They do not have an action.
  * They generate a trigger when they are hit. Also, when a ball hits a portal, 
  * it is teleported with the same velocity to a specified portal on a specified board. 
  * If the board or the portal do not exist, then the ball exits the portal. 

@@ -19,7 +19,7 @@ import physics.Vect;
 /**
  * Model for the Triangle Bumper gadget. 
  * 
- * Triangle bumpers have an edge length of 1d and a hypotenuse length of sqrt(2)d. 
+ * Triangle bumpers have an edge length of 1L and a hypotenuse length of sqrt(2)L. 
  * They do not have actions and they generate a trigger whenever they are hit. 
  * 
  */

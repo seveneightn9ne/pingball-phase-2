@@ -2,8 +2,6 @@ package common.netprotocol;
 
 import physics.Vect;
 
-import common.netprotocol.NetworkMessage.DecodeException;
-
 /**
  * Client -> Server
  * Message sent when a ball hits a portal.

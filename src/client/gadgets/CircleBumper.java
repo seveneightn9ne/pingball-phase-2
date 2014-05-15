@@ -21,7 +21,7 @@ import physics.Vect;
 /**
  * Model for the Circle Bumper gadget. 
  * 
- * Circle bumpers have a diameter of 1d. They do not have actions and they generate
+ * Circle bumpers have a diameter of 1L. They do not have actions and they generate
  * a trigger whenever they are hit. 
  */
 public class CircleBumper implements Gadget {

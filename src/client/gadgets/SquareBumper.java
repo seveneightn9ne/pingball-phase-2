@@ -19,7 +19,7 @@ import physics.Vect;
 /**
  * Model for the Square Bumper gadget. 
  * 
- * Square bumpers have an edge length of 1d. They do not have actions and they generate
+ * Square bumpers have an edge length of 1L. They do not have actions and they generate
  * a trigger whenever they are hit. 
  */
 public class SquareBumper implements Gadget {
