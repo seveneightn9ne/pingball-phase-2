@@ -96,8 +96,9 @@ public class Absorber implements Gadget {
 		// Rectangle2D.Double(xPosD*Constants.SCALE,yPosD*Constants.SCALE,width*Constants.SCALE,height*Constants.SCALE);
 		double xPosD = xPos;
 		double yPosD = yPos;
-		this.shape = new Rectangle2D.Double(xPosD * Constants.SCALE
-				+ Constants.SCALE, yPosD * Constants.SCALE + Constants.SCALE,
+		this.shape = new Rectangle2D.Double(
+				xPosD * Constants.SCALE + Constants.SCALE, 
+				yPosD * Constants.SCALE + Constants.SCALE,
 				width * Constants.SCALE, height * Constants.SCALE);
 
 	}

@@ -158,14 +158,14 @@ public class RightFlipper implements Gadget {
             rShapeType = verticalShape;
 		}
         this.shape = new RoundRectangle2D.Double(
-        		shapeOrigin.x()*Constants.SCALE,
-        		shapeOrigin.y()*Constants.SCALE,
+        		shapeOrigin.x()*Constants.SCALE + Constants.SCALE,
+        		shapeOrigin.y()*Constants.SCALE + Constants.SCALE,
         		shapeType.x()*Constants.SCALE,
         		shapeType.y()*Constants.SCALE,
         		archHeight,archWidth);
         this.rotatedShape = new RoundRectangle2D.Double(
-        		rotatedShapeOrigin.x()*Constants.SCALE,
-        		rotatedShapeOrigin.y()*Constants.SCALE,
+        		rotatedShapeOrigin.x()*Constants.SCALE + Constants.SCALE,
+        		rotatedShapeOrigin.y()*Constants.SCALE + Constants.SCALE,
         		rShapeType.x()*Constants.SCALE,
         		rShapeType.y()*Constants.SCALE,
         		archHeight,archWidth);

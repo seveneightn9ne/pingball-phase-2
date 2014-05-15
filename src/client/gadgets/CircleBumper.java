@@ -56,8 +56,11 @@ public class CircleBumper implements Gadget {
         this.position = new Vect(xPos, yPos);
         circle = new Circle(position, 0.5);
 //    	this.shape = new Ellipse2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
-    	this.shape = new Ellipse2D.Double((xPos-Constants.OFFSET)*Constants.SCALE,(yPos-Constants.OFFSET)*Constants.SCALE,Constants.SCALE,Constants.SCALE);
-
+//    	this.shape = new Ellipse2D.Double((xPos-Constants.OFFSET)*Constants.SCALE,(yPos-Constants.OFFSET)*Constants.SCALE,Constants.SCALE,Constants.SCALE);
+    	this.shape = new Ellipse2D.Double(
+    			xPos*Constants.SCALE + Constants.SCALE,
+    			yPos*Constants.SCALE + Constants.SCALE,
+    			Constants.SCALE, Constants.SCALE);
     }
 
     /**

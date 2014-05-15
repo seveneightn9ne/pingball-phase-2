@@ -129,12 +129,12 @@ public class TriangleBumper implements Gadget {
 			throw new RuntimeException(
 					"Invalid orientation given. Can only be multiples of 90.");
 		}
-		xPointsD = new double[] { corners[0].getCenter().x() * Constants.SCALE,
-				corners[1].getCenter().x() * Constants.SCALE,
-				corners[2].getCenter().x() * Constants.SCALE };
-		yPointsD = new double[] { corners[0].getCenter().y() * Constants.SCALE,
-				corners[1].getCenter().y() * Constants.SCALE,
-				corners[2].getCenter().y() * Constants.SCALE };
+		xPointsD = new double[] { (corners[0].getCenter().x()+0.5) * Constants.SCALE + Constants.SCALE,
+				(corners[1].getCenter().x()+0.5) * Constants.SCALE + Constants.SCALE,
+				(corners[2].getCenter().x()+0.5) * Constants.SCALE + Constants.SCALE };
+		yPointsD = new double[] { (corners[0].getCenter().y()+0.5) * Constants.SCALE + Constants.SCALE,
+				(corners[1].getCenter().y()+0.5) * Constants.SCALE + Constants.SCALE,
+				(corners[2].getCenter().y()+0.5) * Constants.SCALE + Constants.SCALE};
 //		xPointsD = new double[] { (corners[0].getCenter().x()+Constants.OFFSET) * Constants.SCALE,
 //				(corners[1].getCenter().x()+Constants.OFFSET) * Constants.SCALE,
 //				(corners[2].getCenter().x()+Constants.OFFSET) * Constants.SCALE };

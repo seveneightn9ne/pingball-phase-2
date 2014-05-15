@@ -59,7 +59,10 @@ public class Portal implements Gadget {
         this.circle = new Circle(position, .5);
         this.otherBoard = otherBoard;
         this.otherPortal = otherPortal;
-        portalShape = new Ellipse2D.Double((xPos-Constants.OFFSET)*Constants.SCALE,(yPos-Constants.OFFSET)*Constants.SCALE, Constants.SCALE, Constants.SCALE);
+        portalShape = new Ellipse2D.Double(
+        		xPos*Constants.SCALE + Constants.SCALE,
+        		yPos*Constants.SCALE + Constants.SCALE, 
+        		Constants.SCALE, Constants.SCALE);
 
     }
     
