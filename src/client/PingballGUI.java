@@ -78,7 +78,7 @@ public class PingballGUI extends JFrame {
 	 */
 
 	public PingballGUI(PingballClient client, String hostname, final Board board) {
-		
+
 		this.client = client;
 
 		// make the menu bar
@@ -136,38 +136,31 @@ public class PingballGUI extends JFrame {
 			serverStatus.setForeground(DARK_GREEN);
 		}
 
-		JPanel boardWallPanel = new JPanel(new BorderLayout());
-		boardWallPanel.add(boardPanel, BorderLayout.CENTER);
-		for (Wall w : board.getWallList()) {
-			JPanel wallw = new WallGUI(w, 20);
-			if (w.getSide() == Constants.BoardSide.RIGHT) {
-				System.out.println("ADDED RIGHT");
-				boardWallPanel.add(wallw, BorderLayout.EAST);
-			} else if (w.getSide() == Constants.BoardSide.LEFT) {
-				System.out.println("ADDED LEFT");
-				boardWallPanel.add(wallw, BorderLayout.WEST);
-			} else if (w.getSide() == Constants.BoardSide.TOP) {
-				System.out.println("ADDED TOP");
-				boardWallPanel.add(wallw, BorderLayout.NORTH);
-			} else if (w.getSide() == Constants.BoardSide.BOTTOM) {
-				System.out.println("ADDED BOTTOM");
-				boardWallPanel.add(wallw, BorderLayout.SOUTH);
-			}
-		}
+		JPanel rightWall = new WallGUI(
+				board.getWall(Constants.BoardSide.RIGHT), 20);
+		JPanel leftWall = new WallGUI(board.getWall(Constants.BoardSide.LEFT),
+				20);
+		JPanel bottomWall = new WallGUI(
+				board.getWall(Constants.BoardSide.BOTTOM), 20);
+		JPanel topWall = new WallGUI(board.getWall(Constants.BoardSide.TOP), 20);
+
+		JPanel boardWallPanel = new BoardWallGUI(board, boardPanel, rightWall,
+				leftWall, topWall, bottomWall);
 		GroupLayout layout = new GroupLayout(this.getContentPane());
 		this.getContentPane().setLayout(layout);
 		// layout.setAutoCreateContainerGaps(true);
 		// layout.setAutoCreateGaps(true);
 		layout.setVerticalGroup(layout
 				.createSequentialGroup()
-				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 400,
+				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 500,
 						GroupLayout.PREFERRED_SIZE)
 				.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
 						GroupLayout.PREFERRED_SIZE));
 		layout.setHorizontalGroup(layout
 				.createParallelGroup()
-				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 400,
+				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 500,
 						GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
+		pack();
 
 		// // define layout
 		// GroupLayout layout = new GroupLayout(this.getContentPane());
@@ -185,56 +178,55 @@ public class PingballGUI extends JFrame {
 		// GroupLayout.PREFERRED_SIZE)
 		// .addComponent(statusBar)
 		// );
-        pack();
-        
-        // TODO: keyboard listener sends keys to board
-        
-        // menu event listeners
-        newGameMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                newGame();
-            }
-        });
-        pauseMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                pause();
-            }
-        });
-        resumeMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                resume();
-            }
-        });
-        restartMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                restart();
-            }
-        });
-        connectMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                connect();
-            }
-        });
-        disconnectMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                disconnect();
-            }
-        });
-        
-        KeyListener listener = new KeyAdapter() {
-            public void keyPressed(KeyEvent e) {
-                    board.notifyKeydown(KeyEvent.getKeyText(e.getKeyCode()));
-                    System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
-                }
 
-            public void keyReleased(KeyEvent e) {
-                    board.notifyKeyup(KeyEvent.getKeyText(e.getKeyCode()));
-                }
-        };
+		// TODO: keyboard listener sends keys to board
 
-        KeyListener magical = new MagicKeyListener(listener);
+		// menu event listeners
+		newGameMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				newGame();
+			}
+		});
+		pauseMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				pause();
+			}
+		});
+		resumeMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				resume();
+			}
+		});
+		restartMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				restart();
+			}
+		});
+		connectMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				connect();
+			}
+		});
+		disconnectMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				disconnect();
+			}
+		});
 
-        this.addKeyListener(magical);
+		KeyListener listener = new KeyAdapter() {
+			public void keyPressed(KeyEvent e) {
+				board.notifyKeydown(KeyEvent.getKeyText(e.getKeyCode()));
+				System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+			}
+
+			public void keyReleased(KeyEvent e) {
+				board.notifyKeyup(KeyEvent.getKeyText(e.getKeyCode()));
+			}
+		};
+
+		KeyListener magical = new MagicKeyListener(listener);
+
+		this.addKeyListener(magical);
 	}
 
 	private void newGame() {

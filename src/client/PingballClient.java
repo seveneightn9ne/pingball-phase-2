@@ -23,7 +23,6 @@ import java.net.Socket;
 import javax.swing.SwingUtilities;
 
 import physics.Vect;
-import threadBoard.Skeleton;
 
 /**
  * 
