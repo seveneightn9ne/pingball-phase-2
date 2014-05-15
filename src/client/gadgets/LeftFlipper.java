@@ -111,7 +111,7 @@ public class LeftFlipper implements Gadget {
             rotatedShapeOrigin = pivotCoord;
             shapeType = verticalShape;
             rShapeType = horizontalShape;
-        } else if (orientation == 90) {
+        } else if (orientation == 270) {
             pivot = new Vect(xPos - 0.5, yPos + 1.5);
             line = new LineSegment(pivot.x(), pivot.y(), pivot.x() + 2,
                     pivot.y());
@@ -133,7 +133,7 @@ public class LeftFlipper implements Gadget {
             rotatedShapeOrigin = new Vect(xPos, yPos + 1.5);
             shapeType = verticalShape;
             rShapeType = horizontalShape;
-        } else {// if (orientation == 270) {
+        } else {// if (orientation == 90) {
             pivot = new Vect(xPos + 1.5, yPos - 0.5);
             line = new LineSegment(pivot.x(), pivot.y(), pivot.x() - 2,
                     pivot.y());
