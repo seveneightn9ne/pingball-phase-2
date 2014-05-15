@@ -206,7 +206,7 @@ public class ParserTest {
     public void flipperParserTest() {
         File file = new File("boards/flipland.pb");
         Board board = Parser.makeBoard(file);
-        
+        System.out.println(board);
         assertEquals("......................\n"
                 +    ".                    .\n"
                 +    ".                    .\n"
@@ -223,8 +223,8 @@ public class ParserTest {
                 +    ".                    .\n"
                 +    ".                    .\n"
                 +    ".                    .\n"
-                +    ".  --    --     --   .\n"
-                +    ".     --     --      .\n"
+                +    ".                    .\n"
+                +    ".  -- -- --  -- --   .\n"
                 +    ".                    .\n"
                 +    ".====================.\n"
                 +    ".====================.\n"

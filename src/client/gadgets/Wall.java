@@ -13,6 +13,12 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 
+/**
+ * Model for the Wall gadget. 
+ * 
+ *  
+ * 
+ */
 public class Wall implements Gadget {
     /**
      * Rep invariant: line.length() == 20
@@ -52,11 +58,17 @@ public class Wall implements Gadget {
         }
     }
     
+    /**
+     * @return the side of the board this wall is on
+     */
     public Constants.BoardSide getSide()
     {
     	return boardSide;
     }
     
+    /**
+     * @return the name of the board that is connected to this wall
+     */
     public String wallConnectedName()
     {
     	if (connectedBoardName != null)
@@ -66,6 +78,35 @@ public class Wall implements Gadget {
     	return null;
     }
     
+    /**
+     * Connects this wall to the board given
+     * @param name - name of connecting board
+     */
+    public void connectToServer(String name) {
+        this.open = true;
+        this.connectedBoardName = name;
+    }
+    
+    /**
+     * Disconnects this wall from any connected board
+     */
+    public void disconnectFromServer() {
+        this.open = false;
+        this.connectedBoardName = null;
+    }
+    
+    /**
+     * Sets the server handler of this portal (allows it to communicate
+     * with the server)
+     * @param sh - server handler for the client that this portal is on
+     */
+    public void setServerHandler(ServerHandler sh) {
+        this.serverHandler = sh;
+    }
+    
+    /**
+     * Check the rep invariant.
+     */
     public void checkRep(){
         assert (line.length() == 20);
     }
@@ -76,50 +117,24 @@ public class Wall implements Gadget {
     }
     
     @Override
-    public void putInBoardRep(Board board, boolean remove){
-        // walls automatically represented in boardRep
-    }
-    
-    @Override
-    public void action(Board board){
-        // walls have no action
-    }
-    
-    /**
-     * @throws Runtime Exception - Walls do not have triggers
-     */
-    @Override
-    public void addTrigger(Gadget g){
-        throw new RuntimeException("Walls do not have triggers");
-        //Walls cannot trigger: throw exception
-    }
-    
-    public void connectToServer(String name) {
-    	this.open = true;
-    	this.connectedBoardName = name;
-    }
-    
-    public void disconnectFromServer() {
-    	this.open = false;
-    	this.connectedBoardName = null;
-    }
-    
-    public void setServerHandler(ServerHandler sh) {
-    	this.serverHandler = sh;
+    public Vect getOrigin() {
+        return this.line.p1();
     }
 
     @Override
+    public int[] getSize() {
+        return new int[]{1,1};
+    }
+    
+    @Override
     public boolean hit(Ball ball, Board board) {
-//    	System.out.println("Hitting " + boardSide + " wall!");
         if (!open){
-//        	System.out.println("Hit velocity: " + ball.getVelocity());
             Vect velocity = Geometry.reflectWall(line, ball.getVelocity());
             ball.setVelocity(velocity);
-//            System.out.println(ball.getPosition() + ", " + ball.getVelocity());
             return true;
         }
         else{
-        	Vect newBallPosition = ball.getPosition();//.plus(ball.getVelocity().times(Constants.TIMESTEP));
+            Vect newBallPosition = ball.getPosition();
             if (boardSide == Constants.BoardSide.TOP)    newBallPosition = new Vect(newBallPosition.x(), 19d);
             if (boardSide == Constants.BoardSide.RIGHT)  newBallPosition = new Vect(0d, newBallPosition.y());
             if (boardSide == Constants.BoardSide.BOTTOM) newBallPosition = new Vect(newBallPosition.x(), 0d);
@@ -136,20 +151,27 @@ public class Wall implements Gadget {
     @Override
     public double timeUntilCollision(Ball ball){
         double tt = Geometry.timeUntilWallCollision(line, ball.getCircle(), ball.getVelocity());
-//        System.out.println("Time until " + boardSide + " collision: " + tt);
         return tt;
     }
     
     @Override
-    public Vect getOrigin() {
-        return this.line.p1();
+    public void action(Board board){
+        // walls have no action
     }
-
+    
+    /**
+     * @throws Runtime Exception - Walls do not have triggers
+     */
     @Override
-    public int[] getSize() {
-        return new int[]{1,1};
+    public void addTrigger(Gadget g){
+        throw new RuntimeException("Walls do not have triggers");
+        //Walls cannot trigger: throw exception
     }
-
+    
+    @Override
+    public void putInBoardRep(Board board, boolean remove){
+        // walls automatically represented in boardRep
+    }
 
 	@Override
 	public Shape getShape() {

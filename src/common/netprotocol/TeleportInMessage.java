@@ -1,7 +1,6 @@
 package common.netprotocol;
 
 import physics.Vect;
-import common.netprotocol.NetworkMessage.DecodeException;
 
 /**
  * Server -> Client

@@ -40,8 +40,8 @@ public class Parser {
 	/** Takes a file, makes a board out of it
 	 * NOTE: the parser is case sensitive
 	 * Calls cleanFile, isValidFile, and makeGadgets
-	 * @input file representing the board
-	 * @output board instance
+	 * @param file representing the board
+	 * @return board instance
 	 * @throws RuntimeException
 	 */
 	public static Board makeBoard(File file){
@@ -444,7 +444,9 @@ public class Parser {
 			throw new RuntimeException("invalid ball");
 		}
 		
-		Ball ball = new Ball(x, y, xVelocity, yVelocity);
+		String name = line[1].split("=")[1];
+		
+		Ball ball = new Ball(name, x, y, xVelocity, yVelocity);
 		return ball;		
 	}
 	
@@ -543,7 +545,7 @@ public class Parser {
 	
 	/**
 	 * this is called by the pingballServer
-	 * @input a file
+	 * @param file - a file
 	 * @return a string representation of the file
 	 */
 	public static String fileToString(File file){

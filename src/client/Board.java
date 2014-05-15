@@ -40,9 +40,22 @@ public class Board {
 	private Map<String, Gadget> gadgetNames = new HashMap<String, Gadget>();
 	private Hashtable<String, ArrayList<String>> keyupToTriggers = new Hashtable<String, ArrayList<String>>();
     private Hashtable<String, ArrayList<String>> keydownToTriggers = new Hashtable<String, ArrayList<String>>();
-	/**
-	 * Constructor for a default empty Board
-	 */
+	
+    /**
+     * Constructor for the board.
+     * @param name
+     *              - name of the board
+     * @param gravity
+     *              - value of gravity on the board (in d/s)
+     * @param mu
+     *              - first value of friction on the board
+     * @param mu2
+     *              - second value of friction on the board
+     * @param keyups
+     *              - mapping of keys to names of gadgets they trigger on key release
+     * @param keydowns
+     *              - mapping of keys to names of gadgets they trigger on key press
+     */
 	public Board(String name, double gravity, double mu, double mu2, Hashtable<String, ArrayList<String>> keyups, Hashtable<String, ArrayList<String>> keydowns) {
 		this.name = name;
 		this.gravity = gravity;
@@ -51,16 +64,6 @@ public class Board {
 		this.boardConstructor();
 		this.keyupToTriggers = keyups;
 		this.keydownToTriggers = keydowns;
-	}
-
-	public Board(String name, char[][] rep)
-	{
-		boardRep = rep;
-		this.name = name;
-		this.gravity = 20;
-		this.mu = 2;
-		this.mu2 = 2;
-		this.boardConstructor();
 	}
 	
 	/**
@@ -91,6 +94,9 @@ public class Board {
         }
     }
 	
+    /**
+     * @return list of balls currently on this board
+     */
 	public List<Ball> getBalls()
 	{
 		return balls;
@@ -134,6 +140,9 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Disconnects this board from the server
+	 */
 	public void disconnectFromServer() {
 		for (BoardSide side : BoardSide.values()) {
 			disconnectWallFromServer(side);
@@ -210,6 +219,9 @@ public class Board {
 			return borders[3];
 	}
 	
+	/**
+	 * @return list of this board's walls
+	 */
 	public Wall[] getWallList()
 	{
 		return borders;
@@ -242,6 +254,9 @@ public class Board {
 		checkRep();
 	}
 	
+	/**
+	 * @return list of gadgets on this board
+	 */
 	public List<Gadget> returnGadgets()
 	{
 		return gadgets;

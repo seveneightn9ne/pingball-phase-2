@@ -11,6 +11,11 @@ import physics.Circle;
 import physics.Geometry;
 import physics.Vect;
 
+/**
+ * Represents a ball on a Pingball board. 
+ * 
+ * Balls have a default diameter of .5. 
+ */
 public class Ball {
 
 	/**
@@ -27,6 +32,8 @@ public class Ball {
 	/**
 	 * Constructor for Ball
 	 * 
+	 * @param name
+	 *            name of this ball
 	 * @param x
 	 *            the initial x coordinate of the ball
 	 * @param y
@@ -44,19 +51,23 @@ public class Ball {
 		velocity = new Vect(xVel, yVel);
 		circle = new Circle(position, 0.25);
 	}
-
-	public Ball(double x, double y, double xVel, double yVel) {
-		position = new Vect(x, y);
-		velocity = new Vect(xVel, yVel);
-		circle = new Circle(position, 0.25);
-	}
-
+	
+	/**
+	 * Constructor for ball
+	 * @param pos
+	 *          Vect position of this ball
+	 * @param vel
+	 *          Vect velocity of this ball
+	 */
 	public Ball(Vect pos, Vect vel) {
 		position = pos;
 		velocity = vel;
 		circle = new Circle(position, 0.25);
 	}
-
+	
+	/**
+	 * @return name of this ball
+	 */
 	public String getName() {
 		return this.name;
 	}
@@ -170,38 +181,25 @@ public class Ball {
 		}
 		board.setBoardRep(boardRep);
 	}
-
-	/**
-	 * Move the ball on the board according to the ball's velocity and external
-	 * forces
-	 * 
-	 * @param gravity
-	 *            the gravity of the board
-	 * @param mu
-	 *            the first friction coefficient of the board
-	 * @param mu2
-	 *            the second friction coefficient of the board
-	 * @param deltaT
-	 *            the time passed
-	 */
-	public void oldmove(double gravity, double mu, double mu2, double deltaT,
-			Board board) {
-		putInBoardRep(board, true);
-		position = position.plus(velocity.times(deltaT));
-		velocity = velocity.times(1 + gravity * deltaT - mu * deltaT - mu2
-				* velocity.length() * deltaT);
-		circle = new Circle(position, 0.25);
-		putInBoardRep(board, false);
-	}
 	
+	/**
+     * Move the ball on the board according to the ball's velocity and external
+     * forces
+     * 
+     * @param gravity
+     *            the gravity of the board
+     * @param mu
+     *            the first friction coefficient of the board
+     * @param mu2
+     *            the second friction coefficient of the board
+     * @param deltaT
+     *            the time passed
+     * @param board 
+     *            board this ball is on
+     */
 	public void move(double gravity, double mu, double mu2, double deltaT, Board board){
     	checkRep();
         putInBoardRep(board, true);
-//        position = position.plus(velocity.times(deltaT));
-//        velocity = velocity.times(1+gravity*deltaT-mu*deltaT-mu2*velocity.length()*deltaT);
-//        Vect term1 = oldVel.times(Constants.TIMESTEP);
-//        Vect term2 = new Vect(0, 0.5 * gravity * Constants.TIMESTEP * Constants.TIMESTEP);
-//        velocity = 
         Vect oldPos = getPosition();
         Vect oldVel = getVelocity();
 

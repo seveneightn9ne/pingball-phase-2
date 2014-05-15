@@ -102,6 +102,9 @@ public class ServerHandler implements Runnable {
         }
     }
     
+    /**
+     * @return host name
+     */
     public String getHostName() {
     	return socket.getRemoteSocketAddress().toString();
     }
