@@ -254,7 +254,6 @@ public class Board {
 	 *            Ball to add
 	 */
 	public void addBall(Ball ball) {
-	    System.out.println("added ball at " + ball.getPosition());
 		balls.add(ball);
      	ball.putInBoardRep(this, false);
 	}
@@ -338,7 +337,6 @@ public class Board {
      * @param ball ball that has been released
      */
     public void notifyReleased(Ball ball) {
-        System.out.println("released");
         absorbed.remove(ball);
     }
     

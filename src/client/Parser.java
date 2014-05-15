@@ -684,7 +684,6 @@ public class Parser {
 		boolean valid = true;
 		for (String line: fileList){
 			if (!isValidLine(line)){
-			    System.out.println(line);
 				valid = false;
 				break;
 			}
