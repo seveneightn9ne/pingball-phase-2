@@ -102,7 +102,7 @@ public class PingballClient {
 			if (!paused.get()) {
 	            while (!incomingMessages.isEmpty() && board != null) {
 	                NetworkMessage message = incomingMessages.remove();
-	                System.out.println(message);
+	                if(Constants.DEBUG) System.out.println(message);
 	                if (message instanceof BallInMessage) {
 	                    // The sending board is responsible for making ballPos on the correct side of the receiving board.
 	                    Vect ballPos = ((BallInMessage) message).getBallPos();

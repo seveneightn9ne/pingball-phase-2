@@ -204,7 +204,7 @@ public class ParserTest {
     
     @Test 
     public void flipperParserTest() {
-        File file = new File("boards/flipland.pb");
+        File file = new File("boards/testing/flipland.pb");
         Board board = Parser.makeBoard(file);
 
         assertEquals("......................\n"
@@ -356,7 +356,7 @@ public class ParserTest {
 	
 	@Test (expected=RuntimeException.class)
 	public void invalidCharParserTest() {
-		File file = new File("boards/invalidcharboard.pb");
+		File file = new File("boards/testing/invalidcharboard.pb");
 		Parser.makeBoard(file);
 	}
 	
