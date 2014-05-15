@@ -1,7 +1,5 @@
 package client;
 
-//SAUCE: http://stackoverflow.com/questions/17834573/swing-custom-border
-
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
@@ -16,8 +14,8 @@ import javax.swing.border.AbstractBorder;
 import common.Constants;
 
 /**
- * PingBorder is the GUI element that represents the walls of the Pingball
- * board.
+ * PingBorder an implementation of the AbstractBoarder interface. It is the GUI
+ * element that represents the walls of the Pingball board.
  * 
  */
 public class PingBorder extends AbstractBorder {

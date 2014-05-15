@@ -35,6 +35,7 @@ public class BoardGUI extends JPanel implements Runnable {
 	private boolean firstPrintLeft = false;
 	private boolean firstPrintRight = false;
 
+	
 	public BoardGUI(Board board) {
 		setBackground(BACKGROUNDCOLOR);
 		this.board = board;
