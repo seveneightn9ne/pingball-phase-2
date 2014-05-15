@@ -261,6 +261,7 @@ public class PingballGUI extends JFrame {
 						public void run() {
 
 							boardPanel.setBoard(client.getBoard());
+							resume();
 						}
 					});
 				}
