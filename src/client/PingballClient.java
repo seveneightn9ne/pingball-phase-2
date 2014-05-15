@@ -96,15 +96,15 @@ public class PingballClient {
 			while (!invokeLaterQueue.isEmpty()) {
 				Runnable r = invokeLaterQueue.remove();
 				r.run();
-			}
-			if (!paused.get()) {				
+			}				
 	            try {
 	                // Sleep to limit framerate.
 	                Thread.sleep((int) (Constants.TIMESTEP*1000));
 	            } catch (InterruptedException e) {
 	                Thread.currentThread().interrupt();
 	            }
-	
+
+			if (!paused.get()) {
 	            while (!incomingMessages.isEmpty() && board != null) {
 	                NetworkMessage message = incomingMessages.remove();
 	                System.out.println(message);

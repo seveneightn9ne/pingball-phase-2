@@ -359,7 +359,7 @@ public class Board {
         	balls.remove(ball);
         }
         
-        System.out.println(this.toString());
+//        System.out.println(this.toString());
         checkRep();
     }
     

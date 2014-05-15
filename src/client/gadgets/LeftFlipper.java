@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import common.Constants;
@@ -63,8 +66,8 @@ public class LeftFlipper implements Gadget {
         this.name = name;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1,2*Constants.SCALE,archHeight,archWidth);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     	
     }
     /**
@@ -84,8 +87,8 @@ public class LeftFlipper implements Gadget {
         this.name = null;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1,2*Constants.SCALE,archHeight,archWidth);
+        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
+    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     }
 
     /**
@@ -157,10 +160,10 @@ public class LeftFlipper implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-        Vect velocity = Geometry.reflectRotatingWall(line, pivot,
+    	LineSegment lineToCollideWith = lineToCollideWith(ball);
+        Vect velocity = Geometry.reflectRotatingWall(lineToCollideWith, pivot,
                 angularVelocity, ball.getCircle(), ball.getVelocity());
         ball.setVelocity(velocity);
-        
         
         for (Gadget g : triggers) {
             g.action(board);
@@ -210,8 +213,26 @@ public class LeftFlipper implements Gadget {
 
     @Override
     public double timeUntilCollision(Ball ball) {
-        return Geometry.timeUntilWallCollision(line, ball.getCircle(),
-                ball.getVelocity());
+    	List<Double> times = new ArrayList<Double>();
+    	for (LineSegment edge : getRect()) {
+    		times.add(Geometry.timeUntilWallCollision(edge, ball.getCircle(), ball.getVelocity()));
+    	}
+    	return Collections.min(times);
+//        return Geometry.timeUntilWallCollision(line, ball.getCircle(),
+//                ball.getVelocity());
+    }
+    
+    private LineSegment lineToCollideWith(Ball ball) {
+    	double minTime = 9999;
+    	LineSegment closestWall = null;
+    	for (LineSegment edge : getRect()) {
+    		double thisTime = Geometry.timeUntilWallCollision(edge, ball.getCircle(), ball.getVelocity());
+    		if (thisTime < minTime) {
+    			minTime = thisTime;
+    			closestWall = edge;
+    		}
+    	}
+    	return closestWall;
     }
 
     @Override
@@ -232,12 +253,35 @@ public class LeftFlipper implements Gadget {
 
 	@Override
 	public Shape getShape() {
-		if (rotated) return shapeHoriz;
+		if (isHorizontal()) return shapeHoriz;
 		else return shapeVert;
 	}
 	@Override
 	public Color getColor() {
 		return FLIPCOLOR;
+	}
+	
+	private boolean isHorizontal() {
+		boolean isHor = true;
+		if (orientation == 0 || orientation == 180)
+			isHor = false;
+		if (rotated) isHor = !isHor;
+		return isHor;
+	}
+	
+	private List<LineSegment> getRect() {
+		List<LineSegment> rect = new ArrayList<LineSegment>();
+		rect.add(line);
+		if (isHorizontal()) {
+			rect.add(new LineSegment(line.p1().plus(new Vect(0, 0.5)), line.p2().plus(new Vect(0, 0.5))));
+			rect.add(new LineSegment(line.p1(), line.p1().plus(new Vect(0, 0.5))));
+			rect.add(new LineSegment(line.p2(), line.p2().plus(new Vect(0, 0.5))));
+		} else {
+			rect.add(new LineSegment(line.p1().plus(new Vect(0.5, 0)), line.p2().plus(new Vect(0.5, 0))));
+			rect.add(new LineSegment(line.p1(), line.p1().plus(new Vect(0.5, 0))));
+			rect.add(new LineSegment(line.p2(), line.p2().plus(new Vect(0.5, 0))));
+		}
+		return rect;
 	}
 
 }
