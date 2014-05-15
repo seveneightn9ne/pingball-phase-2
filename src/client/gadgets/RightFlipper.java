@@ -44,8 +44,10 @@ public class RightFlipper implements Gadget {
 	private int yPos;
 	private final double archHeight = 20.0;
 	private final double archWidth = 20.0;
-	private final Shape shapeHoriz;
-	private final Shape shapeVert;
+//	private final Shape shapeHoriz;
+//	private final Shape shapeVert;
+	private Shape shape;
+	private Shape rotatedShape;
 	private final Color FLIPCOLOR = new Color(238,172,150);
 	
 
@@ -73,8 +75,8 @@ public class RightFlipper implements Gadget {
 		this.orientation = orientation;
 
 		this.orientationConstructor(xPos, yPos, orientation);
-		shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
-		shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
+//		shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
+//		shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
 
 	}
 
@@ -96,8 +98,8 @@ public class RightFlipper implements Gadget {
 		this.orientation = orientation;
 
 		this.orientationConstructor(xPos, yPos, orientation);
-		shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
-		shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
+//		shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
+//		shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
 
 	}
 
@@ -109,6 +111,12 @@ public class RightFlipper implements Gadget {
 	 * @param orientation
 	 */
 	private void orientationConstructor(int xPos, int yPos, int orientation) {
+    	Vect shapeOrigin;
+    	Vect rotatedShapeOrigin;
+    	Vect verticalShape = new Vect(0.5, 2);
+    	Vect horizontalShape = new Vect(2, 0.5);
+    	Vect shapeType;
+    	Vect rShapeType;
 		if (orientation == 0) {
 			pivot = new Vect(xPos + 1.5, yPos - 0.5);
 			line = new LineSegment(pivot.x(), pivot.y(), pivot.x(),
@@ -116,28 +124,56 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos + 1, yPos);
 			rotatedCoord = new Vect(xPos, yPos);
 			nonRotatedCoord = new Vect(xPos + 1, yPos + 1);
+            shapeOrigin = new Vect(xPos + 1.5, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos);
+            shapeType = verticalShape;
+            rShapeType = horizontalShape;
 		} else if (orientation == 90) {
 			pivot = new Vect(xPos + 1.5, yPos + 1.5);
-			line = new LineSegment(pivot.x() - 2, pivot.y(), pivot.x(),
+			line = new LineSegment(pivot.x(), pivot.y(), pivot.x() - 2,
 					pivot.y());
 			pivotCoord = new Vect(xPos + 1, yPos + 1);
 			rotatedCoord = new Vect(xPos + 1, yPos);
 			nonRotatedCoord = new Vect(xPos, yPos + 1);
+            shapeOrigin = new Vect(xPos, yPos + 1.5);
+            rotatedShapeOrigin = new Vect(xPos + 1.5, yPos);
+            shapeType = horizontalShape;
+            rShapeType = verticalShape;
 		} else if (orientation == 180) {
 			pivot = new Vect(xPos - 0.5, yPos + 1.5);
-			line = new LineSegment(pivot.x(), pivot.y() - 2, pivot.x(),
-					pivot.y());
+			line = new LineSegment(pivot.x(), pivot.y(), pivot.x(),
+					pivot.y() - 2);
 			pivotCoord = new Vect(xPos, yPos + 1);
 			rotatedCoord = new Vect(xPos + 1, yPos + 1);
 			nonRotatedCoord = new Vect(xPos, yPos);
-		} else if (orientation == 270) {
+            shapeOrigin = new Vect(xPos, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos + 1.5);
+            shapeType = verticalShape;
+            rShapeType = horizontalShape;
+		} else {// if (orientation == 270) {
 			pivot = new Vect(xPos - 0.5, yPos - 0.5);
 			line = new LineSegment(pivot.x(), pivot.y(), pivot.x() + 2,
 					pivot.y());
 			pivotCoord = new Vect(xPos, yPos);
 			rotatedCoord = new Vect(xPos, yPos + 1);
 			nonRotatedCoord = new Vect(xPos + 1, yPos);
+            shapeOrigin = new Vect(xPos, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos);
+            shapeType = horizontalShape;
+            rShapeType = verticalShape;
 		}
+        this.shape = new RoundRectangle2D.Double(
+        		shapeOrigin.x()*Constants.SCALE,
+        		shapeOrigin.y()*Constants.SCALE,
+        		shapeType.x()*Constants.SCALE,
+        		shapeType.y()*Constants.SCALE,
+        		archHeight,archWidth);
+        this.rotatedShape = new RoundRectangle2D.Double(
+        		rotatedShapeOrigin.x()*Constants.SCALE,
+        		rotatedShapeOrigin.y()*Constants.SCALE,
+        		rShapeType.x()*Constants.SCALE,
+        		rShapeType.y()*Constants.SCALE,
+        		archHeight,archWidth);
 	}
 
 	/**
@@ -249,8 +285,10 @@ public class RightFlipper implements Gadget {
 
 	@Override
 	public Shape getShape() {
-		if (isHorizontal()) return shapeHoriz;
-		else return shapeVert;
+//		if (isHorizontal()) return shapeHoriz;
+//		else return shapeVert;
+		if (rotated) return rotatedShape;
+		else return shape;
 	}
 	@Override
 	public Color getColor() {

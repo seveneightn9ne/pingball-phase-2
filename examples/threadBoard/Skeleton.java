@@ -16,8 +16,8 @@ public Skeleton(Board board) {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setSize(22*Constants.SCALE, 22*Constants.SCALE);
         setBackground(new Color(201,204,183));
-//        add(new BoardGUI(board),BorderLayout.CENTER);
-        add(new WallBoardGUI(board));
+        add(new BoardGUI(board));
+//        add(new WallBoardGUI(board));
         setLocationRelativeTo(null);
         setVisible(true);
         setResizable(false);

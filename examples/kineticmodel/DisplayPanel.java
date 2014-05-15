@@ -55,10 +55,14 @@ class DisplayPanel extends JPanel {
         }
         g.setColor(Color.black);
         g.fillRect(0, 0, getWidth(), getHeight());
+        System.out.println("get width " +getWidth());
+        System.out.println("get width " +getHeight());
+
         Graphics2D g2D = (Graphics2D) g;
         g2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
             RenderingHints.VALUE_ANTIALIAS_ON);
         g2D.setPaint(paint);
+        //THESES ARE BOARDERS
         r. setRect(0, 0, getWidth(), ROWS);
         g2D.fill(r);
         r. setRect(0, getHeight() - ROWS, getWidth(), ROWS);
@@ -67,6 +71,7 @@ class DisplayPanel extends JPanel {
         g2D.fill(r);
         r. setRect(getWidth() - COLS, 0, COLS, getHeight());
         g2D.fill(r);
+        //ATOMS
         for (Particle atom : model.getAtoms()) {
             model.iterate(atom);
             Shape shape = model.getShape(atom);

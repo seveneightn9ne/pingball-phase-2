@@ -66,7 +66,7 @@ public class PingballClient {
 	public void startClient() {
 		checkRep();
 
-		 new Skeleton(board);
+//		 new Skeleton(board);
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				// new KineticModel(board);
