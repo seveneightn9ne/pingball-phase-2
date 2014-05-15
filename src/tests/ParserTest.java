@@ -40,11 +40,11 @@ public class ParserTest {
     
     @BeforeClass
     public static void setUpBeforeClass(){
-        file1 = new File("boards/staffBoard1.pb");
-        file2_1 = new File("boards/staffBoard2.pb");
-        file2_2 = new File("boards/staffBoard2b.pb");
-        file3 = new File("boards/staffBoard3.pb");
-        file4 = new File("boards/staffBoard4.pb");
+        file1 = new File("boards/staffboard1.pb");
+        file2_1 = new File("boards/staffboard2.pb");
+        file2_2 = new File("boards/staffboard2b.pb");
+        file3 = new File("boards/staffboard3.pb");
+        file4 = new File("boards/staffboard4.pb");
     }
     
     @Test
@@ -206,7 +206,7 @@ public class ParserTest {
     public void flipperParserTest() {
         File file = new File("boards/flipland.pb");
         Board board = Parser.makeBoard(file);
-        System.out.println(board);
+
         assertEquals("......................\n"
                 +    ".                    .\n"
                 +    ".                    .\n"
@@ -223,8 +223,8 @@ public class ParserTest {
                 +    ".                    .\n"
                 +    ".                    .\n"
                 +    ".                    .\n"
-                +    ".                    .\n"
-                +    ".  -- -- --  -- --   .\n"
+                +    ".  --    --     --   .\n"
+                +    ".     --     --      .\n"
                 +    ".                    .\n"
                 +    ".====================.\n"
                 +    ".====================.\n"
