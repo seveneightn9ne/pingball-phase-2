@@ -53,6 +53,30 @@ public class Portal implements Gadget {
         portalShape = new Ellipse2D.Double(posX*Constants.SCALE,posY*Constants.SCALE, 1*Constants.SCALE, 1*Constants.SCALE);
 
     }
+    
+    /**
+     * @return the center of this portal
+     */
+    public Vect getCenter() {
+        return this.circle.getCenter();
+    }
+    
+    /**
+     * Sets the server handler of this portal (allows it to communicate
+     * with the server)
+     * @param sh - server handler for the client that this portal is on
+     */
+    public void setServerHandler(ServerHandler sh) {
+        serverHandler = sh;
+    }
+    
+    /**
+     * Passes a ball to this portal
+     * @param ball - exiting ball
+     */
+    public void giveBall(Ball ball) {
+        exiting.add(ball);
+    }
 
     @Override
     public String getName() {
@@ -62,13 +86,6 @@ public class Portal implements Gadget {
     @Override
     public Vect getOrigin() {
         return this.position;
-    }
-    
-    /**
-     * @return the center of this portal
-     */
-    public Vect getCenter() {
-        return this.circle.getCenter();
     }
 
     @Override
@@ -122,14 +139,6 @@ public class Portal implements Gadget {
     public void addTrigger(Gadget g) {
         triggers.add(g);
     }
-    
-    public void setServerHandler(ServerHandler sh) {
-        serverHandler = sh;
-    }
-    
-    public void giveBall(Ball ball) {
-        exiting.add(ball);
-    }
 
     @Override
     public void putInBoardRep(Board board, boolean remove) {
@@ -138,12 +147,6 @@ public class Portal implements Gadget {
                 .x() + 1)] = '@';
         board.setBoardRep(boardRep);
     }
-    
-    @Override
-    public String toString() {
-        return "@";
-    }
-
 
 	@Override
 	public Shape getShape() {
@@ -154,5 +157,10 @@ public class Portal implements Gadget {
 	public Color getColor() {
 		return PORTALCOLOR;
 	}
+	
+	@Override
+    public String toString() {
+        return "@";
+    }
 
 }

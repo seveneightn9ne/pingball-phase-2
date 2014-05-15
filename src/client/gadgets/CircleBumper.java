@@ -18,6 +18,9 @@ import physics.Circle;
 import physics.Geometry;
 import physics.Vect;
 
+/**
+ *
+ */
 public class CircleBumper implements Gadget {
     /**
      * Rep invariant: 0 <= position.x() <= 19, 0 <= position.y() <= 19.
@@ -52,24 +55,6 @@ public class CircleBumper implements Gadget {
     	this.shape = new Ellipse2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
 
     }
-    /**
-     * Circle Bumper constructor: create a circle of radius 0.5 at specified
-     * position. 
-     * 
-     * @param xPos
-     *            the x position of the gadget
-     * @param yPos
-     *            the y position of the gadget
-     * 
-     */
-    public CircleBumper(int xPos, int yPos) {
-        this.name = null;
-
-        this.position = new Vect(xPos, yPos);
-        circle = new Circle(position, 0.5);
-    	this.shape = new Ellipse2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
-
-    }
 
     /**
      * Check the rep invariant. The integer-valued doubles are automatically
@@ -83,6 +68,21 @@ public class CircleBumper implements Gadget {
                 .y() == position.y());
 
     }
+    
+    @Override
+    public String getName() {
+        return this.name;
+    }
+    
+    @Override
+    public Vect getOrigin() {
+        return this.position;
+    }
+
+    @Override
+    public int[] getSize() {
+        return new int[]{1,1};
+    }
 
     @Override
     public boolean hit(Ball ball, Board board) {
@@ -93,6 +93,13 @@ public class CircleBumper implements Gadget {
             g.action(board);
         }
         return true;
+    }
+    
+    @Override
+    public double timeUntilCollision(Ball ball) {
+        double time = Geometry.timeUntilCircleCollision(circle,
+                ball.getCircle(), ball.getVelocity());
+        return time;
     }
 
     @Override
@@ -113,32 +120,7 @@ public class CircleBumper implements Gadget {
         board.setBoardRep(boardRep);
 
     }
-
-    @Override
-    public String toString() {
-        return "O";
-    }
-
-    @Override
-    public double timeUntilCollision(Ball ball) {
-        double time = Geometry.timeUntilCircleCollision(circle,
-                ball.getCircle(), ball.getVelocity());
-        return time;
-    }
     
-    @Override
-    public String getName() {
-        return this.name;
-    }
-    @Override
-    public Vect getOrigin() {
-        return this.position;
-    }
-
-    @Override
-    public int[] getSize() {
-        return new int[]{1,1};
-	}
 	@Override
 	public Shape getShape() {
 		return shape;
@@ -147,4 +129,10 @@ public class CircleBumper implements Gadget {
 	public Color getColor() {
 		return CIRCLECOLOR;
 	}
+	
+	@Override
+    public String toString() {
+        return "O";
+    }
+	
 }

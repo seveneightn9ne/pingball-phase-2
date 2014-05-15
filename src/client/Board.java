@@ -3,6 +3,7 @@ package client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Map;
 
@@ -36,17 +37,20 @@ public class Board {
 	private List<Ball> absorbed = new ArrayList<Ball>();
 	private char[][] boardRep = new char[22][22];
 	private Wall[] borders = new Wall[4];
-	public Map<String, Gadget> gadgetNames = new HashMap<String, Gadget>();
-
+	private Map<String, Gadget> gadgetNames = new HashMap<String, Gadget>();
+	private Hashtable<String, ArrayList<String>> keyupToTriggers = new Hashtable<String, ArrayList<String>>();
+    private Hashtable<String, ArrayList<String>> keydownToTriggers = new Hashtable<String, ArrayList<String>>();
 	/**
 	 * Constructor for a default empty Board
 	 */
-	public Board(String name, double gravity, double mu, double mu2) {
+	public Board(String name, double gravity, double mu, double mu2, Hashtable<String, ArrayList<String>> keyups, Hashtable<String, ArrayList<String>> keydowns) {
 		this.name = name;
 		this.gravity = gravity;
 		this.mu = mu;
 		this.mu2 = mu2;
 		this.boardConstructor();
+		this.keyupToTriggers = keyups;
+		this.keydownToTriggers = keydowns;
 	}
 
 	public Board(String name, char[][] rep)
@@ -58,6 +62,34 @@ public class Board {
 		this.mu2 = 2;
 		this.boardConstructor();
 	}
+	
+	/**
+	 * Triggers appropriate actions on the board
+	 * due to a key release
+	 * @param key - String representation of key that has been released
+	 */
+	public void notifyKeyup(String key) {
+	    if (keyupToTriggers.get(key) == null) {
+	        return;
+	    }
+	    for (String name : keyupToTriggers.get(key)) {
+	        gadgetNames.get(name).action(this);
+	    }
+	}
+	
+	/**
+     * Triggers appropriate actions on the board
+     * due to a key press
+     * @param key - String representation of key that has been pressed
+     */
+    public void notifyKeydown(String key) {
+        if (keydownToTriggers.get(key) == null) {
+            return;
+        }
+        for (String name : keydownToTriggers.get(key)) {
+            gadgetNames.get(name).action(this);
+        }
+    }
 	
 	public List<Ball> getBalls()
 	{

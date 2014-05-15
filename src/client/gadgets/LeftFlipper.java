@@ -4,7 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.RoundRectangle2D;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import common.Constants;
@@ -38,8 +41,10 @@ public class LeftFlipper implements Gadget {
 	private final double archWidth = 20.0;
 	private int xPos;
 	private int yPos;
-	private final Shape shapeHoriz;
-	private final Shape shapeVert;
+//	private final Shape shapeHoriz;
+//	private final Shape shapeVert;
+	private Shape shape;
+	private Shape rotatedShape;
 	private final Color FLIPCOLOR = new Color(238,172,150);
 	
 	/**
@@ -63,8 +68,8 @@ public class LeftFlipper implements Gadget {
         this.name = name;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1,2*Constants.SCALE,archHeight,archWidth);
+//        shapeHoriz = new RoundRectangle2D.Double(pivotCoord.x()*Constants.SCALE,pivotCoord.y()*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
+//    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     	
     }
     /**
@@ -84,8 +89,8 @@ public class LeftFlipper implements Gadget {
         this.name = null;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,1,archHeight,archWidth);
-    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,1,2*Constants.SCALE,archHeight,archWidth);
+//        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
+//    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     }
 
     /**
@@ -95,6 +100,12 @@ public class LeftFlipper implements Gadget {
      * @param orientation
      */
     private void orientationConstructor(int xPos, int yPos, int orientation) {
+    	Vect shapeOrigin;
+    	Vect rotatedShapeOrigin;
+    	Vect verticalShape = new Vect(0.5, 2);
+    	Vect horizontalShape = new Vect(2, 0.5);
+    	Vect shapeType;
+    	Vect rShapeType;
         if (orientation == 0) {
             pivot = new Vect(xPos - 0.5, yPos - 0.5);
             line = new LineSegment(pivot.x(), pivot.y(), pivot.x(),
@@ -102,28 +113,60 @@ public class LeftFlipper implements Gadget {
             pivotCoord = new Vect(xPos, yPos);
             rotatedCoord = new Vect(xPos + 1, yPos);
             nonRotatedCoord = new Vect(xPos, yPos + 1);
+            shapeOrigin = pivotCoord;
+            rotatedShapeOrigin = pivotCoord;
+            shapeType = verticalShape;
+            rShapeType = horizontalShape;
         } else if (orientation == 90) {
-            pivot = new Vect(xPos + 1.5, yPos - 0.5);
-            line = new LineSegment(pivot.x() - 2, pivot.y(), pivot.x(),
-                    pivot.y());
-            pivotCoord = new Vect(xPos + 1, yPos);
-            rotatedCoord = new Vect(xPos + 1, yPos + 1);
-            nonRotatedCoord = new Vect(xPos, yPos);
-        } else if (orientation == 180) {
-            pivot = new Vect(xPos + 1.5, yPos + 1.5);
-            line = new LineSegment(pivot.x(), pivot.y() - 2, pivot.x(),
-                    pivot.y());
-            pivotCoord = new Vect(xPos + 1, yPos + 1);
-            rotatedCoord = new Vect(xPos, yPos + 1);
-            nonRotatedCoord = new Vect(xPos + 1, yPos);
-        } else if (orientation == 270) {
             pivot = new Vect(xPos - 0.5, yPos + 1.5);
             line = new LineSegment(pivot.x(), pivot.y(), pivot.x() + 2,
                     pivot.y());
             pivotCoord = new Vect(xPos, yPos + 1);
             rotatedCoord = new Vect(xPos, yPos);
             nonRotatedCoord = new Vect(xPos + 1, yPos + 1);
+            shapeOrigin = new Vect(xPos, yPos + 1.5);
+            rotatedShapeOrigin = new Vect(xPos, yPos);
+            shapeType = horizontalShape;
+            rShapeType = verticalShape;
+        } else if (orientation == 180) {
+            pivot = new Vect(xPos + 1.5, yPos + 1.5);
+            line = new LineSegment(pivot.x(), pivot.y(), pivot.x(),
+                    pivot.y() - 2);
+            pivotCoord = new Vect(xPos + 1, yPos + 1);
+            rotatedCoord = new Vect(xPos, yPos + 1);
+            nonRotatedCoord = new Vect(xPos + 1, yPos);
+            shapeOrigin = new Vect(xPos + 1.5, yPos);
+            rotatedShapeOrigin = new Vect(xPos, yPos + 1.5);
+            shapeType = verticalShape;
+            rShapeType = horizontalShape;
+        } else {// if (orientation == 270) {
+            pivot = new Vect(xPos + 1.5, yPos - 0.5);
+            line = new LineSegment(pivot.x(), pivot.y(), pivot.x() - 2,
+                    pivot.y());
+            pivotCoord = new Vect(xPos + 1, yPos);
+            rotatedCoord = new Vect(xPos + 1, yPos + 1);
+            nonRotatedCoord = new Vect(xPos, yPos);
+            shapeOrigin = new Vect(xPos, yPos);
+            rotatedShapeOrigin = new Vect(xPos + 1.5, yPos);
+            shapeType = horizontalShape;
+            rShapeType = verticalShape;
         }
+        this.shape = new RoundRectangle2D.Double(
+        		shapeOrigin.x()*Constants.SCALE,
+        		shapeOrigin.y()*Constants.SCALE,
+        		shapeType.x()*Constants.SCALE,
+        		shapeType.y()*Constants.SCALE,
+        		archHeight,archWidth);
+        this.rotatedShape = new RoundRectangle2D.Double(
+        		rotatedShapeOrigin.x()*Constants.SCALE,
+        		rotatedShapeOrigin.y()*Constants.SCALE,
+        		rShapeType.x()*Constants.SCALE,
+        		rShapeType.y()*Constants.SCALE,
+        		archHeight,archWidth);
+        
+        System.out.println("Shape: " + shape.getBounds2D());
+        System.out.println("Rotated: " + rotatedShape.getBounds2D());
+
     }
 
     /**
@@ -157,10 +200,10 @@ public class LeftFlipper implements Gadget {
 
     @Override
     public boolean hit(Ball ball, Board board) {
-        Vect velocity = Geometry.reflectRotatingWall(line, pivot,
+    	LineSegment lineToCollideWith = lineToCollideWith(ball);
+        Vect velocity = Geometry.reflectRotatingWall(lineToCollideWith, pivot,
                 angularVelocity, ball.getCircle(), ball.getVelocity());
         ball.setVelocity(velocity);
-        
         
         for (Gadget g : triggers) {
             g.action(board);
@@ -210,8 +253,26 @@ public class LeftFlipper implements Gadget {
 
     @Override
     public double timeUntilCollision(Ball ball) {
-        return Geometry.timeUntilWallCollision(line, ball.getCircle(),
-                ball.getVelocity());
+    	List<Double> times = new ArrayList<Double>();
+    	for (LineSegment edge : getRect()) {
+    		times.add(Geometry.timeUntilWallCollision(edge, ball.getCircle(), ball.getVelocity()));
+    	}
+    	return Collections.min(times);
+//        return Geometry.timeUntilWallCollision(line, ball.getCircle(),
+//                ball.getVelocity());
+    }
+    
+    private LineSegment lineToCollideWith(Ball ball) {
+    	double minTime = 9999;
+    	LineSegment closestWall = null;
+    	for (LineSegment edge : getRect()) {
+    		double thisTime = Geometry.timeUntilWallCollision(edge, ball.getCircle(), ball.getVelocity());
+    		if (thisTime < minTime) {
+    			minTime = thisTime;
+    			closestWall = edge;
+    		}
+    	}
+    	return closestWall;
     }
 
     @Override
@@ -232,12 +293,37 @@ public class LeftFlipper implements Gadget {
 
 	@Override
 	public Shape getShape() {
-		if (rotated) return shapeHoriz;
-		else return shapeVert;
+//		if (isHorizontal()) return shapeHoriz;
+//		else return shapeVert;
+		if (rotated) return rotatedShape;
+		else return shape;
 	}
 	@Override
 	public Color getColor() {
 		return FLIPCOLOR;
+	}
+	
+	private boolean isHorizontal() {
+		boolean isHor = true;
+		if (orientation == 0 || orientation == 180)
+			isHor = false;
+		if (rotated) isHor = !isHor;
+		return isHor;
+	}
+	
+	private List<LineSegment> getRect() {
+		List<LineSegment> rect = new ArrayList<LineSegment>();
+		rect.add(line);
+		if (isHorizontal()) {
+			rect.add(new LineSegment(line.p1().plus(new Vect(0, 0.5)), line.p2().plus(new Vect(0, 0.5))));
+			rect.add(new LineSegment(line.p1(), line.p1().plus(new Vect(0, 0.5))));
+			rect.add(new LineSegment(line.p2(), line.p2().plus(new Vect(0, 0.5))));
+		} else {
+			rect.add(new LineSegment(line.p1().plus(new Vect(0.5, 0)), line.p2().plus(new Vect(0.5, 0))));
+			rect.add(new LineSegment(line.p1(), line.p1().plus(new Vect(0.5, 0))));
+			rect.add(new LineSegment(line.p2(), line.p2().plus(new Vect(0.5, 0))));
+		}
+		return rect;
 	}
 
 }

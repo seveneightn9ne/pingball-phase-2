@@ -7,7 +7,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -74,8 +76,9 @@ public class PingballGUI extends JFrame {
 	 * @param board
 	 *            the connected board, or null if there is no board
 	 */
-	public PingballGUI(PingballClient client, String hostname, Board board) {
 
+	public PingballGUI(PingballClient client, String hostname, final Board board) {
+		
 		this.client = client;
 
 		// make the menu bar
@@ -182,42 +185,56 @@ public class PingballGUI extends JFrame {
 		// GroupLayout.PREFERRED_SIZE)
 		// .addComponent(statusBar)
 		// );
+        pack();
+        
+        // TODO: keyboard listener sends keys to board
+        
+        // menu event listeners
+        newGameMI.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                newGame();
+            }
+        });
+        pauseMI.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                pause();
+            }
+        });
+        resumeMI.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                resume();
+            }
+        });
+        restartMI.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                restart();
+            }
+        });
+        connectMI.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                connect();
+            }
+        });
+        disconnectMI.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                disconnect();
+            }
+        });
+        
+        KeyListener listener = new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                    board.notifyKeydown(KeyEvent.getKeyText(e.getKeyCode()));
+                    System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+                }
 
-		pack();
+            public void keyReleased(KeyEvent e) {
+                    board.notifyKeyup(KeyEvent.getKeyText(e.getKeyCode()));
+                }
+        };
 
-		// TODO: keyboard listener sends keys to board
+        KeyListener magical = new MagicKeyListener(listener);
 
-		// menu event listeners
-		newGameMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				newGame();
-			}
-		});
-		pauseMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				pause();
-			}
-		});
-		resumeMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				resume();
-			}
-		});
-		restartMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				restart();
-			}
-		});
-		connectMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				connect();
-			}
-		});
-		disconnectMI.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent event) {
-				disconnect();
-			}
-		});
+        this.addKeyListener(magical);
 	}
 
 	private void newGame() {

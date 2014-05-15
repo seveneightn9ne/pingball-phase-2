@@ -52,21 +52,6 @@ public class SquareBumper implements Gadget {
         this.linesConstructor();
         shape = new Rectangle(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
     }
-
-    /**
-     * Constructor for SquareBumper
-     * 
-     * @param x - x coordinate of the upper left corner of this gadget
-     * @param y - y coordinate of the upper left corner of this gadget
-     */
-    public SquareBumper(int x, int y) {
-        this.name = null;
-        this.position = new Vect(x, y);
-        lines = new LineSegment[4];
-        corners = new Circle[4];
-        this.linesConstructor();
-        shape = new Rectangle(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
-    }
     
     /**
      * Creates LineSegments for the square bumper
@@ -97,6 +82,21 @@ public class SquareBumper implements Gadget {
         assert (position.x() >= 0 && position.x() <= 19);
         assert (position.y() >= 0 && position.y() <= 19);
     }
+    
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public Vect getOrigin() {
+        return this.position;
+    }
+
+    @Override
+    public int[] getSize() {
+        return new int[]{1,1};
+    }
 
     @Override
     public boolean hit(Ball ball, Board board) {
@@ -124,23 +124,9 @@ public class SquareBumper implements Gadget {
         board.setBoardRep(boardRep);
     }
 
-    /**
-     * Accessor method
-     * 
-     * @return a Vect representing the position of the bumper
-     */
-    public Vect getPosition() {
-        return new Vect(position.x(), position.y());
-    }
-
     @Override
     public void action(Board board) {
-
-    }
-
-    @Override
-    public String toString() {
-        return "#";
+        // Square bumpers have no action.
     }
 
     @Override
@@ -173,21 +159,6 @@ public class SquareBumper implements Gadget {
         return minTime;
     }
 
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    @Override
-    public Vect getOrigin() {
-        return this.position;
-    }
-
-    @Override
-    public int[] getSize() {
-        return new int[]{1,1};
-    }
-
 	@Override
 	public Shape getShape() {
 		return shape;
@@ -197,5 +168,10 @@ public class SquareBumper implements Gadget {
 	public Color getColor() {
 		return SQUARECOLOR;
 	}
+	
+	@Override
+    public String toString() {
+        return "#";
+    }
 
 } 

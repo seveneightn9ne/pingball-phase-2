@@ -186,7 +186,7 @@ public class Parser {
 		}
 		
 		
-		Board board = new Board(name, gravity, friction1, friction2);
+		Board board = new Board(name, gravity, friction1, friction2, keyupToTriggers, keydownToTriggers);
 		
 		for (int i = 0; i<gadgetList.size(); i++){
 		    board.addGadget(gadgetList.get(i));
@@ -263,110 +263,6 @@ public class Parser {
 		return true;
 	}
 	
-	/** Takes a string, makes a board out of it
-	 * NOTE: the parser is case sensitive
-	 * NOTE: the parser cannot currently handle tabs (only spaces count as whitespace)
-	 * Calls cleanFile, isValidFile, and makeGadgets
-	 * TODO: Make it call isValidGadget on each gadget
-	 * TODO: make it able to handle tabs
-	 * @input file representing the board
-	 * @output board instance
-	 * @throws RuntimeException
-	 */
-	public static Board makeBoardFromString(String fileString){
-		
-		List<String> cleanedFile = Arrays.asList(fileString.split("\n"));
-		if (!isValidFile(cleanedFile)){
-			throw new RuntimeException("This is not a valid file");
-		}
-		
-		String name="";
-		double gravity =0;
-		double friction1=0;
-		double friction2=0;
-		ArrayList<Ball> ballList = new ArrayList<Ball>();
-		ArrayList<Gadget> gadgetList = new ArrayList<Gadget>();
-		Hashtable<String, String[]> triggerHash= new Hashtable<String, String[]>();
-		Hashtable<Gadget, String> gadgToName = new Hashtable<Gadget, String>();
-		Hashtable<String, Gadget> nameToGadg = new Hashtable<String, Gadget>();
-		
-		
-		//this segement parses the first line of the cleaned file
-		//it gives us the board name, the gravity, friction1, and friction2
-		String[] line1 = cleanedFile.get(0).split(" ");
-		for(String word: line1){
-			word = word.toLowerCase();
-			if (word.startsWith("name")){
-				name = word.split("=")[1];
-			}else if (word.startsWith("gravity")){
-				gravity = Double.parseDouble(word.split("=")[1]);
-			}else if (word.startsWith("friction1")){
-				friction1 = Double.parseDouble(word.split("=")[1]);
-			}else if (word.startsWith("friction2")){
-				friction2 = Double.parseDouble(word.split("=")[1]);
-			}
-		}
-		
-		//this segment parses the rest of the cleaned file line by line
-		//it gives us the information we need about each ball and gadget
-		//and also check to see if each line is a trigger
-		for (int i = 1; i < cleanedFile.size(); i++){
-			String[] line = cleanedFile.get(i).split(" ");
-			if (line[0].equals("ball")){
-				Ball ball = makeBall(line);
-				ballList.add(ball);
-			}else if (Arrays.asList(validGadgets).contains(line[0])){
-				Gadget gadget = makeGadget(line);
-				String gadgetName = line[1].split("=")[1];
-				gadgToName.put(gadget, gadgetName);
-				nameToGadg.put(gadgetName, gadget);
-				gadgetList.add(gadget);
-			}else if (line[0].equals("fire")){
-				if (line.length == 3 && line[1].startsWith("trigger")&& line[2].startsWith("action")){
-					String trigger = line[1].split("=")[1];
-					String action = line[2].split("=")[1];
-					if (triggerHash.containsKey(action)){
-						String[] val = triggerHash.get(action);
-						String[] newVal = new String[val.length + 1];
-						for (int j = 0; j<val.length; j++){
-							newVal[j] = val[j];
-						}
-						newVal[val.length] = trigger;
-						triggerHash.put(action, newVal);
-					}else{
-						String[] val = {trigger};
-						triggerHash.put(action, val);
-					}
-				}else{
-					throw new RuntimeException("bad trigger");
-				}
-			}else{
-				throw new RuntimeException("this is not an acceptable gadget");
-			}
-		}
-		
-		//updates the actions on the gadgets
-		Enumeration<String> enumKey = triggerHash.keys();
-		while(enumKey.hasMoreElements()) {
-		    String act = enumKey.nextElement();
-		    for (String trig: triggerHash.get(act)){
-		    	Gadget trigGadget = nameToGadg.get(trig);
-		    	Gadget actGadget = nameToGadg.get(act);
-		    	actGadget.addTrigger(trigGadget);
-		    }
-		}
-		Board board = new Board(name, gravity, friction1, friction2);
-        
-        for (int i = 0; i<gadgetList.size(); i++){
-            board.addGadget(gadgetList.get(i));
-        }
-        
-        for (int i = 0; i<ballList.size(); i++) {
-            board.addBall(ballList.get(i));
-        }
-
-        return board;
-	}
 	
 	/**
 	 * Make a portal from a given line in the file
@@ -503,7 +399,6 @@ public class Parser {
 	 * @param line
 	 * @return Ball
 	 * @throws runtime exception if it's a bad line
-	 * TODO: make the thrown errors less hacky
 	 */
 	public static Ball makeBall(String[] line){
 		double x;
@@ -709,21 +604,6 @@ public class Parser {
 			}
 		}
 		return true;
-	}
-	
-	
-	/**
-	 * checks each gadget to make sure it's valid
-	 * (ie. isn't overlapping, has valid dimensions for a gadget of that type)
-	 * Called by makeGadget
-	 * @param Gadget to check
-	 * @return true if we have a valid gadget
-	 * false otherwise
-	 * @throw badGadgetException
-	 */
-	private static boolean checkGadget(Gadget gadget){
-		//TODO: implement
-		throw new UnsupportedOperationException();
 	}
 	
 }

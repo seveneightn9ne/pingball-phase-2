@@ -9,7 +9,13 @@ import common.Constants;
 import client.Ball;
 import client.Board;
 
-
+/**
+ * Interface for objects present on the board that are not balls.
+ * 
+ * Gadget have actions and triggers. A trigger is another gadget thats action is triggered by an 
+ * event that happens at the first gadget, such as a ball colliding with it. An action is a 
+ * response that a gadget can make to a trigger happening somewhere on the board.
+ */
 public interface Gadget {
     
     /**
@@ -44,6 +50,7 @@ public interface Gadget {
     
     /**
      * The action to take when this Gadget is triggered
+     * @param board - Board that this gadget is on
      */
     public void action(Board board);
     

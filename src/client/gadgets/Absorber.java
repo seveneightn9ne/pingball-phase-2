@@ -111,6 +111,21 @@ public class Absorber implements Gadget {
         assert (ballSet.size() == balls.size());
 
     }
+    
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @Override
+    public Vect getOrigin() {
+        return this.position;
+    }
+
+    @Override
+    public int[] getSize() {
+        return new int[]{this.width, this.height};
+    }
 
     @Override
     public boolean hit(Ball ball, Board board) {
@@ -124,43 +139,7 @@ public class Absorber implements Gadget {
         }
         return true;
     }
-
-    @Override
-    public void action(Board board) {
-        if (!balls.isEmpty()) {
-            Ball ball = balls.get(0);
-            balls.remove(ball);
-            ball.setPosition(new Vect(southEast.x(), southEast.y()));
-            ball.setVelocity(new Vect(0, -50));
-            ball.putInBoardRep(board, false);
-            board.notifyReleased(ball);
-        }
-    }
-
-    @Override
-    public String toString() {
-        return "=";
-    }
-
-    @Override
-    public void putInBoardRep(Board board, boolean remove) {
-        char[][] boardRep = board.getBoardRep();
-        for (int i = 0; i < width; i++) {
-            for (int j = 0; j < height; j++) {
-                boardRep[((int) position.y()) + j + 1][((int) position.x()) + i
-                        + 1] = '=';
-            }
-        }
-
-        board.setBoardRep(boardRep);
-
-    }
-
-    @Override
-    public void addTrigger(Gadget g) {
-        triggers.add(g);
-    }
-
+    
     @Override
     public double timeUntilCollision(Ball ball) {
         double minTime = Double.POSITIVE_INFINITY;
@@ -183,20 +162,35 @@ public class Absorber implements Gadget {
     }
 
     @Override
-    public String getName() {
-        return this.name;
+    public void action(Board board) {
+        if (!balls.isEmpty()) {
+            Ball ball = balls.get(0);
+            balls.remove(ball);
+            ball.setPosition(new Vect(southEast.x(), southEast.y()));
+            ball.setVelocity(new Vect(0, -50));
+            ball.putInBoardRep(board, false);
+            board.notifyReleased(ball);
+        }
+    }
+    
+    @Override
+    public void addTrigger(Gadget g) {
+        triggers.add(g);
     }
 
     @Override
-    public Vect getOrigin() {
-        return this.position;
-    }
+    public void putInBoardRep(Board board, boolean remove) {
+        char[][] boardRep = board.getBoardRep();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                boardRep[((int) position.y()) + j + 1][((int) position.x()) + i
+                        + 1] = '=';
+            }
+        }
 
-    @Override
-    public int[] getSize() {
-        return new int[]{this.width, this.height};
-    }
+        board.setBoardRep(boardRep);
 
+    }
 
 	@Override
 	public Shape getShape() {
@@ -207,5 +201,10 @@ public class Absorber implements Gadget {
 	public Color getColor() {
 		return ABSORBCOLOR;
 	}
+	
+	@Override
+    public String toString() {
+        return "=";
+    }
 
 }
