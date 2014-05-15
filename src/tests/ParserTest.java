@@ -3,16 +3,12 @@ package tests;
 import static org.junit.Assert.assertEquals;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import client.Board;
 import client.Parser;
-import server.PingballServer;
 
 /**
  * Parser Testing Strategy:
@@ -32,7 +28,6 @@ import server.PingballServer;
  *          General tests:              Check that comments are ignored, exceptions are thrown when illegal arguments/formatting is given.
  *                                      Test staff boards.
  *          
- * @author meganoleary
  *
  */
 public class ParserTest {

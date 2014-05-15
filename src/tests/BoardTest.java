@@ -1,6 +1,9 @@
 package tests;
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+import java.util.Hashtable;
+
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -20,14 +23,17 @@ import client.gadgets.*;
  */
 public class BoardTest {
     
+    Hashtable<String, ArrayList<String>> keyupToTriggers = new Hashtable<String, ArrayList<String>>();
+    Hashtable<String, ArrayList<String>> keydownToTriggers = new Hashtable<String, ArrayList<String>>();
+    
     @BeforeClass
     public static void setUpBeforeClass() {
-        
+     
     }
     
     @Test
     public void emptyBoardTest(){
-        Board board = new Board("board1", 0, 0, 0);
+        Board board = new Board("board1", 0, 0, 0, keyupToTriggers, keydownToTriggers);
         assertEquals("......................\n.                    .\n.                    .\n.                    .\n"
                 + ".                    .\n.                    .\n.                    .\n.                    .\n"
                 + ".                    .\n.                    .\n.                    .\n.                    .\n"
@@ -38,7 +44,7 @@ public class BoardTest {
     
     @Test
     public void boardPlusStationaryBallTest(){
-        Board board = new Board("board1", 0, 0, 0);
+        Board board = new Board("board1", 0, 0, 0, keyupToTriggers, keydownToTriggers);
         board.addBall(new Ball("ball1",1,2,0,0));
         assertEquals("......................\n.                    .\n.                    .\n. *                  .\n"
                 + ".                    .\n.                    .\n.                    .\n.                    .\n"
@@ -50,7 +56,7 @@ public class BoardTest {
     
     @Test
     public void boardVariousGadgetsTest(){
-        Board board = new Board("board1", 0, 0, 0);
+        Board board = new Board("board1", 0, 0, 0, keyupToTriggers, keydownToTriggers);
         Gadget g1 = new SquareBumper("c1",1,1);
         Gadget g2 = new CircleBumper("c1",5, 15);
         Gadget g3 = new TriangleBumper("c1",1,2,0);
@@ -83,7 +89,7 @@ public class BoardTest {
     
     @Test
     public void testAbsorption(){
-        Board board = new Board("board1", 0,0,0);
+        Board board = new Board("board1", 0,0,0, keyupToTriggers, keydownToTriggers);
         Ball ball = new Ball("ball1",5,5,0,10);
         board.addBall(ball);
         Gadget g1 = new Absorber("abs1",0,16, 15, 2);

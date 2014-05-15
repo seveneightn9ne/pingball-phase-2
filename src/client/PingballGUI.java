@@ -6,7 +6,9 @@ import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -75,7 +77,7 @@ public class PingballGUI extends JFrame {
 	 * @param hostname the name of the connected server, or null if there is no server connection
 	 * @param board the connected board, or null if there is no board
 	 */
-	public PingballGUI(PingballClient client, String hostname, Board board) {
+	public PingballGUI(PingballClient client, String hostname, final Board board) {
 		
 		this.client = client;
 		
@@ -183,6 +185,21 @@ public class PingballGUI extends JFrame {
                 disconnect();
             }
         });
+        
+        KeyListener listener = new KeyAdapter() {
+            public void keyPressed(KeyEvent e) {
+                    board.notifyKeydown(KeyEvent.getKeyText(e.getKeyCode()));
+                    System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
+                }
+
+            public void keyReleased(KeyEvent e) {
+                    board.notifyKeyup(KeyEvent.getKeyText(e.getKeyCode()));
+                }
+        };
+
+        KeyListener magical = new MagicKeyListener(listener);
+
+        this.addKeyListener(magical);
 	}
 	
 	private void newGame() {

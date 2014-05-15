@@ -59,29 +59,24 @@ public class WallBoardGUI extends JPanel implements Runnable {
 
 		synchronized (board) {
 			for (Wall w : board.getWallList()) {
-				System.out.println("IN LOOP FOR BOARD");
 				if (w.wallConnectedName() != null) {
 					AffineTransform orig = g2d.getTransform();
 					if (w.getSide() == Constants.BoardSide.BOTTOM) {
-						System.out.println("BOTTOM");
 						g2d.drawString(w.wallConnectedName(),
 								(Constants.SCALE * 20 + Constants.SCALE) / 2,
 								Constants.SCALE * 20 + Constants.SCALE / 2);
 
 					} else if (w.getSide() == Constants.BoardSide.RIGHT) {
-						System.out.println("RIGHT");
 						g2d.rotate(90.0);
 						g2d.drawString(w.wallConnectedName(),
 								(Constants.SCALE * 20 + Constants.SCALE) / 2,
 								Constants.SCALE * 20 + Constants.SCALE / 2);
 
 					} else if (w.getSide() == Constants.BoardSide.TOP) {
-						System.out.println("TOP");
 						g2d.drawString(w.wallConnectedName(),
 								(Constants.SCALE * 20 + Constants.SCALE) / 2, 0);
 
 					} else if (w.getSide() == Constants.BoardSide.LEFT) {
-						System.out.println("LEFT");
 						g2d.rotate(270.0);
 						g2d.drawString(w.wallConnectedName(),
 								(Constants.SCALE * 20 + Constants.SCALE) / 2,
