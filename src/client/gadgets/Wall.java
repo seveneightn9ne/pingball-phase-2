@@ -20,8 +20,9 @@ public class Wall implements Gadget {
     private LineSegment line;
     private boolean open = false;
     private Constants.BoardSide boardSide;
-    private String connectedBoardName;
+    private String connectedBoardName=null;
     private ServerHandler serverHandler;
+    
     
     /**
      * Wall constructor: creates line segments representing the walls of a board
@@ -49,6 +50,20 @@ public class Wall implements Gadget {
         else if (side == Constants.BoardSide.LEFT){
             line = new LineSegment(-.5, 19.5, -.5, -.5);
         }
+    }
+    
+    public Constants.BoardSide getSide()
+    {
+    	return boardSide;
+    }
+    
+    public String wallConnectedName()
+    {
+    	if (connectedBoardName != null)
+    	{
+        	return new String(connectedBoardName);
+    	}
+    	return null;
     }
     
     public void checkRep(){

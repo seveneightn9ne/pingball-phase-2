@@ -177,6 +177,11 @@ public class Board {
 		else
 			return borders[3];
 	}
+	
+	public Wall[] getWallList()
+	{
+		return borders;
+	}
 
 	/**
 	 * Accessor method
