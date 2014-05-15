@@ -16,9 +16,9 @@ import javax.swing.border.AbstractBorder;
 import common.Constants;
 
 /**
- * PingBorder is the GUI element that represents the walls
- * of the Pingball board. 
- *
+ * PingBorder is the GUI element that represents the walls of the Pingball
+ * board.
+ * 
  */
 public class PingBorder extends AbstractBorder {
 
@@ -32,8 +32,11 @@ public class PingBorder extends AbstractBorder {
 
 	/**
 	 * Create a new border
-	 * @param colour the colour of the border
-	 * @param g the amount of gap in pixels
+	 * 
+	 * @param colour
+	 *            the colour of the border
+	 * @param g
+	 *            the amount of gap in pixels
 	 */
 	public PingBorder(Color colour, int g) {
 		borderColour = colour;
@@ -42,8 +45,11 @@ public class PingBorder extends AbstractBorder {
 
 	/**
 	 * Set the name of the wall on the given side
-	 * @param side the side of the border
-	 * @param name the name to write on that side
+	 * 
+	 * @param side
+	 *            the side of the border
+	 * @param name
+	 *            the name to write on that side
 	 */
 	public void setString(Constants.BoardSide side, String name) {
 		if (side == Constants.BoardSide.RIGHT) {
@@ -59,7 +65,9 @@ public class PingBorder extends AbstractBorder {
 
 	/**
 	 * Clear the current side name, if there is one
-	 * @param side the side of the border to clear the name of
+	 * 
+	 * @param side
+	 *            the side of the border to clear the name of
 	 */
 	public void clearString(Constants.BoardSide side) {
 		if (side == Constants.BoardSide.RIGHT) {
@@ -77,96 +85,101 @@ public class PingBorder extends AbstractBorder {
 	public void paintBorder(Component c, Graphics g, int x, int y, int width,
 			int height) {
 		super.paintBorder(c, g, x, y, width, height);
-		Graphics2D g2d;
-		if (g instanceof Graphics2D) {
-			g2d = (Graphics2D) g;
-			g2d.setColor(borderColour);
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-					RenderingHints.VALUE_ANTIALIAS_ON);
+		Graphics2D g2d = (Graphics2D) g;
+		g2d.setColor(borderColour);
+		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+				RenderingHints.VALUE_ANTIALIAS_ON);
 
-			// TOPLEFT Border
-			if (rightString != null) {
+		if (rightString != null) {
+			// Create a rotation transformation for the font.
+			AffineTransform fontAT = new AffineTransform();
 
-				// Create a rotation transformation for the font.
-				AffineTransform fontAT = new AffineTransform();
+			// get the current font
+			Font theFont = g2d.getFont();
 
-				// get the current font
-				Font theFont = g2d.getFont();
+			// Derive a new font using a rotatation transform
+			fontAT.rotate(90 * java.lang.Math.PI / 180);
+			Font theDerivedFont = theFont.deriveFont(fontAT);
 
-				// Derive a new font using a rotatation transform
-				fontAT.rotate(90 * java.lang.Math.PI / 180);
-				Font theDerivedFont = theFont.deriveFont(fontAT);
+			// set the derived font in the Graphics2D context
+			g2d.setFont(theDerivedFont);
 
-				// set the derived font in the Graphics2D context
-				g2d.setFont(theDerivedFont);
+			// Render a string using the derived font
+			g2d.drawString(
+					rightString,
+					(int) width
+							- (theDerivedFont.getSize() + theDerivedFont
+									.getSize() / 2), (int) y + height / 2);
 
-				// Render a string using the derived font
-				g2d.drawString(rightString, (int) width-(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y + height / 2);
+			// put the original font back
+			g2d.setFont(theFont);
 
-				// put the original font back
-				g2d.setFont(theFont);
+		}
+		// TOPRIGHT Border
+		if (leftString != null) {
+			AffineTransform fontAT = new AffineTransform();
 
-			}
-			// TOPRIGHT Border
-			if (leftString != null) {
-				AffineTransform fontAT = new AffineTransform();
+			// get the current font
+			Font theFont = g2d.getFont();
 
-				// get the current font
-				Font theFont = g2d.getFont();
+			// Derive a new font using a rotatation transform
+			fontAT.rotate(270 * java.lang.Math.PI / 180);
+			Font theDerivedFont = theFont.deriveFont(fontAT);
 
-				// Derive a new font using a rotatation transform
-				fontAT.rotate(270 * java.lang.Math.PI/180);
-				Font theDerivedFont = theFont.deriveFont(fontAT);
+			// set the derived font in the Graphics2D context
+			g2d.setFont(theDerivedFont);
 
-				// set the derived font in the Graphics2D context
-				g2d.setFont(theDerivedFont);
+			// Render a string using the derived font
+			g2d.drawString(
+					leftString,
+					(int) (theDerivedFont.getSize() + theDerivedFont.getSize() / 2),
+					(int) y + height / 2);
 
-				// Render a string using the derived font
-				g2d.drawString(leftString, (int)(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y+height/2);
+			// put the original font back
+			g2d.setFont(theFont);
+		}
+		// Lower Left Border
+		if (bottomString != null) {
 
-				// put the original font back
-				g2d.setFont(theFont);
-			}
-			// Lower Left Border
-			if (bottomString != null) {
+			AffineTransform fontAT = new AffineTransform();
 
-				AffineTransform fontAT = new AffineTransform();
+			// get the current font
+			Font theFont = g2d.getFont();
 
-				// get the current font
-				Font theFont = g2d.getFont();
+			// Derive a new font using a rotatation transform
+			Font theDerivedFont = theFont.deriveFont(fontAT);
 
-				// Derive a new font using a rotatation transform
-				Font theDerivedFont = theFont.deriveFont(fontAT);
+			// set the derived font in the Graphics2D context
+			g2d.setFont(theDerivedFont);
 
-				// set the derived font in the Graphics2D context
-				g2d.setFont(theDerivedFont);
+			// Render a string using the derived font
+			g2d.drawString(bottomString, (int) x + width / 2, (int) height
+					- (theDerivedFont.getSize() + theDerivedFont.getSize() / 2));
 
-				// Render a string using the derived font
-				g2d.drawString(bottomString, (int) x+width/2, (int) height-(theDerivedFont.getSize()+theDerivedFont.getSize()/2));
+			// put the original font back
+			g2d.setFont(theFont);
+		}
+		// Lower Right Border
+		if (topString != null) {
+			AffineTransform fontAT = new AffineTransform();
 
-				// put the original font back
-				g2d.setFont(theFont);
-			}
-			// Lower Right Border
-			if (topString != null) {
+			// get the current font
+			Font theFont = g2d.getFont();
 
-				AffineTransform fontAT = new AffineTransform();
+			// Derive a new font using a rotatation transform
+			Font theDerivedFont = theFont.deriveFont(fontAT);
 
-				// get the current font
-				Font theFont = g2d.getFont();
+			// set the derived font in the Graphics2D context
+			g2d.setFont(theDerivedFont);
 
-				// Derive a new font using a rotatation transform
-				Font theDerivedFont = theFont.deriveFont(fontAT);
+			// Render a string using the derived font
+			g2d.drawString(
+					topString,
+					(int) x + width / 2,
+					(int) (theDerivedFont.getSize() + theDerivedFont.getSize() / 2));
 
-				// set the derived font in the Graphics2D context
-				g2d.setFont(theDerivedFont);
-
-				// Render a string using the derived font
-				g2d.drawString(topString, (int) x+width/2, (int) (theDerivedFont.getSize()+theDerivedFont.getSize()/2));
-
-				// put the original font back
-				g2d.setFont(theFont);
-			}
+			// put the original font back
+			g2d.setFont(theFont);
 		}
 	}
 
