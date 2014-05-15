@@ -15,8 +15,17 @@ import common.Constants;
 import client.gadgets.Gadget;
 import client.gadgets.Wall;
 
+/**
+ * BoardGUI is a JPanel that represents a Pingball Board. 
+ * It repaints the JPanel to continuously represent the state 
+ * of the Board.
+ * 
+ * Thread Safety: BoardGUI is confined to the Swing thread.
+ *
+ */
 public class BoardGUI extends JPanel implements Runnable {
 
+	private static final long serialVersionUID = 1L;
 	private Board board;
 	private Thread animator;
 	private final Color BACKGROUNDCOLOR = new Color(231, 220, 166);
@@ -105,8 +114,7 @@ public class BoardGUI extends JPanel implements Runnable {
 
 				Thread.sleep((long) Constants.TIMESTEP);
 			} catch (InterruptedException ex) {
-				Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null,
-						ex);
+				Logger.getLogger(Board.class.getName()).log(Level.SEVERE, null, ex);
 			}
 		}
 	}
