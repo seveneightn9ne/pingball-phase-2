@@ -1,10 +1,7 @@
 package client.gadgets;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
-import java.awt.geom.Ellipse2D;
 import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -21,9 +18,8 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 
-
 /**
- * Model for the Right Flipper gadget.  
+ * Model for the Right Flipper gadget.
  * 
  */
 public class RightFlipper implements Gadget {
@@ -49,10 +45,7 @@ public class RightFlipper implements Gadget {
 	private final double archWidth = 20.0;
 	private Shape shape;
 	private Shape rotatedShape;
-	private final Color FLIPCOLOR = new Color(238,172,150);
-	
-
-	
+	private final Color FLIPCOLOR = new Color(238, 172, 150);
 
 	/**
 	 * Constructor for RightFlipper
@@ -99,19 +92,22 @@ public class RightFlipper implements Gadget {
 	}
 
 	/**
-	 * Sets the orientation of the flipper
+	 * Sets the orientation and the shape representation of the flipper
 	 * 
 	 * @param xPos
+	 *            - xPosition for the flipper
 	 * @param yPos
+	 *            - yPosition for the flipper
 	 * @param orientation
+	 *            - orientation for the flipper
 	 */
 	private void orientationConstructor(int xPos, int yPos, int orientation) {
-    	Vect shapeOrigin;
-    	Vect rotatedShapeOrigin;
-    	Vect verticalShape = new Vect(0.5, 2);
-    	Vect horizontalShape = new Vect(2, 0.5);
-    	Vect shapeType;
-    	Vect rShapeType;
+		Vect shapeOrigin;
+		Vect rotatedShapeOrigin;
+		Vect verticalShape = new Vect(0.5, 2);
+		Vect horizontalShape = new Vect(2, 0.5);
+		Vect shapeType;
+		Vect rShapeType;
 		if (orientation == 0) {
 			pivot = new Vect(xPos + 1.5, yPos - 0.5);
 			line = new LineSegment(pivot.x(), pivot.y(), pivot.x(),
@@ -119,10 +115,10 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos + 1, yPos);
 			rotatedCoord = new Vect(xPos, yPos);
 			nonRotatedCoord = new Vect(xPos + 1, yPos + 1);
-            shapeOrigin = new Vect(xPos + 1.5, yPos);
-            rotatedShapeOrigin = new Vect(xPos, yPos);
-            shapeType = verticalShape;
-            rShapeType = horizontalShape;
+			shapeOrigin = new Vect(xPos + 1.5, yPos);
+			rotatedShapeOrigin = new Vect(xPos, yPos);
+			shapeType = verticalShape;
+			rShapeType = horizontalShape;
 		} else if (orientation == 90) {
 			pivot = new Vect(xPos + 1.5, yPos + 1.5);
 			line = new LineSegment(pivot.x(), pivot.y(), pivot.x() - 2,
@@ -130,10 +126,10 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos + 1, yPos + 1);
 			rotatedCoord = new Vect(xPos + 1, yPos);
 			nonRotatedCoord = new Vect(xPos, yPos + 1);
-            shapeOrigin = new Vect(xPos, yPos + 1.5);
-            rotatedShapeOrigin = new Vect(xPos + 1.5, yPos);
-            shapeType = horizontalShape;
-            rShapeType = verticalShape;
+			shapeOrigin = new Vect(xPos, yPos + 1.5);
+			rotatedShapeOrigin = new Vect(xPos + 1.5, yPos);
+			shapeType = horizontalShape;
+			rShapeType = verticalShape;
 		} else if (orientation == 180) {
 			pivot = new Vect(xPos - 0.5, yPos + 1.5);
 			line = new LineSegment(pivot.x(), pivot.y(), pivot.x(),
@@ -141,10 +137,10 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos, yPos + 1);
 			rotatedCoord = new Vect(xPos + 1, yPos + 1);
 			nonRotatedCoord = new Vect(xPos, yPos);
-            shapeOrigin = new Vect(xPos, yPos);
-            rotatedShapeOrigin = new Vect(xPos, yPos + 1.5);
-            shapeType = verticalShape;
-            rShapeType = horizontalShape;
+			shapeOrigin = new Vect(xPos, yPos);
+			rotatedShapeOrigin = new Vect(xPos, yPos + 1.5);
+			shapeType = verticalShape;
+			rShapeType = horizontalShape;
 		} else {// if (orientation == 270) {
 			pivot = new Vect(xPos - 0.5, yPos - 0.5);
 			line = new LineSegment(pivot.x(), pivot.y(), pivot.x() + 2,
@@ -152,23 +148,21 @@ public class RightFlipper implements Gadget {
 			pivotCoord = new Vect(xPos, yPos);
 			rotatedCoord = new Vect(xPos, yPos + 1);
 			nonRotatedCoord = new Vect(xPos + 1, yPos);
-            shapeOrigin = new Vect(xPos, yPos);
-            rotatedShapeOrigin = new Vect(xPos, yPos);
-            shapeType = horizontalShape;
-            rShapeType = verticalShape;
+			shapeOrigin = new Vect(xPos, yPos);
+			rotatedShapeOrigin = new Vect(xPos, yPos);
+			shapeType = horizontalShape;
+			rShapeType = verticalShape;
 		}
-        this.shape = new RoundRectangle2D.Double(
-        		shapeOrigin.x()*Constants.SCALE + Constants.SCALE,
-        		shapeOrigin.y()*Constants.SCALE + Constants.SCALE,
-        		shapeType.x()*Constants.SCALE,
-        		shapeType.y()*Constants.SCALE,
-        		archHeight,archWidth);
-        this.rotatedShape = new RoundRectangle2D.Double(
-        		rotatedShapeOrigin.x()*Constants.SCALE + Constants.SCALE,
-        		rotatedShapeOrigin.y()*Constants.SCALE + Constants.SCALE,
-        		rShapeType.x()*Constants.SCALE,
-        		rShapeType.y()*Constants.SCALE,
-        		archHeight,archWidth);
+		this.shape = new RoundRectangle2D.Double(shapeOrigin.x()
+				* Constants.SCALE + Constants.SCALE, shapeOrigin.y()
+				* Constants.SCALE + Constants.SCALE, shapeType.x()
+				* Constants.SCALE, shapeType.y() * Constants.SCALE, archHeight,
+				archWidth);
+		this.rotatedShape = new RoundRectangle2D.Double(rotatedShapeOrigin.x()
+				* Constants.SCALE + Constants.SCALE, rotatedShapeOrigin.y()
+				* Constants.SCALE + Constants.SCALE, rShapeType.x()
+				* Constants.SCALE, rShapeType.y() * Constants.SCALE,
+				archHeight, archWidth);
 	}
 
 	/**
@@ -202,8 +196,8 @@ public class RightFlipper implements Gadget {
 
 	@Override
 	public boolean hit(Ball ball, Board board) {
-		Vect velocity = Geometry.reflectRotatingWall(lineToCollideWith(ball), pivot,
-				angularVelocity, ball.getCircle(), ball.getVelocity(),
+		Vect velocity = Geometry.reflectRotatingWall(lineToCollideWith(ball),
+				pivot, angularVelocity, ball.getCircle(), ball.getVelocity(),
 				reflection);
 		ball.setVelocity(velocity);
 		for (Gadget g : triggers) {
@@ -254,14 +248,13 @@ public class RightFlipper implements Gadget {
 
 	@Override
 	public double timeUntilCollision(Ball ball) {
-    	List<Double> times = new ArrayList<Double>();
-    	for (LineSegment edge : getRect()) {
-    		times.add(Geometry.timeUntilWallCollision(edge, ball.getCircle(), ball.getVelocity()));
-    	}
-    	return Collections.min(times);
-//        return Geometry.timeUntilWallCollision(line, ball.getCircle(),
-//                ball.getVelocity());
-    }
+		List<Double> times = new ArrayList<Double>();
+		for (LineSegment edge : getRect()) {
+			times.add(Geometry.timeUntilWallCollision(edge, ball.getCircle(),
+					ball.getVelocity()));
+		}
+		return Collections.min(times);
+	}
 
 	@Override
 	public String getName() {
@@ -272,7 +265,7 @@ public class RightFlipper implements Gadget {
 	public Vect getOrigin() {
 		return this.pivotCoord;
 	}
-	
+
 	@Override
 	public int[] getSize() {
 		return new int[] { 2, 2 };
@@ -280,48 +273,78 @@ public class RightFlipper implements Gadget {
 
 	@Override
 	public Shape getShape() {
-//		if (isHorizontal()) return shapeHoriz;
-//		else return shapeVert;
-		if (rotated) return rotatedShape;
-		else return shape;
+		// if (isHorizontal()) return shapeHoriz;
+		// else return shapeVert;
+		if (rotated)
+			return rotatedShape;
+		else
+			return shape;
 	}
+
 	@Override
 	public Color getColor() {
 		return FLIPCOLOR;
 	}
-	
+
+	/**
+	 * Checks to see if the flipper is in a verticle
+	 * 
+	 * @return true if flipper is verticle
+	 */
 	private boolean isHorizontal() {
 		boolean isHor = true;
 		if (orientation == 0 || orientation == 180)
 			isHor = false;
-		if (rotated) isHor = !isHor;
+		if (rotated)
+			isHor = !isHor;
 		return isHor;
 	}
-	
-    private LineSegment lineToCollideWith(Ball ball) {
-    	double minTime = 9999;
-    	LineSegment closestWall = null;
-    	for (LineSegment edge : getRect()) {
-    		double thisTime = Geometry.timeUntilWallCollision(edge, ball.getCircle(), ball.getVelocity());
-    		if (thisTime < minTime) {
-    			minTime = thisTime;
-    			closestWall = edge;
-    		}
-    	}
-    	return closestWall;
-    }
-	
+
+	/**
+	 * Returns the line segment representation of the wall that the ball will
+	 * collide with.
+	 * 
+	 * @param ball
+	 *            - ball that is colliding with the wall
+	 * @return LineSegement of wall that is being collided with
+	 */
+	private LineSegment lineToCollideWith(Ball ball) {
+		double minTime = 9999;
+		LineSegment closestWall = null;
+		for (LineSegment edge : getRect()) {
+			double thisTime = Geometry.timeUntilWallCollision(edge,
+					ball.getCircle(), ball.getVelocity());
+			if (thisTime < minTime) {
+				minTime = thisTime;
+				closestWall = edge;
+			}
+		}
+		return closestWall;
+	}
+
+	/**
+	 * Creates line segments that make up this flipper using position vectors
+	 * and lines.
+	 * 
+	 * @return the list of line segments that make up the flipper rectangle
+	 */
 	private List<LineSegment> getRect() {
 		List<LineSegment> rect = new ArrayList<LineSegment>();
 		rect.add(line);
 		if (isHorizontal()) {
-			rect.add(new LineSegment(line.p1().plus(new Vect(0, 0.5)), line.p2().plus(new Vect(0, 0.5))));
-			rect.add(new LineSegment(line.p1(), line.p1().plus(new Vect(0, 0.5))));
-			rect.add(new LineSegment(line.p2(), line.p2().plus(new Vect(0, 0.5))));
+			rect.add(new LineSegment(line.p1().plus(new Vect(0, 0.5)), line
+					.p2().plus(new Vect(0, 0.5))));
+			rect.add(new LineSegment(line.p1(), line.p1()
+					.plus(new Vect(0, 0.5))));
+			rect.add(new LineSegment(line.p2(), line.p2()
+					.plus(new Vect(0, 0.5))));
 		} else {
-			rect.add(new LineSegment(line.p1().plus(new Vect(-0.5, 0)), line.p2().plus(new Vect(-0.5, 0))));
-			rect.add(new LineSegment(line.p1(), line.p1().plus(new Vect(-0.5, 0))));
-			rect.add(new LineSegment(line.p2(), line.p2().plus(new Vect(-0.5, 0))));
+			rect.add(new LineSegment(line.p1().plus(new Vect(-0.5, 0)), line
+					.p2().plus(new Vect(-0.5, 0))));
+			rect.add(new LineSegment(line.p1(), line.p1().plus(
+					new Vect(-0.5, 0))));
+			rect.add(new LineSegment(line.p2(), line.p2().plus(
+					new Vect(-0.5, 0))));
 		}
 		return rect;
 	}
