@@ -104,7 +104,7 @@ public class Board {
      */
 	public List<Ball> getBalls()
 	{
-		return balls;
+		return new ArrayList<Ball>(balls);
 	}
 	/**
 	 * Initializes appropriate borders and walls for board object
