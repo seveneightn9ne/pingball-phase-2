@@ -151,7 +151,6 @@ public class PingballGUI extends JFrame {
 				.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400+2*Constants.SCALE,
 						GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
 		pack();
-		// TODO: keyboard listener sends keys to board
 
 		// menu event listeners
 		newGameMI.addActionListener(new ActionListener() {
@@ -190,7 +189,6 @@ public class PingballGUI extends JFrame {
 				client.invokeLater(new Runnable() {
 					public void run() {
 						board.notifyKeydown(KeyEvent.getKeyText(e.getKeyCode()));
-						System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
 					}
 				});
 			}
@@ -199,7 +197,6 @@ public class PingballGUI extends JFrame {
 				client.invokeLater(new Runnable() {
 					public void run() {
 						board.notifyKeyup(KeyEvent.getKeyText(e.getKeyCode()));
-						System.out.println(KeyEvent.getKeyText(e.getKeyCode()));
 					}
 				});
 			}
@@ -211,16 +208,9 @@ public class PingballGUI extends JFrame {
 	}
 
 	private void newGame() {
+		disconnect();
 		pause();
-		String boardsdir = System.getProperty("user.dir") + "/boards" /*
-																	 * + System.
-																	 * getProperty
-																	 * (
-																	 * "line.separator"
-																	 * +)
-																	 * "boards"
-																	 */;
-		// JFileChooser fileChooser = new JFileChooser();
+		String boardsdir = System.getProperty("user.dir") + "/boards"; //default boards directory
 		final JFileChooser fc = new JFileChooser(new File(boardsdir));
 		int returnVal = fc.showOpenDialog(PingballGUI.this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
@@ -278,7 +268,7 @@ public class PingballGUI extends JFrame {
 			}
 		});
 		// restart disconnects from server
-		serverIsNotConnected("");
+		serverIsNotConnected();
 	}
 
 	private void connect() {
@@ -313,7 +303,7 @@ public class PingballGUI extends JFrame {
 					} catch (IOException e) {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
-								serverIsNotConnected("Connection failed.");
+								serverIsNotConnected();
 							}
 						});
 					}
@@ -322,17 +312,25 @@ public class PingballGUI extends JFrame {
 		}
 	}
 
+	/**
+	 * Tells the client to disconnect from the server
+	 * and updates the GUI to reflect that
+	 */
 	private void disconnect() {
 		client.invokeLater(new Runnable() {
 			public void run() {
 				client.disconnectFromServer();
 			}
 		});
-		serverIsNotConnected("");
+		serverIsNotConnected();
 	}
 
-	private void serverIsNotConnected(String details) { // TODO: show details on
-														// status bar
+	/**
+	 * Notify that the client is not connected to the server.
+	 * This updates the GUI to reflect that.
+	 */
+	private void serverIsNotConnected() { 
+		
 		serverStatus.setText(DISCONNECTED_TEXT);
 		serverStatus.setForeground(Color.darkGray);
 		connectMI.setEnabled(true);
