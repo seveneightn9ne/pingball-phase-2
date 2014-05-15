@@ -1,8 +1,6 @@
 package client.gadgets;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -90,10 +88,6 @@ public class Absorber implements Gadget {
 		corners[1] = new Circle(northEast, 0);
 		corners[2] = new Circle(southWest, 0);
 		corners[3] = new Circle(southEast, 0);
-		// double xPosD = xPos+0.0025;
-		// double yPosD = yPos-Constants.OFFSET;
-		// this.shape = new
-		// Rectangle2D.Double(xPosD*Constants.SCALE,yPosD*Constants.SCALE,width*Constants.SCALE,height*Constants.SCALE);
 		double xPosD = xPos;
 		double yPosD = yPos;
 		this.shape = new Rectangle2D.Double(

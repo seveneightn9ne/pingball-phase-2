@@ -43,9 +43,9 @@ public class BoardGUI extends JPanel implements Runnable {
 	public BoardGUI(Board board) {
 		setBackground(BACKGROUNDCOLOR);
 		this.board = board;
-		//cleaner animations via double buffered
+		// cleaner animations via double buffered
 		setDoubleBuffered(true);
-		//keeping size scalable
+		// keeping size scalable
 		setSize(20 * Constants.SCALE + Constants.SCALE, 20 * Constants.SCALE
 				+ Constants.SCALE);
 		setBorder(border);
@@ -65,19 +65,22 @@ public class BoardGUI extends JPanel implements Runnable {
 		super.paint(g);
 
 		Graphics2D g2d = (Graphics2D) g;
-		//Anti-aliasing = cleaner graphics! 
+		// Anti-aliasing = cleaner graphics!
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
-		
+
 		if (board != null) {
+			// drawing gadgets
 			for (Gadget s : board.returnGadgets()) {
 				g2d.setColor(s.getColor());
 				g2d.fill(s.getShape());
 			}
+			// drawing balls
 			for (Ball b : board.getBalls()) {
 				g2d.setColor(b.getColor());
 				g2d.fill(b.getShape());
 			}
+			// drawing walls
 			for (Wall w : board.getWallList()) {
 				if (w.wallConnectedName() != null) {
 					if (w.getSide() == Constants.BoardSide.RIGHT

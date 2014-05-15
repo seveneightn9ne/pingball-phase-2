@@ -2,11 +2,7 @@ package client.gadgets;
 
 import java.util.HashSet;
 import java.awt.*;
-import java.awt.geom.Line2D;
 import java.awt.geom.Path2D;
-import java.awt.geom.Point2D;
-
-import javax.swing.*;
 
 import common.Constants;
 
@@ -73,7 +69,7 @@ public class TriangleBumper implements Gadget {
 	}
 
 	/**
-	 * Create line segments corresponding to edges of the bumper in the correct
+	 * Constructs the line segments corresponding to edges of the bumper in the correct
 	 * orientation.
 	 * 
 	 * @param orientation
@@ -135,12 +131,6 @@ public class TriangleBumper implements Gadget {
 		yPointsD = new double[] { (corners[0].getCenter().y()+0.5) * Constants.SCALE + Constants.SCALE,
 				(corners[1].getCenter().y()+0.5) * Constants.SCALE + Constants.SCALE,
 				(corners[2].getCenter().y()+0.5) * Constants.SCALE + Constants.SCALE};
-//		xPointsD = new double[] { (corners[0].getCenter().x()+Constants.OFFSET) * Constants.SCALE,
-//				(corners[1].getCenter().x()+Constants.OFFSET) * Constants.SCALE,
-//				(corners[2].getCenter().x()+Constants.OFFSET) * Constants.SCALE };
-//		yPointsD = new double[] { (corners[0].getCenter().y()+Constants.OFFSET) * Constants.SCALE,
-//				(corners[1].getCenter().y()+Constants.OFFSET) * Constants.SCALE,
-//				(corners[2].getCenter().y()+Constants.OFFSET) * Constants.SCALE };
 
 		Path2D path = new Path2D.Double();
 		path.moveTo(xPointsD[0], yPointsD[0]);
@@ -220,8 +210,15 @@ public class TriangleBumper implements Gadget {
 		return minTime;
 	}
 
+	/**
+	 * @see Gadget#action(Board)
+	 * @throws Runtime
+	 *             Exception - Triangle Bumpers do not have gadgets
+	 */
 	@Override
 	public void action(Board board) {
+		throw new RuntimeException("Triangle bumpers do not have actions");
+		
 		// Triangle bumpers have no action
 	}
 

@@ -54,7 +54,6 @@ public class SquareBumper implements Gadget {
         lines = new LineSegment[4];
         corners = new Circle[4];
         this.linesConstructor();
-//        shape = new Rectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
         shape = new Rectangle2D.Double(
         		xPos*Constants.SCALE+Constants.SCALE,
         		yPos*Constants.SCALE+Constants.SCALE,
@@ -62,7 +61,7 @@ public class SquareBumper implements Gadget {
     }
     
     /**
-     * Creates LineSegments for the square bumper
+     * Constructs LineSegments for the square bumper
      */
     private void linesConstructor() {
 
@@ -149,8 +148,14 @@ public class SquareBumper implements Gadget {
         return minTime;
     }
     
+	/**
+	 * @see Gadget#action(Board)
+	 * @throws Runtime
+	 *             Exception - Square bumpers do not have gadgets
+	 */
     @Override
     public void action(Board board) {
+		throw new RuntimeException("Square bumpers do not have actions");
         // Square bumpers have no action.
     }
     

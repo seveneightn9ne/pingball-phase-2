@@ -1,17 +1,12 @@
 package client.gadgets;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
-import java.awt.geom.RoundRectangle2D;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import common.Constants;
-
 import client.Ball;
 import client.Board;
 import physics.Circle;
@@ -32,7 +27,6 @@ public class CircleBumper implements Gadget {
 	 */
 	private Vect position;
 	private Circle circle;
-	private double reflection = 1;
 	private List<Gadget> triggers = new ArrayList<Gadget>();
 	private String name;
 	private final Shape shape;
@@ -105,9 +99,15 @@ public class CircleBumper implements Gadget {
 				ball.getCircle(), ball.getVelocity());
 		return time;
 	}
-
+	
+	/**
+	 * @see Gadget#action(Board)
+	 * @throws Runtime
+	 *             Exception - Circle bumpers do not have gadgets
+	 */
 	@Override
 	public void action(Board board) {
+		throw new RuntimeException("Circle bumpers do not have actions");
 		// Circle Bumpers have no action
 	}
 

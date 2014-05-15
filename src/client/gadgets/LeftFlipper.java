@@ -87,7 +87,7 @@ public class LeftFlipper implements Gadget {
 	}
 
 	/**
-	 * Sets the orientation and the shape representation of the flipper
+	 * Constructs the orientation and the shape representation of the flipper
 	 * 
 	 * @param xPos
 	 *            - xPosition for the flipper
@@ -254,28 +254,6 @@ public class LeftFlipper implements Gadget {
 
 	}
 
-	/**
-	 * Returns the line segment representation of the wall that the ball will
-	 * collide with.
-	 * 
-	 * @param ball
-	 *            - ball that is colliding with the wall
-	 * @return LineSegement of wall that is being collided with
-	 */
-	private LineSegment lineToCollideWith(Ball ball) {
-		double minTime = 9999;
-		LineSegment closestWall = null;
-		for (LineSegment edge : getRect()) {
-			double thisTime = Geometry.timeUntilWallCollision(edge,
-					ball.getCircle(), ball.getVelocity());
-			if (thisTime < minTime) {
-				minTime = thisTime;
-				closestWall = edge;
-			}
-		}
-		return closestWall;
-	}
-
 	@Override
 	public String getName() {
 		return this.name;
@@ -343,6 +321,28 @@ public class LeftFlipper implements Gadget {
 					.plus(new Vect(0.5, 0))));
 		}
 		return rect;
+	}
+
+	/**
+	 * Returns the line segment representation of the wall that the ball will
+	 * collide with.
+	 * 
+	 * @param ball
+	 *            - ball that is colliding with the wall
+	 * @return LineSegement of wall that is being collided with
+	 */
+	private LineSegment lineToCollideWith(Ball ball) {
+		double minTime = 9999;
+		LineSegment closestWall = null;
+		for (LineSegment edge : getRect()) {
+			double thisTime = Geometry.timeUntilWallCollision(edge,
+					ball.getCircle(), ball.getVelocity());
+			if (thisTime < minTime) {
+				minTime = thisTime;
+				closestWall = edge;
+			}
+		}
+		return closestWall;
 	}
 
 }

@@ -273,8 +273,6 @@ public class RightFlipper implements Gadget {
 
 	@Override
 	public Shape getShape() {
-		// if (isHorizontal()) return shapeHoriz;
-		// else return shapeVert;
 		if (rotated)
 			return rotatedShape;
 		else
@@ -299,29 +297,7 @@ public class RightFlipper implements Gadget {
 			isHor = !isHor;
 		return isHor;
 	}
-
-	/**
-	 * Returns the line segment representation of the wall that the ball will
-	 * collide with.
-	 * 
-	 * @param ball
-	 *            - ball that is colliding with the wall
-	 * @return LineSegement of wall that is being collided with
-	 */
-	private LineSegment lineToCollideWith(Ball ball) {
-		double minTime = 9999;
-		LineSegment closestWall = null;
-		for (LineSegment edge : getRect()) {
-			double thisTime = Geometry.timeUntilWallCollision(edge,
-					ball.getCircle(), ball.getVelocity());
-			if (thisTime < minTime) {
-				minTime = thisTime;
-				closestWall = edge;
-			}
-		}
-		return closestWall;
-	}
-
+	
 	/**
 	 * Creates line segments that make up this flipper using position vectors
 	 * and lines.
@@ -348,4 +324,27 @@ public class RightFlipper implements Gadget {
 		}
 		return rect;
 	}
+
+	/**
+	 * Returns the line segment representation of the wall that the ball will
+	 * collide with.
+	 * 
+	 * @param ball
+	 *            - ball that is colliding with the wall
+	 * @return LineSegement of wall that is being collided with
+	 */
+	private LineSegment lineToCollideWith(Ball ball) {
+		double minTime = 9999;
+		LineSegment closestWall = null;
+		for (LineSegment edge : getRect()) {
+			double thisTime = Geometry.timeUntilWallCollision(edge,
+					ball.getCircle(), ball.getVelocity());
+			if (thisTime < minTime) {
+				minTime = thisTime;
+				closestWall = edge;
+			}
+		}
+		return closestWall;
+	}
+
 }

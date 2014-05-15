@@ -1,11 +1,9 @@
 package client.gadgets;
 
 import java.awt.Color;
-import java.awt.Graphics2D;
 import java.awt.Shape;
 
 import physics.Vect;
-import common.Constants;
 import client.Ball;
 import client.Board;
 
