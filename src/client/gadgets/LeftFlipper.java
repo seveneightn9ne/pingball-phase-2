@@ -19,6 +19,10 @@ import physics.Geometry;
 import physics.LineSegment;
 import physics.Vect;
 
+
+/**
+ * Model for the Left Flipper gadget.  
+ */
 public class LeftFlipper implements Gadget {
 
     /**
@@ -39,10 +43,6 @@ public class LeftFlipper implements Gadget {
     private String name;
 	private final double archHeight= 20.0;
 	private final double archWidth = 20.0;
-	private int xPos;
-	private int yPos;
-//	private final Shape shapeHoriz;
-//	private final Shape shapeVert;
 	private Shape shape;
 	private Shape rotatedShape;
 	private final Color FLIPCOLOR = new Color(238,172,150);
@@ -63,13 +63,9 @@ public class LeftFlipper implements Gadget {
      * 
      */
     public LeftFlipper(String name, int xPos, int yPos, int orientation) {
-    	this.xPos = xPos;
-    	this.yPos = yPos;
         this.name = name;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-//        shapeHoriz = new RoundRectangle2D.Double(pivotCoord.x()*Constants.SCALE,pivotCoord.y()*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
-//    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     	
     }
     /**
@@ -89,8 +85,6 @@ public class LeftFlipper implements Gadget {
         this.name = null;
         this.orientation = orientation;
         this.orientationConstructor(xPos, yPos, orientation);
-//        shapeHoriz = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,2*Constants.SCALE,0.5*Constants.SCALE,archHeight,archWidth);
-//    	shapeVert = new RoundRectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,0.5*Constants.SCALE,2*Constants.SCALE,archHeight,archWidth);
     }
 
     /**

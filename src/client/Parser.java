@@ -444,7 +444,9 @@ public class Parser {
 			throw new RuntimeException("invalid ball");
 		}
 		
-		Ball ball = new Ball(x, y, xVelocity, yVelocity);
+		String name = line[1].split("=")[1];
+		
+		Ball ball = new Ball(name, x, y, xVelocity, yVelocity);
 		return ball;		
 	}
 	
