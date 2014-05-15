@@ -1,5 +1,6 @@
 package client;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,34 +25,27 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
+import common.Constants;
 
+import client.gadgets.Wall;
 
 /**
- * How to draw the gadgets on the board? 
- * * Option 1: 
- * 		A drawGadget method that uses instanceof and accesses data based on that
- * 		Downsides: Requires instanceof
- * * Option 2:
- * 		Gadgets have a drawSelf method
- * 		Downsides: Bad separation of model and view
- * * Option 3:
- * 		All gadgets have a corresponding GadgetGUI class
- * 		Downsides: Tons of new classes, 
- * 		Gadget and GadgetGUI don't relate to each other in a meaningful way,
- * 		The main GUI will have to know which GadgetGUI to use, might require instanceof,
- * 		Alternatively a Gadget can know its GUI but once again, bad separation of model and view
+ * How to draw the gadgets on the board? * Option 1: A drawGadget method that
+ * uses instanceof and accesses data based on that Downsides: Requires
+ * instanceof * Option 2: Gadgets have a drawSelf method Downsides: Bad
+ * separation of model and view * Option 3: All gadgets have a corresponding
+ * GadgetGUI class Downsides: Tons of new classes, Gadget and GadgetGUI don't
+ * relate to each other in a meaningful way, The main GUI will have to know
+ * which GadgetGUI to use, might require instanceof, Alternatively a Gadget can
+ * know its GUI but once again, bad separation of model and view
  * 
  * 
- * Manual Testing Strategy:
- * * New board from file
- * 		* Try invalid filepath (possible with open dialog?)
- * 		* Try file that is not a board
- * 		* Make sure connecting to server is enabled
- * 		* Maybe game should not start immediately.
- * * Connect to server
- * 		* Some notification that it worked (in bottom area?)
- * 		* Disconnect becomes enabled, connect becomes disabled
- * 	
+ * Manual Testing Strategy: * New board from file * Try invalid filepath
+ * (possible with open dialog?) * Try file that is not a board * Make sure
+ * connecting to server is enabled * Maybe game should not start immediately. *
+ * Connect to server * Some notification that it worked (in bottom area?) *
+ * Disconnect becomes enabled, connect becomes disabled
+ * 
  */
 public class PingballGUI extends JFrame {
 
@@ -60,7 +54,7 @@ public class PingballGUI extends JFrame {
 	private static final String DISCONNECTED_TEXT = "Not connected to server.";
 	private static final String WINDOW_TITLE = "Pingball";
 	private static final Color DARK_GREEN = new Color(0, 150, 0);
-	
+
 	private final PingballClient client;
 	private final JMenuItem pauseMI;
 	private final JMenuItem resumeMI;
@@ -71,19 +65,24 @@ public class PingballGUI extends JFrame {
 
 	/**
 	 * Create a PingballGUI
-	 * @param client the client which is running the Pingball game
-	 * @param hostname the name of the connected server, or null if there is no server connection
-	 * @param board the connected board, or null if there is no board
+	 * 
+	 * @param client
+	 *            the client which is running the Pingball game
+	 * @param hostname
+	 *            the name of the connected server, or null if there is no
+	 *            server connection
+	 * @param board
+	 *            the connected board, or null if there is no board
 	 */
 	public PingballGUI(PingballClient client, String hostname, Board board) {
-		
+
 		this.client = client;
-		
+
 		// make the menu bar
 		JMenuBar menuBar = new JMenuBar();
 		JMenu gameMenu = new JMenu("Game");
 		menuBar.add(gameMenu);
-		
+
 		JMenuItem newGameMI = new JMenuItem("New Game...");
 		gameMenu.add(newGameMI);
 		pauseMI = new JMenuItem("Pause");
@@ -93,11 +92,10 @@ public class PingballGUI extends JFrame {
 		resumeMI.setEnabled(false);
 		JMenuItem restartMI = new JMenuItem("Restart");
 		gameMenu.add(restartMI);
-		
-		
+
 		JMenu serverMenu = new JMenu("Server");
 		menuBar.add(serverMenu);
-		
+
 		connectMI = new JMenuItem("Connect to Server...");
 		serverMenu.add(connectMI);
 		disconnectMI = new JMenuItem("Disconnect from Server");
@@ -107,16 +105,17 @@ public class PingballGUI extends JFrame {
 			pauseMI.setEnabled(false);
 			restartMI.setEnabled(false);
 			connectMI.setEnabled(false);
-			connectMI.setToolTipText("You must start a game before you can connect.");
+			connectMI
+					.setToolTipText("You must start a game before you can connect.");
 		}
 
 		// set JFrame details
 		setJMenuBar(menuBar);
 		setTitle(WINDOW_TITLE);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-		
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 		boardPanel = new BoardGUI(board);
-		
+
 		// The bottom status bar
 		JPanel statusBar = new JPanel();
 		serverStatus = new JLabel(DISCONNECTED_TEXT, SwingConstants.RIGHT);
@@ -125,8 +124,7 @@ public class PingballGUI extends JFrame {
 		statusBar.add(serverStatus);
 		statusBar.setAlignmentX(RIGHT_ALIGNMENT);
 		statusBar.setLayout(new GridLayout(0, 1));
-		
-		
+
 		if (hostname == null) {
 			disconnectMI.setEnabled(false);
 		} else {
@@ -134,80 +132,125 @@ public class PingballGUI extends JFrame {
 			serverStatus.setText(CONNECTED_TEXT + hostname);
 			serverStatus.setForeground(DARK_GREEN);
 		}
-		
-		// define layout
-        GroupLayout layout = new GroupLayout(this.getContentPane());
-        this.getContentPane().setLayout(layout);
-//        layout.setAutoCreateContainerGaps(true);
-//        layout.setAutoCreateGaps(true);
-        layout.setVerticalGroup(layout.createSequentialGroup()
-        		.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
-        		.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20, GroupLayout.PREFERRED_SIZE)
-        );
-        layout.setHorizontalGroup(layout.createParallelGroup()
-                .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400, GroupLayout.PREFERRED_SIZE)
-                .addComponent(statusBar)
-         );
-        pack();
-        
-        // TODO: keyboard listener sends keys to board
-        
-        // menu event listeners
-        newGameMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                newGame();
-            }
-        });
-        pauseMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                pause();
-            }
-        });
-        resumeMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                resume();
-            }
-        });
-        restartMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                restart();
-            }
-        });
-        connectMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                connect();
-            }
-        });
-        disconnectMI.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent event) {
-                disconnect();
-            }
-        });
+
+		JPanel boardWallPanel = new JPanel(new BorderLayout());
+		boardWallPanel.add(boardPanel, BorderLayout.CENTER);
+		for (Wall w : board.getWallList()) {
+			JPanel wallw = new WallGUI(w, 20);
+			if (w.getSide() == Constants.BoardSide.RIGHT) {
+				System.out.println("ADDED RIGHT");
+				boardWallPanel.add(wallw, BorderLayout.EAST);
+			} else if (w.getSide() == Constants.BoardSide.LEFT) {
+				System.out.println("ADDED LEFT");
+				boardWallPanel.add(wallw, BorderLayout.WEST);
+			} else if (w.getSide() == Constants.BoardSide.TOP) {
+				System.out.println("ADDED TOP");
+				boardWallPanel.add(wallw, BorderLayout.NORTH);
+			} else if (w.getSide() == Constants.BoardSide.BOTTOM) {
+				System.out.println("ADDED BOTTOM");
+				boardWallPanel.add(wallw, BorderLayout.SOUTH);
+			}
+		}
+		GroupLayout layout = new GroupLayout(this.getContentPane());
+		this.getContentPane().setLayout(layout);
+		// layout.setAutoCreateContainerGaps(true);
+		// layout.setAutoCreateGaps(true);
+		layout.setVerticalGroup(layout
+				.createSequentialGroup()
+				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 400,
+						GroupLayout.PREFERRED_SIZE)
+				.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
+						GroupLayout.PREFERRED_SIZE));
+		layout.setHorizontalGroup(layout
+				.createParallelGroup()
+				.addComponent(boardWallPanel, GroupLayout.PREFERRED_SIZE, 400,
+						GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
+
+		// // define layout
+		// GroupLayout layout = new GroupLayout(this.getContentPane());
+		// this.getContentPane().setLayout(layout);
+		// // layout.setAutoCreateContainerGaps(true);
+		// // layout.setAutoCreateGaps(true);
+		// layout.setVerticalGroup(layout.createSequentialGroup()
+		// .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
+		// GroupLayout.PREFERRED_SIZE)
+		// .addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
+		// GroupLayout.PREFERRED_SIZE)
+		// );
+		// layout.setHorizontalGroup(layout.createParallelGroup()
+		// .addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
+		// GroupLayout.PREFERRED_SIZE)
+		// .addComponent(statusBar)
+		// );
+
+		pack();
+
+		// TODO: keyboard listener sends keys to board
+
+		// menu event listeners
+		newGameMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				newGame();
+			}
+		});
+		pauseMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				pause();
+			}
+		});
+		resumeMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				resume();
+			}
+		});
+		restartMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				restart();
+			}
+		});
+		connectMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				connect();
+			}
+		});
+		disconnectMI.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent event) {
+				disconnect();
+			}
+		});
 	}
-	
+
 	private void newGame() {
 		pause();
-		String boardsdir = System.getProperty("user.dir") + "/boards" /*+ System.getProperty("line.separator" +) "boards"*/;
-//		JFileChooser fileChooser = new JFileChooser();
+		String boardsdir = System.getProperty("user.dir") + "/boards" /*
+																	 * + System.
+																	 * getProperty
+																	 * (
+																	 * "line.separator"
+																	 * +)
+																	 * "boards"
+																	 */;
+		// JFileChooser fileChooser = new JFileChooser();
 		final JFileChooser fc = new JFileChooser(new File(boardsdir));
 		int returnVal = fc.showOpenDialog(PingballGUI.this);
 		if (returnVal == JFileChooser.APPROVE_OPTION) {
-			final String filename = fc.getCurrentDirectory().toString() + "/" +  fc.getSelectedFile().getName();
+			final String filename = fc.getCurrentDirectory().toString() + "/"
+					+ fc.getSelectedFile().getName();
 			setTitle(WINDOW_TITLE + " - " + filename);
 			client.invokeLater(new Runnable() {
 				public void run() {
 					client.setBoard(filename);
-	                SwingUtilities.invokeLater(new Runnable() {
-	                	public void run() {
+					SwingUtilities.invokeLater(new Runnable() {
+						public void run() {
 
-	                    	boardPanel.setBoard(client.getBoard());
-	                	}
-	                });
+							boardPanel.setBoard(client.getBoard());
+						}
+					});
 				}
 			});
 		}
 	}
-	
+
 	private void pause() {
 		client.invokeLater(new Runnable() {
 			public void run() {
@@ -217,7 +260,7 @@ public class PingballGUI extends JFrame {
 		pauseMI.setEnabled(false);
 		resumeMI.setEnabled(true);
 	}
-	
+
 	private void resume() {
 		client.invokeLater(new Runnable() {
 			public void run() {
@@ -227,42 +270,42 @@ public class PingballGUI extends JFrame {
 		pauseMI.setEnabled(true);
 		resumeMI.setEnabled(false);
 	}
-	
-	private void restart() {
-        client.invokeLater(new Runnable() {
-            public void run() {
-                client.restart();
-                SwingUtilities.invokeLater(new Runnable() {
-                	public void run() {
 
-                    	boardPanel.setBoard(client.getBoard());
-                	}
-                });
-            }
-        });         
+	private void restart() {
+		client.invokeLater(new Runnable() {
+			public void run() {
+				client.restart();
+				SwingUtilities.invokeLater(new Runnable() {
+					public void run() {
+
+						boardPanel.setBoard(client.getBoard());
+					}
+				});
+			}
+		});
 		// restart disconnects from server
-        serverIsNotConnected("");
+		serverIsNotConnected("");
 	}
-	
-	private void connect() { 
+
+	private void connect() {
 		JTextField hostField = new JTextField(10);
 		hostField.setText("localhost"); // default hostname
-	    JTextField portField = new JTextField(5);
-	    portField.setText("10987"); // default port
+		JTextField portField = new JTextField(5);
+		portField.setText("10987"); // default port
 
-	      JPanel myPanel = new JPanel();
-	      myPanel.add(new JLabel("Host name:"));
-	      myPanel.add(hostField);
-	      myPanel.add(Box.createHorizontalStrut(15)); // a spacer
-	      myPanel.add(new JLabel("Port:"));
-	      myPanel.add(portField);
+		JPanel myPanel = new JPanel();
+		myPanel.add(new JLabel("Host name:"));
+		myPanel.add(hostField);
+		myPanel.add(Box.createHorizontalStrut(15)); // a spacer
+		myPanel.add(new JLabel("Port:"));
+		myPanel.add(portField);
 
-	      int result = JOptionPane.showConfirmDialog(null, myPanel, 
-	               "Connect to Server...", JOptionPane.OK_CANCEL_OPTION);
-	      if (result == JOptionPane.OK_OPTION) {
-	    	final String hostname = hostField.getText();
-	    	final int port = Integer.parseInt(portField.getText());
-	    
+		int result = JOptionPane.showConfirmDialog(null, myPanel,
+				"Connect to Server...", JOptionPane.OK_CANCEL_OPTION);
+		if (result == JOptionPane.OK_OPTION) {
+			final String hostname = hostField.getText();
+			final int port = Integer.parseInt(portField.getText());
+
 			serverStatus.setText("Connecting...");
 			client.invokeLater(new Runnable() {
 				public void run() {
@@ -273,8 +316,7 @@ public class PingballGUI extends JFrame {
 								serverIsConnected(hostname, port);
 							}
 						});
-					}
-					catch (IOException e) {
+					} catch (IOException e) {
 						SwingUtilities.invokeLater(new Runnable() {
 							public void run() {
 								serverIsNotConnected("Connection failed.");
@@ -283,9 +325,9 @@ public class PingballGUI extends JFrame {
 					}
 				}
 			});
-	      }
+		}
 	}
-	
+
 	private void disconnect() {
 		client.invokeLater(new Runnable() {
 			public void run() {
@@ -294,14 +336,15 @@ public class PingballGUI extends JFrame {
 		});
 		serverIsNotConnected("");
 	}
-	
-	private void serverIsNotConnected(String details){ // TODO: show details on status bar
+
+	private void serverIsNotConnected(String details) { // TODO: show details on
+														// status bar
 		serverStatus.setText(DISCONNECTED_TEXT);
 		serverStatus.setForeground(Color.darkGray);
 		connectMI.setEnabled(true);
 		disconnectMI.setEnabled(false);
 	}
-	
+
 	private void serverIsConnected(String hostname, int port) {
 		serverStatus.setText(CONNECTED_TEXT + hostname + ":" + port);
 		serverStatus.setForeground(DARK_GREEN);

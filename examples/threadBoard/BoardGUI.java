@@ -30,6 +30,7 @@ public class BoardGUI extends JPanel implements Runnable {
 
 	}
 
+	@Override
 	public void addNotify() {
 		super.addNotify();
 		animator = new Thread(this);
