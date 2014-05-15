@@ -116,13 +116,13 @@ public class PingballGUI extends JFrame {
 			connectMI
 					.setToolTipText("You must start a game before you can connect.");
 		}
+		boardPanel = new BoardGUI(board);
+		
 
 		// set JFrame details
 		setJMenuBar(menuBar);
 		setTitle(WINDOW_TITLE);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-		boardPanel = new BoardGUI(board);
 
 		// The bottom status bar
 		JPanel statusBar = new JPanel();
@@ -238,7 +238,6 @@ public class PingballGUI extends JFrame {
 					client.setBoard(filename);
 					SwingUtilities.invokeLater(new Runnable() {
 						public void run() {
-
 							boardPanel.setBoard(client.getBoard());
 							resume();
 						}
@@ -274,7 +273,6 @@ public class PingballGUI extends JFrame {
 				client.restart();
 				SwingUtilities.invokeLater(new Runnable() {
 					public void run() {
-
 						boardPanel.setBoard(client.getBoard());
 					}
 				});
