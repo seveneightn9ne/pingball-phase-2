@@ -1,13 +1,7 @@
 package client;
 
-import ihavenoidea.RepaintThread;
-
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +10,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.swing.Box;
 import javax.swing.GroupLayout;
@@ -34,7 +27,6 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 import common.Constants;
-import client.gadgets.Wall;
 
 /**
  * Manual Testing Strategy: 
