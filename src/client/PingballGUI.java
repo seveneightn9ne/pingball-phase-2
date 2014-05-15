@@ -29,6 +29,16 @@ import javax.swing.SwingUtilities;
 import common.Constants;
 
 /**
+ * PingballGUI is a Swing GUI for PingballClient. It allows the 
+ * user to interact with the game via keyboard commands, as well 
+ * as metagame interactions via the mouse. 
+ * 
+ * KNOWN BUGS:
+ * * Starting a new game from the open file dialog will not properly 
+ *   reset the key triggers; the new board will still have the old
+ *   board's key triggers. This is likely a bug in Parser but we have
+ *   not been able to track it down. 
+ * 
  * Manual Testing Strategy: 
  * * New board from file 
  * * Try invalid filepath (possible with open dialog?) 
