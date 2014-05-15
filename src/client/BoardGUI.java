@@ -51,47 +51,45 @@ public class BoardGUI extends JPanel implements Runnable {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 		if (board != null) {
-			synchronized (board) {
-				for (Gadget s : board.returnGadgets()) {
-					g2d.setColor(s.getColor());
-					g2d.fill(s.getShape());
-				}
-				for (Ball b : board.getBalls()) {
-					g2d.setColor(b.getColor());
-					g2d.fill(b.getShape());
-				}
-				for (Wall w : board.getWallList()) {
-					if (w.wallConnectedName() != null) {
-						if (w.getSide() == Constants.BoardSide.RIGHT
-								&& !firstPrintRight) {
-							System.out.println("adding name to RIGHTSIDE");
-							firstPrintRight = true;
-							border.setString(w.getSide(), w.wallConnectedName());
-							setBorder(border);
-						} else if (w.getSide() == Constants.BoardSide.LEFT
-								&& !firstPrintLeft) {
-							System.out.println("adding name to LEFTSIDE");
-							firstPrintLeft = true;
-							border.setString(w.getSide(), w.wallConnectedName());
-							setBorder(border);
-						} else if (w.getSide() == Constants.BoardSide.TOP
-								&& !firstPrintTop) {
-							System.out.println("adding name to TOPSIDE");
-							firstPrintTop = true;
-							border.setString(w.getSide(), w.wallConnectedName());
-							setBorder(border);
-						} else if (w.getSide() == Constants.BoardSide.BOTTOM
-								&& !firstPrintBottom) {
-							System.out.println("adding name to BOTTOMSIDE");
-							firstPrintBottom = true;
-							border.setString(w.getSide(), w.wallConnectedName());
-							setBorder(border);
-						}
-	
-					} else {
-						border.clearString(w.getSide());
+			for (Gadget s : board.returnGadgets()) {
+				g2d.setColor(s.getColor());
+				g2d.fill(s.getShape());
+			}
+			for (Ball b : board.getBalls()) {
+				g2d.setColor(b.getColor());
+				g2d.fill(b.getShape());
+			}
+			for (Wall w : board.getWallList()) {
+				if (w.wallConnectedName() != null) {
+					if (w.getSide() == Constants.BoardSide.RIGHT
+							&& !firstPrintRight) {
+						System.out.println("adding name to RIGHTSIDE");
+						firstPrintRight = true;
+						border.setString(w.getSide(), w.wallConnectedName());
+						setBorder(border);
+					} else if (w.getSide() == Constants.BoardSide.LEFT
+							&& !firstPrintLeft) {
+						System.out.println("adding name to LEFTSIDE");
+						firstPrintLeft = true;
+						border.setString(w.getSide(), w.wallConnectedName());
+						setBorder(border);
+					} else if (w.getSide() == Constants.BoardSide.TOP
+							&& !firstPrintTop) {
+						System.out.println("adding name to TOPSIDE");
+						firstPrintTop = true;
+						border.setString(w.getSide(), w.wallConnectedName());
+						setBorder(border);
+					} else if (w.getSide() == Constants.BoardSide.BOTTOM
+							&& !firstPrintBottom) {
+						System.out.println("adding name to BOTTOMSIDE");
+						firstPrintBottom = true;
+						border.setString(w.getSide(), w.wallConnectedName());
 						setBorder(border);
 					}
+
+				} else {
+					border.clearString(w.getSide());
+					setBorder(border);
 				}
 			}
 		}

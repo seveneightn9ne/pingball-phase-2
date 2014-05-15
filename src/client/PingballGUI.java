@@ -29,16 +29,24 @@ import javax.swing.SwingUtilities;
 import common.Constants;
 
 /**
+ * PingballGUI is a Swing GUI for PingballClient. It allows the 
+ * user to interact with the game via keyboard commands, as well 
+ * as metagame interactions via the mouse. 
+ * 
  * Manual Testing Strategy: 
  * * New board from file 
- * * Try invalid filepath (possible with open dialog?) 
  * * Try file that is not a board 
- * * Make sure connecting to server is enabled 
- * * Maybe game should not start immediately. 
- * * Connect to server 
- * * Some notification that it worked (in bottom area?) 
+ * * Make sure connecting to server is enabled when a valid board is loaded
+ * * Connect to server, status shown in bottom panel
  * * Disconnect becomes enabled, connect becomes disabled
+ * * Try keyboard input with boards/testKeys.pb
+ * * Watch boards run for a long time to catch bugs
  * 
+ * Rep Invariant: 
+ * * pauseMI and resumeMI are never both enabled
+ * * connectMI and disconnectMI are never both enabled
+ * * serverStatus always starts with either CONNECTED_TEXT or DISCONNECTED_TEXT
+ * * this jframe's title always starts with WINDOW_TITLE
  */
 public class PingballGUI extends JFrame {
 
@@ -221,13 +229,18 @@ public class PingballGUI extends JFrame {
 			setTitle(WINDOW_TITLE + " - " + filename);
 			client.invokeLater(new Runnable() {
 				public void run() {
-					client.setBoard(filename);
-					SwingUtilities.invokeLater(new Runnable() {
-						public void run() {
-							boardPanel.setBoard(client.getBoard());
-							resume();
-						}
-					});
+					try {
+						client.setBoard(filename);
+						SwingUtilities.invokeLater(new Runnable() {
+							public void run() {
+								boardPanel.setBoard(client.getBoard());
+								resume();
+							}
+						});
+					} catch (RuntimeException e) {
+						// invalid board file. 
+						boardPanel.setBoard(null);
+					}
 				}
 			});
 		}
