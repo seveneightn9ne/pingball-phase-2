@@ -1,7 +1,6 @@
 package client;
 
 import java.awt.EventQueue;
-
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyListener;
 import java.io.IOException;
@@ -24,6 +23,7 @@ import java.net.Socket;
 import javax.swing.SwingUtilities;
 
 import physics.Vect;
+import threadBoard.Skeleton;
 
 /**
  * 
@@ -66,7 +66,7 @@ public class PingballClient {
 	public void startClient() {
 		checkRep();
 
-		// new Skeleton(board);
+		 new Skeleton(board);
 //		EventQueue.invokeLater(new Runnable() {
 //			public void run() {
 //				// new KineticModel(board);
