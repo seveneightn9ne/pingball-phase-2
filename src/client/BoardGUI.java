@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
 import java.awt.Toolkit;
-
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,13 +30,16 @@ public class BoardGUI extends JPanel implements Runnable {
 
     }
 
+    @Override
     public void addNotify() {
         super.addNotify();
         animator = new Thread(this);
         animator.start();
     }
 
+    @Override
     public void paint(Graphics g) {
+    	System.out.println("PAINTING BOARDS");
         super.paint(g);
 
         Graphics2D g2d = (Graphics2D)g;
@@ -57,6 +59,7 @@ public class BoardGUI extends JPanel implements Runnable {
         g.dispose();
     }
 
+    @Override
     public void run() {
 //		SwingWorker<String[], String[]> execution = new UpdateWorker(board);
 //		execution.execute();

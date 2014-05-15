@@ -199,7 +199,7 @@ public class Board {
 	 * @param side the side of the board
 	 * @return the wall on that side
 	 */
-	private Wall getWall(Constants.BoardSide side) {
+	public Wall getWall(Constants.BoardSide side) {
 		if (side == Constants.BoardSide.TOP)
 			return borders[0];
 		if (side == Constants.BoardSide.RIGHT)
@@ -359,7 +359,7 @@ public class Board {
         	balls.remove(ball);
         }
         
-//        System.out.println(this.toString());
+		// System.out.println(this.toString());
         checkRep();
     }
     

@@ -34,7 +34,7 @@ public class WallGUI extends JPanel implements Runnable {
 
 		if (wall.getSide() == Constants.BoardSide.RIGHT
 				|| wall.getSide() == Constants.BoardSide.LEFT) {
-			setSize(20, 200);
+			setSize(20, 20);
 			if (wall.getSide() == Constants.BoardSide.RIGHT)
 				this.rotation = 90.0;
 			else
@@ -62,36 +62,39 @@ public class WallGUI extends JPanel implements Runnable {
 		g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
 				RenderingHints.VALUE_ANTIALIAS_ON);
 
-		synchronized (wall) {
-			AffineTransform orig = g2d.getTransform();
-			if (wall.wallConnectedName() != null && this.name == null) {
-				this.name = wall.wallConnectedName();
-				g2d.setColor(Color.RED);
-				g2d.rotate(this.rotation);
-				g2d.drawString(this.name, 10,10);
+		AffineTransform orig = g2d.getTransform();
+		if (wall.wallConnectedName() != null && this.name == null) {
+			System.out
+					.println("wall.wallConnectedName() != null && this.name == null");
+			this.name = wall.wallConnectedName();
+			g2d.setColor(Color.RED);
+			g2d.rotate(this.rotation);
+			g2d.drawString(this.name, 10, 10);
 
-			} else if (wall.wallConnectedName() == null && this.name != null) {
-				g2d.setColor(Color.YELLOW);
+		} else if (wall.wallConnectedName() == null && this.name != null) {
+			System.out
+					.println("wall.wallConnectedName() == null && this.name != null");
+			g2d.setColor(Color.YELLOW);
+			g2d.rotate(this.rotation);
+			g2d.drawString(this.name, 10, 10);
+
+		} else if (wall.wallConnectedName() != null && this.name != null) {
+			System.out.println(wall.wallConnectedName() != null
+					&& this.name != null);
+			if (!wall.wallConnectedName().equals(this.name)) {
+				g2d.setColor(Color.BLUE);
+				this.name = wall.wallConnectedName();
 				g2d.rotate(this.rotation);
 				g2d.drawString(this.name, 10, 10);
 
-			} else if (wall.wallConnectedName() != null && this.name != null) {
-
-				if (!wall.wallConnectedName().equals(this.name)) {
-					g2d.setColor(Color.BLUE);
-					this.name = wall.wallConnectedName();
-					g2d.rotate(this.rotation);
-					g2d.drawString(this.name, 10, 10);
-
-				} else {
-					g2d.setColor(Color.BLACK);
-					g2d.rotate(this.rotation);
-					g2d.drawString(this.name, 10, 10);
-				}
+			} else {
+				g2d.setColor(Color.BLACK);
+				g2d.rotate(this.rotation);
+				g2d.drawString(this.name, 10, 10);
 			}
-			g2d.setTransform(orig);
-
 		}
+		g2d.setTransform(orig);
+
 		Toolkit.getDefaultToolkit().sync();
 		g.dispose();
 	}
@@ -109,6 +112,5 @@ public class WallGUI extends JPanel implements Runnable {
 			}
 		}
 	}
-
 
 }
