@@ -39,6 +39,11 @@ import common.Constants;
  * * Some notification that it worked (in bottom area?) 
  * * Disconnect becomes enabled, connect becomes disabled
  * 
+ * Rep Invariant: 
+ * * pauseMI and resumeMI are never both enabled
+ * * connectMI and disconnectMI are never both enabled
+ * * serverStatus always starts with either CONNECTED_TEXT or DISCONNECTED_TEXT
+ * * this jframe's title always starts with WINDOW_TITLE
  */
 public class PingballGUI extends JFrame {
 
