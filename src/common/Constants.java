@@ -17,5 +17,6 @@ public class Constants {
     public static final int MIN_PORT = 0;
     public static final int MAX_PORT = 65535;
     public static final int SCALE = 20;
+    public static final double OFFSET = 0.5;
     
 }

@@ -33,7 +33,7 @@ public class BoardGUI extends JPanel implements Runnable {
 		setBackground(BACKGROUNDCOLOR);
 		this.board = board;
 		setDoubleBuffered(true);
-		setSize(200, 200);
+		setSize(20*Constants.SCALE+Constants.SCALE, 20*Constants.SCALE+Constants.SCALE);
 		setBorder(border);
 		setPreferredSize(new Dimension(200, 200));
 

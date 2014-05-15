@@ -42,9 +42,9 @@ public class Portal implements Gadget {
      * Creates a portal on the specified board linked to the specified other portal.
      * @param name
      *          Name of this board
-     * @param posX
+     * @param xPos
      *          X coordinate of the location of the center of this portal
-     * @param posY
+     * @param yPos
      *          Y coordinate of the location of the center of this portal
      * @param board
      *          Board this portal is on
@@ -53,13 +53,13 @@ public class Portal implements Gadget {
      * @param otherPortal
      *          portal that this portal is linked to
      */
-    public Portal(String name, int posX, int posY, String otherBoard, String otherPortal) {
+    public Portal(String name, int xPos, int yPos, String otherBoard, String otherPortal) {
         this.name = name;
-        this.position = new Vect(posX, posY);
+        this.position = new Vect(xPos, yPos);
         this.circle = new Circle(position, .5);
         this.otherBoard = otherBoard;
         this.otherPortal = otherPortal;
-        portalShape = new Ellipse2D.Double(posX*Constants.SCALE,posY*Constants.SCALE, 1*Constants.SCALE, 1*Constants.SCALE);
+        portalShape = new Ellipse2D.Double((xPos-Constants.OFFSET)*Constants.SCALE,(yPos-Constants.OFFSET)*Constants.SCALE, Constants.SCALE, Constants.SCALE);
 
     }
     

@@ -148,13 +148,13 @@ public class PingballGUI extends JFrame {
 
 		layout.setVerticalGroup(layout
 				.createSequentialGroup()
-				.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
+				.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400+2*Constants.SCALE,
 						GroupLayout.PREFERRED_SIZE)
 				.addComponent(statusBar, GroupLayout.PREFERRED_SIZE, 20,
 						GroupLayout.PREFERRED_SIZE));
 		layout.setHorizontalGroup(layout
 				.createParallelGroup(Alignment.CENTER)
-				.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400,
+				.addComponent(boardPanel, GroupLayout.PREFERRED_SIZE, 400+2*Constants.SCALE,
 						GroupLayout.PREFERRED_SIZE).addComponent(statusBar));
 		pack();
 		// TODO: keyboard listener sends keys to board

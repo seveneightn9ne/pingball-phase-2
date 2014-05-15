@@ -4,11 +4,11 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.Rectangle2D;
 import java.util.HashSet;
 import java.util.Set;
 
 import common.Constants;
-
 import client.Ball;
 import client.Board;
 import physics.Circle;
@@ -36,8 +36,8 @@ public class SquareBumper implements Gadget {
     private String nextHitType;
     private String name;
     private Set<Gadget> triggers = new HashSet<Gadget>();
-	private int xPos;
-	private int yPos;
+	private double xPos;
+	private double yPos;
 	private final Shape shape;
 	private final Color SQUARECOLOR = new Color(18,35,113);
 
@@ -49,14 +49,15 @@ public class SquareBumper implements Gadget {
      * @param y - y coordinate of the upper left corner of this gadget
      */
     public SquareBumper(String name, int x, int y) {
-    	this.xPos = x;
-    	this.yPos = y;
+    	this.xPos = x+Constants.OFFSET;
+    	this.yPos = y-Constants.OFFSET;
         this.name = name;
         this.position = new Vect(x, y);
         lines = new LineSegment[4];
         corners = new Circle[4];
         this.linesConstructor();
-        shape = new Rectangle(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
+//        shape = new Rectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
+        shape = new Rectangle2D.Double(xPos*Constants.SCALE+Constants.SCALE,yPos*Constants.SCALE+Constants.SCALE,Constants.SCALE,Constants.SCALE);
     }
     
     /**

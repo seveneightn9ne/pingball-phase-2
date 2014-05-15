@@ -220,7 +220,9 @@ public class Ball {
     }
 
 	public Shape getShape() {
-		return new Ellipse2D.Double(getPosition().x()*Constants.SCALE,getPosition().y()*Constants.SCALE, 0.5*Constants.SCALE, 0.5*Constants.SCALE);
+//		return new Ellipse2D.Double(getPosition().x()*Constants.SCALE,getPosition().y()*Constants.SCALE, 0.5*Constants.SCALE, 0.5*Constants.SCALE);
+		return new Ellipse2D.Double(getPosition().x()*Constants.SCALE+Constants.SCALE,getPosition().y()*Constants.SCALE+Constants.SCALE, 0.5*Constants.SCALE, 0.5*Constants.SCALE);
+
 	}
 
 	public Color getColor() {

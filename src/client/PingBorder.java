@@ -78,7 +78,7 @@ public class PingBorder extends AbstractBorder {
 			AffineTransform orig = g2d.getTransform();
 
 			// TOPLEFT Border
-			if (leftString != null) {
+			if (rightString != null) {
 
 				// Create a rotation transformation for the font.
 				AffineTransform fontAT = new AffineTransform();
@@ -95,14 +95,14 @@ public class PingBorder extends AbstractBorder {
 
 				// Render a string using the derived font
 				int yval = y + height / 2;
-				g2d.drawString(leftString, (int) width-(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y + height / 2);
+				g2d.drawString(rightString, (int) width-(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y + height / 2);
 
 				// put the original font back
 				g2d.setFont(theFont);
 
 			}
 			// TOPRIGHT Border
-			if (rightString != null) {
+			if (leftString != null) {
 				AffineTransform fontAT = new AffineTransform();
 
 				// get the current font
@@ -117,7 +117,7 @@ public class PingBorder extends AbstractBorder {
 
 				// Render a string using the derived font
 				int yval = y + height / 2;
-				g2d.drawString(rightString, (int)(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y+height/2);
+				g2d.drawString(leftString, (int)(theDerivedFont.getSize()+theDerivedFont.getSize()/2), (int) y+height/2);
 
 				// put the original font back
 				g2d.setFont(theFont);
