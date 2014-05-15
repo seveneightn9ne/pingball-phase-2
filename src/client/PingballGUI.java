@@ -37,21 +37,15 @@ import common.Constants;
 import client.gadgets.Wall;
 
 /**
- * How to draw the gadgets on the board? * Option 1: A drawGadget method that
- * uses instanceof and accesses data based on that Downsides: Requires
- * instanceof * Option 2: Gadgets have a drawSelf method Downsides: Bad
- * separation of model and view * Option 3: All gadgets have a corresponding
- * GadgetGUI class Downsides: Tons of new classes, Gadget and GadgetGUI don't
- * relate to each other in a meaningful way, The main GUI will have to know
- * which GadgetGUI to use, might require instanceof, Alternatively a Gadget can
- * know its GUI but once again, bad separation of model and view
- * 
- * 
- * Manual Testing Strategy: * New board from file * Try invalid filepath
- * (possible with open dialog?) * Try file that is not a board * Make sure
- * connecting to server is enabled * Maybe game should not start immediately. *
- * Connect to server * Some notification that it worked (in bottom area?) *
- * Disconnect becomes enabled, connect becomes disabled
+ * Manual Testing Strategy: 
+ * * New board from file 
+ * * Try invalid filepath (possible with open dialog?) 
+ * * Try file that is not a board 
+ * * Make sure connecting to server is enabled 
+ * * Maybe game should not start immediately. 
+ * * Connect to server 
+ * * Some notification that it worked (in bottom area?) 
+ * * Disconnect becomes enabled, connect becomes disabled
  * 
  */
 public class PingballGUI extends JFrame {

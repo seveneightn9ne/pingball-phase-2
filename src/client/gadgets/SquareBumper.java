@@ -47,15 +47,18 @@ public class SquareBumper implements Gadget {
      * @param y - y coordinate of the upper left corner of this gadget
      */
     public SquareBumper(String name, int x, int y) {
-    	this.xPos = x+Constants.OFFSET;
-    	this.yPos = y-Constants.OFFSET;
+    	this.xPos = x;
+    	this.yPos = y;
         this.name = name;
         this.position = new Vect(x, y);
         lines = new LineSegment[4];
         corners = new Circle[4];
         this.linesConstructor();
 //        shape = new Rectangle2D.Double(xPos*Constants.SCALE,yPos*Constants.SCALE,Constants.SCALE,Constants.SCALE);
-        shape = new Rectangle2D.Double(xPos*Constants.SCALE+Constants.SCALE,yPos*Constants.SCALE+Constants.SCALE,Constants.SCALE,Constants.SCALE);
+        shape = new Rectangle2D.Double(
+        		xPos*Constants.SCALE+Constants.SCALE,
+        		yPos*Constants.SCALE+Constants.SCALE,
+        		Constants.SCALE,Constants.SCALE);
     }
     
     /**
