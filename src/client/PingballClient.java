@@ -30,13 +30,20 @@ import physics.Vect;
  * server, and runs the pingball game while communicating with the server about
  * inter-board fuses and ball transfers.
  * 
- * Thread Safety Argument: - board and its gadgets are confined to the
- * PingballClient thread. - the serverHandler thread passes messages via
- * incomingMessages which is a threadsafe datatype. - any GUI thread accessing
- * the client does so by adding runnables to the threadsafe invokeLater queue.
+ * KNOWN BUGS:
+ * - Starting a new game from the open file dialog will not properly 
+ *   reset the key triggers; the new board will still have the old
+ *   board's key triggers. This is likely a bug in Parser but we have
+ *   not been able to track it down. 
  * 
- * Rep Invariant: - incomingMessages must not be null. - if board is null, so is
- * serverHandler and boardPath.
+ * Thread Safety Argument: 
+ * - board and its gadgets are confined to the PingballClient thread. 
+ * - the serverHandler thread passes messages via incomingMessages which is a threadsafe datatype. 
+ * - any GUI thread accessing the client does so by adding runnables to the threadsafe invokeLater queue.
+ * 
+ * Rep Invariant: 
+ * - incomingMessages must not be null. 
+ * - if board is null, so is serverHandler and boardPath.
  */
 public class PingballClient {
 	private Board board;
